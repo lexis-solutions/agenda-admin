@@ -17,6 +17,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "classnames": "^2.3.1",
     "daisyui": "^1.16.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
