@@ -42,7 +42,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       <td>{job.name}</td>
       <td>
         <div
-          data-tip={new Date(job.lastRunAt).toLocaleString()}
+          data-tip={job.lastRunAt && new Date(job.lastRunAt).toLocaleString()}
           className="tooltip"
         >
           {lastRunAt}
@@ -50,7 +50,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </td>
       <td>
         <div
-          data-tip={new Date(job.nextRunAt).toLocaleString()}
+          data-tip={job.nextRunAt && new Date(job.nextRunAt).toLocaleString()}
           className="tooltip"
         >
           {nextRunAt}
