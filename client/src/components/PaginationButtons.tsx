@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 interface PropType {
   page: number;
   pagesCount: number;

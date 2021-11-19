@@ -12,7 +12,11 @@ const App = () => {
   return (
     <div className="flex flex-col items-center justify-between p-16">
       <JobsTable page={page} />
-      <PaginationButtons page={page} pagesCount={data.pagesCount} setPage={setPage} />
+      <PaginationButtons
+        page={page}
+        pagesCount={data.pagesCount}
+        setPage={setPage}
+      />
     </div>
   );
 };

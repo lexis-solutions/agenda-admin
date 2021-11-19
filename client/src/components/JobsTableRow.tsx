@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import getRelativeTime from '../utils/getRelativeTime';
 
 interface PropsType {
   job: {
@@ -11,6 +12,13 @@ interface PropsType {
 
 const JobsTableRow: React.FC<PropsType> = ({ job }) => {
   const [checked, setChecked] = useState(false);
+
+  const lastRunAt = job.lastRunAt
+    ? getRelativeTime(new Date(job.lastRunAt))
+    : 'never';
+  const nextRunAt = job.nextRunAt
+    ? getRelativeTime(new Date(job.nextRunAt))
+    : 'never';
 
   const renderJobActions = () => (
     <>
@@ -32,8 +40,8 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </th>
       <td></td>
       <td>{job.name}</td>
-      <td>{job.lastRunAt}</td>
-      <td>{job.nextRunAt}</td>
+      <td>{lastRunAt}</td>
+      <td>{nextRunAt}</td>
       <td>{renderJobActions()}</td>
     </tr>
   );
