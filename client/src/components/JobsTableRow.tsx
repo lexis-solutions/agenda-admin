@@ -40,8 +40,22 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </th>
       <td></td>
       <td>{job.name}</td>
-      <td>{lastRunAt}</td>
-      <td>{nextRunAt}</td>
+      <td>
+        <div
+          data-tip={new Date(job.lastRunAt).toLocaleString()}
+          className="tooltip"
+        >
+          {lastRunAt}
+        </div>
+      </td>
+      <td>
+        <div
+          data-tip={new Date(job.nextRunAt).toLocaleString()}
+          className="tooltip"
+        >
+          {nextRunAt}
+        </div>
+      </td>
       <td>{renderJobActions()}</td>
     </tr>
   );
