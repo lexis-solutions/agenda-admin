@@ -5,9 +5,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import agenda from './agenda';
+import enableCors from './middleware/enable-cors';
 import apiRouter from './routes';
 
 const app = express();
+
+app.use(enableCors);
 
 app.use('/', express.static(path.join(__dirname, '../../client/build')));
 
