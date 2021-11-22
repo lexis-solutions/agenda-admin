@@ -1,19 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from '../agenda';
+import getJobStatus from '../utils/get-job-status';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
   sortType: 'desc' | 'asc';
   page: number;
-}
-
-interface Status {
-  repeating: boolean;
-  scheduled: boolean;
-  queued: boolean;
-  completed: boolean;
-  failed: boolean;
-  running: boolean;
 }
 
 const getJobs = async (
@@ -55,22 +47,7 @@ const setJobsStatus = (
 ) => {
   const { jobs } = res.locals;
   const jobsWithStatus = jobs.map((job: any) => {
-    const { lastFinishedAt, nextRunAt, lastRunAt, repeatInterval, failedAt } =
-      job.attrs;
-    const status: Status = {
-      repeating: !!repeatInterval,
-      scheduled: nextRunAt && new Date(nextRunAt) > new Date(),
-      queued:
-        new Date() > new Date(nextRunAt) &&
-        new Date(nextRunAt) > new Date(lastFinishedAt),
-      completed:
-        (lastFinishedAt && !failedAt) ||
-        new Date(lastFinishedAt) > new Date(failedAt),
-      failed: new Date(lastFinishedAt) === new Date(failedAt),
-      running: new Date(lastRunAt) > new Date(lastFinishedAt),
-    };
-
-    job.attrs.status = status;
+    job.attrs.status = getJobStatus(job);
     return job;
   });
 

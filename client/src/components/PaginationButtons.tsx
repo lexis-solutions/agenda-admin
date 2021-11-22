@@ -43,7 +43,6 @@ const PaginationButtons: React.FC<PropType> = ({
     </button>
   );
 
-
   const renderPaginationButtons = () => {
     if (pagesCount <= 10) {
       return range(1, pagesCount + 1).map((pg) => renderPageButton(pg));
