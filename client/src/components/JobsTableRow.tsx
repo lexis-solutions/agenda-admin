@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
-import getRelativeTime from '../utils/getRelativeTime';
+import getRelativeTime from '../utils/get-relative-time';
+
+type StatusType =
+  | 'repeating'
+  | 'scheduled'
+  | 'queued'
+  | 'completed'
+  | 'failed'
+  | 'running';
+
+interface JobStatusType {
+  repeating: boolean;
+  scheduled: boolean;
+  queued: boolean;
+  completed: boolean;
+  failed: boolean;
+  running: boolean;
+}
 
 interface PropsType {
   job: {
@@ -7,8 +24,19 @@ interface PropsType {
     name: string;
     lastRunAt: string;
     nextRunAt: string;
+    repeatInterval: string;
+    status: JobStatusType;
   };
 }
+
+const statusColors = {
+  repeating: 'bg-blue-400',
+  scheduled: 'bg-blue-400',
+  queued: 'bg-blue-800',
+  completed: 'bg-green-500',
+  failed: 'bg-red-500',
+  running: 'bg-yellow-500',
+};
 
 const JobsTableRow: React.FC<PropsType> = ({ job }) => {
   const [checked, setChecked] = useState(false);
@@ -21,11 +49,38 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
     : 'never';
 
   const renderJobActions = () => (
-    <>
-      <button className="mx-1 text-white bg-green-500 btn-sm">Info</button>
-      <button className="mx-1 text-white bg-blue-500 btn-sm">Reque</button>
-      <button className="mx-1 text-white bg-red-500 btn-sm">Delete</button>
-    </>
+    <div className="flex flex-wrap items-center justify-center">
+      <button className="flex-1 m-1 text-white bg-green-600 rounded-box btn-sm">
+        Info
+      </button>
+      <button className="flex-1 m-1 text-white bg-blue-500 rounded-box btn-sm">
+        Reque
+      </button>
+      <button className="flex-1 m-1 text-white bg-red-500 rounded-box btn-sm">
+        Delete
+      </button>
+    </div>
+  );
+
+  const renderJobStatus = () => (
+    <div className="flex flex-wrap">
+      {Object.keys(job.status).map((status) => {
+        if (!job.status[status as StatusType]) {
+          return null;
+        }
+
+        return (
+          <span
+            className={`p-1 m-1 text-white bg-gray-500 text-2xs rounded-sm ${
+              statusColors[status as StatusType]
+            }`}
+            key={status}
+          >
+            {status === 'repeating' ? job.repeatInterval : status}
+          </span>
+        );
+      })}
+    </div>
   );
 
   return (
@@ -38,7 +93,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
           onChange={() => setChecked(!checked)}
         />
       </th>
-      <td></td>
+      <td>{renderJobStatus()}</td>
       <td>{job.name}</td>
       <td>
         <div
