@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 import agenda from './agenda';
 import enableCors from './middleware/enable-cors';
