@@ -1,17 +1,17 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import cors from 'cors';
 
 import dotenv from 'dotenv';
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 import agenda from './agenda';
-import enableCors from './middleware/enable-cors';
 import apiRouter from './routes';
 import finalize from './middleware/finalize';
 
 const app = express();
 
-app.use(enableCors);
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, '../../client/build')));
 
