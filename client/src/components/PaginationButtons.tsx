@@ -1,4 +1,5 @@
 import { range } from 'lodash';
+import { useCallback, useMemo } from 'react';
 
 interface PropType {
   page: number;
@@ -11,22 +12,32 @@ const PaginationButtons: React.FC<PropType> = ({
   pagesCount,
   setPage,
 }) => {
-  const handlePrevPage = () => page > 1 && setPage(page - 1);
-  const handleNextPage = () => page < pagesCount && setPage(page + 1);
+  const handlePrevPage = useCallback(
+    () => page > 1 && setPage(page - 1),
+    [page, setPage]
+  );
 
-  const setCustomPage = (newPage: number) => {
-    if (newPage >= 1 && newPage <= pagesCount) {
-      setPage(newPage);
-    }
-  };
+  const handleNextPage = useCallback(
+    () => page < pagesCount && setPage(page + 1),
+    [page, pagesCount, setPage]
+  );
 
-  const setPageFromUserInput = () => {
+  const setCustomPage = useCallback(
+    (newPage: number) => {
+      if (newPage >= 1 && newPage <= pagesCount) {
+        setPage(newPage);
+      }
+    },
+    [pagesCount, setPage]
+  );
+
+  const setPageFromUserInput = useCallback(() => {
     const pg = prompt('Enter the page number: ');
     const newPage = parseInt(pg!);
     setCustomPage(newPage);
-  };
+  }, [setCustomPage]);
 
-  const renderPaginationButtons = () => {
+  const renderPaginationButtons = useMemo(() => {
     if (pagesCount <= 10) {
       return range(1, pagesCount + 1).map((pg) => (
         <button
@@ -86,7 +97,7 @@ const PaginationButtons: React.FC<PropType> = ({
         </button>
       </>
     );
-  };
+  }, [page, pagesCount, setCustomPage, setPageFromUserInput]);
 
   return (
     <div className="btn-group">
@@ -97,7 +108,7 @@ const PaginationButtons: React.FC<PropType> = ({
       >
         ‹
       </button>
-      {renderPaginationButtons()}
+      {renderPaginationButtons}
       <button
         className="btn btn-outline"
         onClick={handleNextPage}
