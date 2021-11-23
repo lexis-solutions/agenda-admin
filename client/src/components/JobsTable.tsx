@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
-import JobsTableRow from './JobsTableRow';
-import arrowUp from '../svgs/chevron-up.svg';
-import arrowDown from '../svgs/chevron-down.svg';
+import JobsTableRow from 'src/components/JobsTableRow';
+import arrowUp from 'src/svgs/chevron-up.svg';
+import arrowDown from 'src/svgs/chevron-down.svg';
 
 interface PropType {
   page: number;

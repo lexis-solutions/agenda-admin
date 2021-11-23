@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getRelativeTime from '../utils/get-relative-time';
+import getRelativeTime from 'src/utils/get-relative-time';
 
 type StatusType =
   | 'repeating'

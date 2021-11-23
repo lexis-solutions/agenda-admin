@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useSWR from 'swr';
-import JobsTable from './components/JobsTable';
-import PaginationButtons from './components/PaginationButtons';
+import JobsTable from 'src/components/JobsTable';
+import PaginationButtons from 'src/components/PaginationButtons';
 
 const App = () => {
   const [page, setPage] = useState(1);

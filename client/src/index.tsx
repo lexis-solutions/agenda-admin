@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import { SWRConfig } from 'swr';
+
+import 'src/index.css';
+import App from 'src/App';
 
 const refreshInterval = process.env.REACT_APP_REFRESH_INTERVAL
   ? parseInt(process.env.REACT_APP_REFRESH_INTERVAL)
