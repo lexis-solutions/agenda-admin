@@ -4,16 +4,13 @@ import { SWRConfig } from 'swr';
 
 import 'src/index.css';
 import App from 'src/App';
-
-const refreshInterval = process.env.REACT_APP_REFRESH_INTERVAL
-  ? parseInt(process.env.REACT_APP_REFRESH_INTERVAL)
-  : 15000;
+import { REFRESH_INTERVAL } from 'src/constants';
 
 ReactDOM.render(
   <React.StrictMode>
     <SWRConfig
       value={{
-        refreshInterval,
+        refreshInterval: REFRESH_INTERVAL,
         fetcher: (url) => fetch(url).then((res) => res.json()),
       }}
     >
