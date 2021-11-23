@@ -8,7 +8,7 @@ interface ReqQuery {
   page: number;
 }
 
-const getJobs = async (
+export const getJobs = async (
   req: Request<any, any, any, ReqQuery>,
   res: Response,
   next: NextFunction
@@ -40,7 +40,7 @@ const getJobs = async (
   next();
 };
 
-const setJobsStatus = (
+export const setJobsStatus = (
   req: Request<any, any, any, ReqQuery>,
   res: Response,
   next: NextFunction
@@ -55,5 +55,3 @@ const setJobsStatus = (
 
   next();
 };
-
-export default [getJobs, setJobsStatus];
