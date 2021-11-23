@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/app.ts",
-    "test": "./node_modules/.bin/mocha --require ts-node/register test/**/*.ts --timeout 5000 --exit"
+    "test": "./node_modules/.bin/mocha --require ts-node/register test/**/*.test.ts --timeout 5000 --exit"
   },
   "dependencies": {
     "agenda": "^4.2.1",
