@@ -5,7 +5,9 @@ import PaginationButtons from 'src/components/PaginationButtons';
 
 const App = () => {
   const [page, setPage] = useState(1);
-  const { data, error } = useSWR(`http://localhost:4000/api/jobs?page=${page}`);
+  const { data, error } = useSWR(
+    `${process.env.REACT_APP_API_URL}/jobs?page=${page}`
+  );
 
   if (!data && !error) return null;
 

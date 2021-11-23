@@ -15,9 +15,9 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
   const [sortBy, setSortBy] = useState<SortType>('lastRunAt');
   const [sortDesc, setSortDesc] = useState(true);
   const { data, error } = useSWR(
-    `http://localhost:4000/api/jobs?page=${page}&sortBy=${sortBy}&sortType=${
-      sortDesc ? 'desc' : 'asc'
-    }`
+    `${
+      process.env.REACT_APP_API_URL
+    }/jobs?page=${page}&sortBy=${sortBy}&sortType=${sortDesc ? 'desc' : 'asc'}`
   );
 
   if (!data && !error) return null;
