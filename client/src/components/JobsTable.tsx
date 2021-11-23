@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import JobsTableRow from 'src/components/JobsTableRow';
-import arrowUp from 'src/svgs/chevron-up.svg';
-import arrowDown from 'src/svgs/chevron-down.svg';
+import SortableColumnButton from './SortableColumnButton';
 
 interface PropType {
   page: number;
@@ -22,24 +21,6 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
 
   if (!data && !error) return null;
 
-  const sortableColumnButton = (title: string, type: SortType) => (
-    <div
-      className="flex flex-row items-center justify-between cursor-pointer"
-      onClick={() => {
-        if (type === sortBy) {
-          setSortDesc(!sortDesc);
-        } else {
-          setSortBy(type);
-        }
-      }}
-    >
-      <div>{title}</div>
-      {type === sortBy && (
-        <img src={sortDesc ? arrowDown : arrowUp} width={20} />
-      )}
-    </div>
-  );
-
   return (
     <div>
       <table className="table w-full">
@@ -55,8 +36,26 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
             </th>
             <th>Status</th>
             <th>Name</th>
-            <th>{sortableColumnButton('Last Run At', 'lastRunAt')}</th>
-            <th>{sortableColumnButton('Next Run At', 'nextRunAt')}</th>
+            <th>
+              <SortableColumnButton
+                title="Next Run At"
+                column="nextRunAt"
+                currentColumn={sortBy}
+                setCurrentColumn={setSortBy}
+                sortDesc={sortDesc}
+                setSortDesc={setSortDesc}
+              />
+            </th>
+            <th>
+              <SortableColumnButton
+                title="Last Run At"
+                column="lastRunAt"
+                currentColumn={sortBy}
+                setCurrentColumn={setSortBy}
+                sortDesc={sortDesc}
+                setSortDesc={setSortDesc}
+              />
+            </th>
             <th>Actions</th>
           </tr>
         </thead>
