@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getRelativeTime from 'src/utils/get-relative-time';
+import { relativeTimeFormatter } from 'src/utils/formatter';
 
 type StatusType =
   | 'repeating'
@@ -41,12 +41,8 @@ const statusColors = {
 const JobsTableRow: React.FC<PropsType> = ({ job }) => {
   const [checked, setChecked] = useState(false);
 
-  const lastRunAt = job.lastRunAt
-    ? getRelativeTime(new Date(job.lastRunAt))
-    : 'never';
-  const nextRunAt = job.nextRunAt
-    ? getRelativeTime(new Date(job.nextRunAt))
-    : 'never';
+  const lastRunAt = relativeTimeFormatter(job.lastRunAt);
+  const nextRunAt = relativeTimeFormatter(job.nextRunAt);
 
   const renderJobActions = () => (
     <div className="flex flex-wrap items-center justify-center">
