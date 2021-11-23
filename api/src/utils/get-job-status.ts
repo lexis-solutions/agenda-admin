@@ -10,7 +10,7 @@ export default (job: any) => {
     completed:
       (lastFinishedAt && !failedAt) ||
       new Date(lastFinishedAt) > new Date(failedAt),
-    failed: new Date(lastFinishedAt) === new Date(failedAt),
+    failed: new Date(lastFinishedAt).getTime() === new Date(failedAt).getTime(),
     running: new Date(lastRunAt) > new Date(lastFinishedAt),
   };
 };
