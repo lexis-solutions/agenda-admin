@@ -40,10 +40,6 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
     </div>
   );
 
-  const renderJobsList = data.jobs.map((job: any) => (
-    <JobsTableRow job={job} key={job._id} />
-  ));
-
   return (
     <div>
       <table className="table w-full">
@@ -64,7 +60,11 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>{renderJobsList}</tbody>
+        <tbody>
+          {data.jobs.map((job: any) => (
+            <JobsTableRow job={job} key={job._id} />
+          ))}
+        </tbody>
       </table>
     </div>
   );

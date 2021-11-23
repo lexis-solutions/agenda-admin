@@ -26,26 +26,18 @@ const PaginationButtons: React.FC<PropType> = ({
     setCustomPage(newPage);
   };
 
-  const renderPageButton = (newPage: number) => (
-    <button
-      key={newPage}
-      className="btn btn-outline"
-      onClick={() => setCustomPage(newPage)}
-      disabled={page === newPage}
-    >
-      {newPage}
-    </button>
-  );
-
-  const renderHiddenPagesButton = () => (
-    <button className="btn btn-outline" onClick={setPageFromUserInput}>
-      ...
-    </button>
-  );
-
   const renderPaginationButtons = () => {
     if (pagesCount <= 10) {
-      return range(1, pagesCount + 1).map((pg) => renderPageButton(pg));
+      return range(1, pagesCount + 1).map((pg) => (
+        <button
+          key={pg}
+          className="btn btn-outline"
+          onClick={() => setCustomPage(pg)}
+          disabled={page === pg}
+        >
+          {pg}
+        </button>
+      ));
     }
 
     const leftHiddenPages = page - 2 > 2;
@@ -56,11 +48,42 @@ const PaginationButtons: React.FC<PropType> = ({
 
     return (
       <>
-        {renderPageButton(1)}
-        {leftHiddenPages && renderHiddenPagesButton()}
-        {range(start, end + 1).map((pg) => renderPageButton(pg))}
-        {rightHiddenPages && renderHiddenPagesButton()}
-        {renderPageButton(pagesCount)}
+        <button
+          key={1}
+          className="btn btn-outline"
+          onClick={() => setCustomPage(1)}
+          disabled={page === 1}
+        >
+          {1}
+        </button>
+        {leftHiddenPages && (
+          <button className="btn btn-outline" onClick={setPageFromUserInput}>
+            ...
+          </button>
+        )}
+        {range(start, end + 1).map((pg) => (
+          <button
+            key={pg}
+            className="btn btn-outline"
+            onClick={() => setCustomPage(pg)}
+            disabled={page === pg}
+          >
+            {pg}
+          </button>
+        ))}
+        {rightHiddenPages && (
+          <button className="btn btn-outline" onClick={setPageFromUserInput}>
+            ...
+          </button>
+        )}
+        <button
+          key={pagesCount}
+          className="btn btn-outline"
+          onClick={() => setCustomPage(pagesCount)}
+          disabled={page === pagesCount}
+        >
+          {pagesCount}
+        </button>
       </>
     );
   };
