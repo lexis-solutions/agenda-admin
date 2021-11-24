@@ -6,6 +6,7 @@ interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
   sortType: 'desc' | 'asc';
   page: number;
+  itemsPerPage: number;
 }
 
 export const getJobs = async (
@@ -13,12 +14,10 @@ export const getJobs = async (
   res: Response,
   next: NextFunction
 ) => {
-  const itemsPerPage = process.env.ITEMS_PER_PAGE
-    ? parseInt(process.env.ITEMS_PER_PAGE)
-    : 20;
   const jobsCount = await agenda._collection.countDocuments();
-  const pagesCount = Math.ceil(jobsCount / itemsPerPage);
   const page = req.query.page || 1;
+  const itemsPerPage = req.query.itemsPerPage || 20;
+  const pagesCount = Math.ceil(jobsCount / itemsPerPage);
 
   const sortBy = req.query.sortBy || 'lastRunAt';
   const sortType = req.query.sortType === 'asc' ? 1 : -1;
@@ -28,8 +27,8 @@ export const getJobs = async (
     {
       [sortBy]: sortType,
     },
-    itemsPerPage,
-    (page - 1) * itemsPerPage
+    +itemsPerPage,
+    +itemsPerPage * (page - 1)
   );
 
   res.locals = {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useSWR from 'swr';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from './SortableColumnButton';
-import { API_URL } from 'src/constants';
+import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
 
 interface PropType {
   page: number;
@@ -15,7 +15,7 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
   const [sortBy, setSortBy] = useState<SortType>('lastRunAt');
   const [sortDesc, setSortDesc] = useState(true);
   const { data, error } = useSWR(
-    `${API_URL}/jobs?page=${page}&sortBy=${sortBy}&sortType=${
+    `${API_URL}/jobs?page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
       sortDesc ? 'desc' : 'asc'
     }`
   );

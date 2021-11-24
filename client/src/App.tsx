@@ -2,11 +2,13 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
-import { API_URL } from 'src/constants';
+import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
 
 const App = () => {
   const [page, setPage] = useState(1);
-  const { data, error } = useSWR(`${API_URL}/jobs?page=${page}`);
+  const { data, error } = useSWR(
+    `${API_URL}/jobs?page=${page}&itemsPerPage=${ITEMS_PER_PAGE}`
+  );
 
   if (!data && !error) return null;
 
