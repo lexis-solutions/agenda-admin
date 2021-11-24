@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from '../agenda';
-import getJobStatus from '../utils/get-job-status';
+import agenda from 'src/agenda';
+import getJobStatus from 'src/utils/get-job-status';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';

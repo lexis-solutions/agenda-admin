@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "src/*": [ "./src/*" ],
+      "test/*": [ "./test/*" ]
+    },
     "target": "es6",
     "lib": [
       "dom",
@@ -18,7 +23,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "plugins": [
+      {
+          "transform": "typescript-transform-paths"
+      }
+    ],
   },
   "include": [ "src", "test" ]
 }

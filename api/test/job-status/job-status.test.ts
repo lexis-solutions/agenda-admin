@@ -1,6 +1,9 @@
 import { expect } from 'chai';
-import getJobStatus from '../../src/utils/get-job-status';
-import testData, { OutputType, StatusType } from './job-status-test-data';
+import getJobStatus from 'src/utils/get-job-status';
+import testData, {
+  OutputType,
+  StatusType,
+} from 'test/job-status/job-status-test-data';
 
 describe('Job status tests', () => {
   testData.forEach(({ description, input, output }) => {

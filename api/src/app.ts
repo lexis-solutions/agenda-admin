@@ -5,9 +5,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import agenda from './agenda';
-import apiRouter from './routes';
-import finalize from './middleware/finalize';
+import agenda from 'src/agenda';
+import apiRouter from 'src/routes';
+import finalize from 'src/middleware/finalize';
 
 const app = express();
 
