@@ -1,22 +1,6 @@
 import React, { useState } from 'react';
+import { JobStatusType, StatusType } from 'src/types';
 import { relativeTimeFormatter } from 'src/utils/formatter';
-
-type StatusType =
-  | 'repeating'
-  | 'scheduled'
-  | 'queued'
-  | 'completed'
-  | 'failed'
-  | 'running';
-
-interface JobStatusType {
-  repeating: boolean;
-  scheduled: boolean;
-  queued: boolean;
-  completed: boolean;
-  failed: boolean;
-  running: boolean;
-}
 
 interface PropsType {
   job: {

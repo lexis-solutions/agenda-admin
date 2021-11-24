@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import JobsTableRow from 'src/components/JobsTableRow';
-import SortableColumnButton from './SortableColumnButton';
+import SortableColumnButton from 'src/components/SortableColumnButton';
 import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
+import { SortType } from 'src/types';
 
 interface PropType {
   page: number;
 }
-
-type SortType = 'lastRunAt' | 'nextRunAt';
 
 const JobsTable: React.FC<PropType> = ({ page }) => {
   const [selectAll, setSelectAll] = useState(false);

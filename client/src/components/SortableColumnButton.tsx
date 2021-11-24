@@ -1,7 +1,6 @@
 import arrowUp from 'src/svgs/chevron-up.svg';
 import arrowDown from 'src/svgs/chevron-down.svg';
-
-type SortType = 'lastRunAt' | 'nextRunAt';
+import { SortType } from 'src/types';
 
 interface PropsType {
   title: string;
