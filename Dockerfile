@@ -26,4 +26,6 @@ EXPOSE 4000
 
 RUN yarn --cwd ./client/ build
 
-CMD [ "./api/node_modules/.bin/ts-node-transpile-only", "./api/src/app.ts" ]
+WORKDIR /usr/src/app/api
+
+CMD [ "./node_modules/.bin/ts-node-transpile-only", "./src/app.ts" ]

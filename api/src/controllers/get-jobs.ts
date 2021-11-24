@@ -16,7 +16,7 @@ export const getJobs = async (
 ) => {
   const jobsCount = await agenda._collection.countDocuments();
   const page = req.query.page || 1;
-  const itemsPerPage = req.query.itemsPerPage || 20;
+  const itemsPerPage = +req.query.itemsPerPage || 20;
   const pagesCount = Math.ceil(jobsCount / itemsPerPage);
 
   const sortBy = req.query.sortBy || 'lastRunAt';
@@ -27,8 +27,8 @@ export const getJobs = async (
     {
       [sortBy]: sortType,
     },
-    +itemsPerPage,
-    +itemsPerPage * (page - 1)
+    itemsPerPage,
+    itemsPerPage * (page - 1)
   );
 
   res.locals = {
