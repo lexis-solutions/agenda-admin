@@ -33,7 +33,7 @@ export const getJobs = async (
     const value = /^\d+$/.test(req.query.value)
       ? +req.query.value
       : req.query.value;
-    query.data[req.query.property] = value;
+    query[req.query.property] = value;
   }
 
   const statusFilter: any = {};
