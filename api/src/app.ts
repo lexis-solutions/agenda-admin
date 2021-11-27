@@ -1,13 +1,7 @@
-require('tsconfig-paths/register');
-
 import express, { Request, Response } from 'express';
 import path from 'path';
 import cors from 'cors';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
-import agenda from 'src/agenda';
 import apiRouter from 'src/routes';
 import finalize from 'src/middleware/finalize';
 
@@ -26,6 +20,4 @@ app.use((error: any, req: Request, res: Response) => {
   res.status(status).send({ status, message });
 });
 
-agenda.start().then(() => {
-  app.listen(4000, () => console.info('App running on port 4000'));
-});
+export default app;
