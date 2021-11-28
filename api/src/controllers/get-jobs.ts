@@ -52,34 +52,36 @@ export const getJobs = async (
       {
         $project: {
           job: '$$ROOT',
-          running: {
-            $and: ['$lastRunAt', { $gt: ['$lastRunAt', '$lastFinishedAt'] }],
-          },
-          scheduled: {
-            $and: ['$nextRunAt', { $gte: ['$nextRunAt', new Date()] }],
-          },
-          queued: {
-            $and: [
-              '$nextRunAt',
-              { $gte: [new Date(), '$nextRunAt'] },
-              { $gte: ['$nextRunAt', '$lastFinishedAt'] },
-            ],
-          },
-          completed: {
-            $and: [
-              '$lastFinishedAt',
-              { $gt: ['$lastFinishedAt', '$failedAt'] },
-            ],
-          },
-          failed: {
-            $and: [
-              '$lastFinishedAt',
-              '$failedAt',
-              { $eq: ['$lastFinishedAt', '$failedAt'] },
-            ],
-          },
-          repeating: {
-            $and: ['$repeatInterval', { $ne: ['$repeatInterval', null] }],
+          status: {
+            running: {
+              $and: ['$lastRunAt', { $gt: ['$lastRunAt', '$lastFinishedAt'] }],
+            },
+            scheduled: {
+              $and: ['$nextRunAt', { $gte: ['$nextRunAt', new Date()] }],
+            },
+            queued: {
+              $and: [
+                '$nextRunAt',
+                { $gte: [new Date(), '$nextRunAt'] },
+                { $gte: ['$nextRunAt', '$lastFinishedAt'] },
+              ],
+            },
+            completed: {
+              $and: [
+                '$lastFinishedAt',
+                { $gt: ['$lastFinishedAt', '$failedAt'] },
+              ],
+            },
+            failed: {
+              $and: [
+                '$lastFinishedAt',
+                '$failedAt',
+                { $eq: ['$lastFinishedAt', '$failedAt'] },
+              ],
+            },
+            repeating: {
+              $and: ['$repeatInterval', { $ne: ['$repeatInterval', null] }],
+            },
           },
         },
       },
@@ -107,7 +109,7 @@ export const getJobs = async (
     ])
     .toArray();
 
-  res.locals.data = data;
+  res.locals = data;
 
   next();
 };
