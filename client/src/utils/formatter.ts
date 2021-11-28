@@ -1,4 +1,4 @@
-import getRelativeTime from 'src/utils/get-relative-time';
+import { DateTime } from 'luxon';
 
-export const relativeTimeFormatter = (time: string | Date | null) =>
-  time ? getRelativeTime(new Date(time)) : 'never';
+export const formatRelativeTime = (time: string) =>
+  time ? DateTime.fromISO(time).toRelative() : '';

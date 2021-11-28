@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { JobStatusType, StatusType } from 'src/types';
-import { relativeTimeFormatter } from 'src/utils/formatter';
-
+import { formatRelativeTime } from 'src/utils/formatter';
 interface PropsType {
   job: {
     job: {
@@ -27,8 +26,8 @@ const statusColors = {
 const JobsTableRow: React.FC<PropsType> = ({ job }) => {
   const [checked, setChecked] = useState(false);
 
-  const lastRunAt = relativeTimeFormatter(job.job.lastRunAt);
-  const nextRunAt = relativeTimeFormatter(job.job.nextRunAt);
+  const lastRunAt = formatRelativeTime(job.job.lastRunAt);
+  const nextRunAt = formatRelativeTime(job.job.nextRunAt);
 
   return (
     <tr>
