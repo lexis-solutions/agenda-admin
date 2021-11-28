@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 interface PropType {
   page: number;
@@ -37,7 +37,7 @@ const PaginationButtons: React.FC<PropType> = ({
     setCustomPage(newPage);
   }, [setCustomPage]);
 
-  const renderPaginationButtons = useMemo(() => {
+  const renderPaginationButtons = useCallback(() => {
     if (pagesCount <= 10) {
       return range(1, pagesCount + 1).map((pg) => (
         <button
@@ -108,7 +108,7 @@ const PaginationButtons: React.FC<PropType> = ({
       >
         ‹
       </button>
-      {renderPaginationButtons}
+      {renderPaginationButtons()}
       <button
         className="btn btn-outline"
         onClick={handleNextPage}
