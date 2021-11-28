@@ -12,20 +12,19 @@ const App = () => {
 
   if (!data && !error) return null;
 
-  if (data[0].jobs.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <span className="text-2xl text-gray-600 shadow-xl">No data found!</span>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col items-center justify-between p-16">
       <JobsTable page={page} />
+      {data[0].jobs.length === 0 && (
+        <div className="flex items-center justify-center p-4 m-4">
+          <span className="text-xl text-gray-600 shadow-md">
+            No data found!
+          </span>
+        </div>
+      )}
       <PaginationButtons
         page={page}
-        pagesCount={data[0].pages[0].pagesCount}
+        pagesCount={data[0].pages[0] ? data[0].pages[0].pagesCount : 1}
         setPage={setPage}
       />
     </div>
