@@ -4,11 +4,13 @@ import { relativeTimeFormatter } from 'src/utils/formatter';
 
 interface PropsType {
   job: {
-    _id: string;
-    name: string;
-    lastRunAt: string;
-    nextRunAt: string;
-    repeatInterval: string;
+    job: {
+      _id: string;
+      name: string;
+      lastRunAt: string;
+      nextRunAt: string;
+      repeatInterval: string;
+    };
     status: JobStatusType;
   };
 }
@@ -25,43 +27,8 @@ const statusColors = {
 const JobsTableRow: React.FC<PropsType> = ({ job }) => {
   const [checked, setChecked] = useState(false);
 
-  const lastRunAt = relativeTimeFormatter(job.lastRunAt);
-  const nextRunAt = relativeTimeFormatter(job.nextRunAt);
-
-  const renderJobActions = () => (
-    <div className="flex flex-wrap items-center justify-center">
-      <button className="flex-1 m-1 text-white bg-green-600 rounded-box btn-sm">
-        Info
-      </button>
-      <button className="flex-1 m-1 text-white bg-blue-500 rounded-box btn-sm">
-        Reque
-      </button>
-      <button className="flex-1 m-1 text-white bg-red-500 rounded-box btn-sm">
-        Delete
-      </button>
-    </div>
-  );
-
-  const renderJobStatus = () => (
-    <div className="flex flex-wrap">
-      {Object.keys(job.status).map((status) => {
-        if (!job.status[status as StatusType]) {
-          return null;
-        }
-
-        return (
-          <span
-            className={`p-1 m-1 text-white bg-gray-500 text-2xs rounded-sm ${
-              statusColors[status as StatusType]
-            }`}
-            key={status}
-          >
-            {status === 'repeating' ? job.repeatInterval : status}
-          </span>
-        );
-      })}
-    </div>
-  );
+  const lastRunAt = relativeTimeFormatter(job.job.lastRunAt);
+  const nextRunAt = relativeTimeFormatter(job.job.nextRunAt);
 
   return (
     <tr>
@@ -73,25 +40,60 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
           onChange={() => setChecked(!checked)}
         />
       </th>
-      <td>{renderJobStatus()}</td>
-      <td>{job.name}</td>
+      <td>
+        <div className="flex flex-wrap">
+          {Object.keys(job.status).map((status) => {
+            if (!job.status[status as StatusType]) {
+              return null;
+            }
+
+            return (
+              <span
+                className={`p-1 m-1 text-white bg-gray-500 text-2xs rounded-sm ${
+                  statusColors[status as StatusType]
+                }`}
+                key={status}
+              >
+                {status === 'repeating' ? job.job.repeatInterval : status}
+              </span>
+            );
+          })}
+        </div>
+      </td>
+      <td>{job.job.name}</td>
       <td>
         <div
-          data-tip={job.lastRunAt && new Date(job.lastRunAt).toLocaleString()}
+          data-tip={
+            job.job.nextRunAt && new Date(job.job.nextRunAt).toLocaleString()
+          }
+          className="tooltip"
+        >
+          {nextRunAt}
+        </div>
+      </td>
+      <td>
+        <div
+          data-tip={
+            job.job.lastRunAt && new Date(job.job.lastRunAt).toLocaleString()
+          }
           className="tooltip"
         >
           {lastRunAt}
         </div>
       </td>
       <td>
-        <div
-          data-tip={job.nextRunAt && new Date(job.nextRunAt).toLocaleString()}
-          className="tooltip"
-        >
-          {nextRunAt}
+        <div className="flex flex-wrap items-center justify-center">
+          <button className="flex-1 m-1 text-white bg-green-600 rounded-box btn-sm">
+            Info
+          </button>
+          <button className="flex-1 m-1 text-white bg-blue-500 rounded-box btn-sm">
+            Reque
+          </button>
+          <button className="flex-1 m-1 text-white bg-red-500 rounded-box btn-sm">
+            Delete
+          </button>
         </div>
       </td>
-      <td>{renderJobActions()}</td>
     </tr>
   );
 };

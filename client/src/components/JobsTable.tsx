@@ -60,7 +60,7 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
           </tr>
         </thead>
         <tbody>
-          {data.jobs.map((job: any) => (
+          {data[0].jobs.map((job: any) => (
             <JobsTableRow job={job} key={job._id} />
           ))}
         </tbody>
