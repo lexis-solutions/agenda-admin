@@ -17,10 +17,13 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "classnames": "^2.3.1",
     "daisyui": "^1.16.2",
+    "luxon": "^2.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "swr": "^1.0.1",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
@@ -37,6 +40,8 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.177",
+    "@types/luxon": "^2.0.7",
     "autoprefixer": "^9",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"

@@ -1,8 +1,8 @@
 {
   "private": true,
   "workspaces": [
-    "@agenda-admin/api",
-    "@agenda-admin/client"
+    "api",
+    "client"
   ],
   "scripts": {
     "prepare": "husky install",
