@@ -48,7 +48,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
 
             return (
               <span
-                className={`p-1 m-1 text-white bg-gray-500 text-2xs rounded-sm ${
+                className={`p-1 m-1 text-white text-2xs rounded-sm ${
                   statusColors[status as StatusType]
                 }`}
                 key={status}
