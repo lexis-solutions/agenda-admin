@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from 'src/agenda';
+import { AUTOCOMPLETE_ITEMS } from 'src/constants';
 
 interface ReqQuery {
   autocomplete: string;
@@ -17,7 +18,7 @@ export const autocomplete = async (
         name: { $regex: autocomplete },
       },
       {
-        limit: 10,
+        limit: AUTOCOMPLETE_ITEMS,
         projection: ['name'],
       }
     )
