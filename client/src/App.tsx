@@ -11,9 +11,11 @@ const App = () => {
   const [sortBy, setSortBy] = useState<SortType>('lastRunAt');
   const [sortDesc, setSortDesc] = useState(true);
   const [name, setName] = useState('');
+  const [property, setProperty] = useState('');
+  const [value, setValue] = useState('');
 
   const { data, error } = useSWR(
-    `${API_URL}/jobs?name=${name}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
+    `${API_URL}/jobs?name=${name}&property=${property}&value=${value}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
       sortDesc ? 'desc' : 'asc'
     }`
   );
@@ -22,7 +24,14 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-between p-16">
-      <JobFilters setJobName={setName} jobName={name} />
+      <JobFilters
+        jobName={name}
+        jobProperty={property}
+        jobValue={value}
+        setJobName={setName}
+        setJobProperty={setProperty}
+        setJobValue={setValue}
+      />
       <JobsTable
         sortBy={sortBy}
         setSortBy={setSortBy}
