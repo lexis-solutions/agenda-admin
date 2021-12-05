@@ -12,16 +12,22 @@ export const autocomplete = async (
   next: NextFunction
 ) => {
   const autocomplete = new RegExp(`^${req.query.autocomplete}.*`, 'i');
+
   const data = await agenda._collection
-    .find(
+    .aggregate([
       {
-        name: { $regex: autocomplete },
+        $match: { name: { $regex: autocomplete } },
       },
       {
-        limit: AUTOCOMPLETE_ITEMS,
-        projection: ['name'],
-      }
-    )
+        $group: {
+          _id: '$name',
+          name: { $first: '$name' },
+        },
+      },
+      {
+        $limit: AUTOCOMPLETE_ITEMS,
+      },
+    ])
     .toArray();
 
   res.locals.data = data;
