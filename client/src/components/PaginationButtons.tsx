@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface PropType {
   page: number;
@@ -12,6 +12,12 @@ const PaginationButtons: React.FC<PropType> = ({
   pagesCount,
   setPage,
 }) => {
+  useEffect(() => {
+    if (page > pagesCount) {
+      setPage(pagesCount);
+    }
+  }, [page, pagesCount, setPage]);
+
   const handlePrevPage = useCallback(
     () => page > 1 && setPage(page - 1),
     [page, setPage]
