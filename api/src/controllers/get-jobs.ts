@@ -38,7 +38,7 @@ export const getJobs = async (
 
   const statusFilter: any = {};
   if (req.query.status) {
-    statusFilter[req.query.status] = true;
+    statusFilter[`status.${req.query.status}`] = true;
   }
 
   const data = await agenda._collection

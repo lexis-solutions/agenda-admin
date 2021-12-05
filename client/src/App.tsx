@@ -4,7 +4,7 @@ import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
 import JobFilters from 'src/components/JobFilters';
 import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
-import { SortType } from 'src/types';
+import { SortType, StatusType } from 'src/types';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -13,9 +13,10 @@ const App = () => {
   const [name, setName] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
+  const [status, setStatus] = useState<StatusType | ''>('');
 
   const { data, error } = useSWR(
-    `${API_URL}/jobs?name=${name}&property=${property}&value=${value}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
+    `${API_URL}/jobs?name=${name}&property=${property}&value=${value}&status=${status}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
       sortDesc ? 'desc' : 'asc'
     }`
   );
@@ -28,9 +29,11 @@ const App = () => {
         jobName={name}
         jobProperty={property}
         jobValue={value}
+        jobStatus={status}
         setJobName={setName}
         setJobProperty={setProperty}
         setJobValue={setValue}
+        setJobStatus={setStatus}
       />
       <JobsTable
         sortBy={sortBy}
