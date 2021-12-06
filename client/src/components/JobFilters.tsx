@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { API_URL } from 'src/constants';
 import useJobsOvervoew from 'src/hooks/useJobsOvervoew';
@@ -7,6 +8,7 @@ import { StatusType } from 'src/types';
 import { abreviateNumber } from 'src/utils/formatter';
 
 const ALL_JOBS = { _id: 1, name: 'All jobs' };
+const DEBOUNCE_DELAY = 500;
 
 interface PropsType {
   jobName: string;
@@ -51,6 +53,32 @@ const JobFilters: React.FC<PropsType> = ({
 
   const handleJobSelect = (job: string) =>
     setJobName(job === ALL_JOBS.name ? '' : job);
+
+  const debouncedSetJobProperty = useMemo(
+    () =>
+      debounce((val: string) => {
+        setJobProperty(val);
+      }, DEBOUNCE_DELAY),
+    [setJobProperty]
+  );
+
+  const handlePropertyChange = (val: string) => {
+    setProperty(val);
+    debouncedSetJobProperty(val);
+  };
+
+  const debouncedSetJobValue = useMemo(
+    () =>
+      debounce((val: string) => {
+        setJobValue(val);
+      }, DEBOUNCE_DELAY),
+    [setJobValue]
+  );
+
+  const handleValueChange = (val: string) => {
+    setValue(val);
+    debouncedSetJobValue(val);
+  };
 
   const handleStatusSelect = (btnStatus: StatusType) => () =>
     setJobStatus(jobStatus !== btnStatus ? btnStatus : '');
@@ -99,8 +127,7 @@ const JobFilters: React.FC<PropsType> = ({
               type="text"
               placeholder="property"
               value={property}
-              onChange={(e) => setProperty(e.target.value)}
-              onBlur={() => setJobProperty(property)}
+              onChange={(e) => handlePropertyChange(e.target.value)}
             />
             <span className="px-4 text-4xl text-center bg-gray-300 border-black">
               =
@@ -110,8 +137,7 @@ const JobFilters: React.FC<PropsType> = ({
               type="text"
               placeholder="value"
               value={value}
-              onChange={(e) => setValue(e.target.value)}
-              onBlur={() => setJobValue(value)}
+              onChange={(e) => handleValueChange(e.target.value)}
             />
           </div>
         </div>
