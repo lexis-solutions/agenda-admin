@@ -39,7 +39,9 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useSWR(`${API_URL}/overview`);
+  const { data } = useSWR(
+    `${API_URL}/overview?name=${jobName}&property=${jobProperty}&value=${jobValue}`
+  );
 
   useEffect(() => {
     fetchNames(term).then(({ data }) => setOptions([ALL_JOBS, ...data]));
@@ -79,7 +81,11 @@ const JobFilters: React.FC<PropsType> = ({
             )}
             renderInput={(props) => {
               return (
-                <input {...props} className="text-xl input input-bordered" />
+                <input
+                  {...props}
+                  className="text-xl input input-bordered"
+                  placeholder="All jobs"
+                />
               );
             }}
             value={term}
@@ -112,7 +118,7 @@ const JobFilters: React.FC<PropsType> = ({
           </div>
         </div>
       </div>
-      {data && (
+      {data && data.data.length ? (
         <div className="flex w-full m-2">
           <button
             className={classNames(
@@ -175,7 +181,7 @@ const JobFilters: React.FC<PropsType> = ({
             <span>FAILED</span>
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

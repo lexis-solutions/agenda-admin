@@ -1,13 +1,32 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from 'src/agenda';
 
+interface ReqQuery {
+  name: string | null;
+  property: string | null;
+  value: any | null;
+}
+
 export const overview = async (
-  req: Request,
+  req: Request<any, any, any, ReqQuery>,
   res: Response,
   next: NextFunction
 ) => {
+  const query: any = {};
+  if (req.query.name) {
+    query.name = req.query.name;
+  }
+
+  if (req.query.property) {
+    const value = /^\d+$/.test(req.query.value)
+      ? +req.query.value
+      : req.query.value;
+    query[req.query.property] = value;
+  }
+
   const data = await agenda._collection
     .aggregate([
+      { $match: query },
       {
         $project: {
           running: {
