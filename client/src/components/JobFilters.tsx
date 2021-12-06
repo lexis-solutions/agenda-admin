@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { API_URL } from 'src/constants';
+import useJobsOvervoew from 'src/hooks/useJobsOvervoew';
 import { StatusType } from 'src/types';
 import { abreviateNumber } from 'src/utils/formatter';
-import useSWR from 'swr';
 
 const ALL_JOBS = { _id: 1, name: 'All jobs' };
 
@@ -39,9 +39,7 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useSWR(
-    `${API_URL}/overview?name=${jobName}&property=${jobProperty}&value=${jobValue}`
-  );
+  const { data } = useJobsOvervoew(jobName, jobProperty, jobValue);
 
   useEffect(() => {
     fetchNames(term).then(({ data }) => setOptions([ALL_JOBS, ...data]));

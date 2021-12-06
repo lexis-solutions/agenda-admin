@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import useSWR from 'swr';
 import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
 import JobFilters from 'src/components/JobFilters';
-import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
 import { SortType, StatusType } from 'src/types';
+import useJobsList from './hooks/useJobsList';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -15,10 +14,14 @@ const App = () => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
 
-  const { data, error } = useSWR(
-    `${API_URL}/jobs?name=${name}&property=${property}&value=${value}&status=${status}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
-      sortDesc ? 'desc' : 'asc'
-    }`
+  const { data, error } = useJobsList(
+    name,
+    property,
+    value,
+    status,
+    page,
+    sortBy,
+    sortDesc
   );
 
   if (!data && !error) return null;
