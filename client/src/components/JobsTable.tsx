@@ -22,7 +22,7 @@ const JobsTable: React.FC<PropType> = ({
 
   return (
     <div>
-      <table className="table w-full">
+      <table className="table w-screen max-w-7xl">
         <thead>
           <tr>
             <th>

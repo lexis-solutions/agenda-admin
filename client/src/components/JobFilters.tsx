@@ -119,66 +119,76 @@ const JobFilters: React.FC<PropsType> = ({
         </div>
       </div>
       {data && data.data.length ? (
-        <div className="flex w-full m-2">
+        <div className="flex w-full m-2 btn-group">
           <button
             className={classNames(
-              'flex flex-col items-center justify-center flex-1 py-2 text-white bg-black border-4 border-white rounded-l-xl',
-              { 'border-none': jobStatus !== 'scheduled' }
+              'btn btn-lg flex-1 text-white border-none bg-black rounded-l-xl',
+              { 'btn-active': jobStatus === 'scheduled' }
             )}
             onClick={handleStatusSelect('scheduled')}
           >
-            <span className="text-4xl">
-              {abreviateNumber(data.data[0].scheduled)}
-            </span>
-            <span>SCHEDULED</span>
+            <div className="flex flex-col">
+              <span className="text-3xl">
+                {abreviateNumber(data.data[0].scheduled)}
+              </span>
+              <span className="text-sm">SCHEDULED</span>
+            </div>
           </button>
           <button
             className={classNames(
-              'flex flex-col items-center justify-center flex-1 py-2 text-white bg-blue-500 border-4 border-white',
-              { 'border-none': jobStatus !== 'queued' }
+              'btn btn-lg flex-1 text-white border-none bg-blue-400',
+              { 'btn-active': jobStatus === 'queued' }
             )}
             onClick={handleStatusSelect('queued')}
           >
-            <span className="text-4xl">
-              {abreviateNumber(data.data[0].queued)}
-            </span>
-            <span>QUEUED</span>
+            <div className="flex flex-col">
+              <span className="text-3xl">
+                {abreviateNumber(data.data[0].queued)}
+              </span>
+              <span className="text-sm">QUEUED</span>
+            </div>
           </button>
           <button
             className={classNames(
-              'flex flex-col items-center justify-center flex-1 py-2 text-white bg-yellow-500 border-4 border-white',
-              { 'border-none': jobStatus !== 'running' }
+              'btn btn-lg flex-1 text-white border-none bg-yellow-500',
+              { 'btn-active': jobStatus === 'running' }
             )}
             onClick={handleStatusSelect('running')}
           >
-            <span className="text-4xl">
-              {abreviateNumber(data.data[0].running)}
-            </span>
-            <span>RUNNING</span>
+            <div className="flex flex-col">
+              <span className="text-3xl">
+                {abreviateNumber(data.data[0].running)}
+              </span>
+              <span className="text-sm">RUNNING</span>
+            </div>
           </button>
           <button
             className={classNames(
-              'flex flex-col items-center justify-center flex-1 py-2 text-white bg-green-500 border-4 border-white',
-              { 'border-none': jobStatus !== 'completed' }
+              'btn btn-lg flex-1 text-white border-none bg-green-500',
+              { 'btn-active': jobStatus === 'completed' }
             )}
             onClick={handleStatusSelect('completed')}
           >
-            <span className="text-4xl">
-              {abreviateNumber(data.data[0].completed)}
-            </span>
-            <span>COMPLETED</span>
+            <div className="flex flex-col">
+              <span className="text-3xl">
+                {abreviateNumber(data.data[0].completed)}
+              </span>
+              <span className="text-sm">COMPLETED</span>
+            </div>
           </button>
           <button
             className={classNames(
-              'flex flex-col items-center justify-center flex-1 py-2 text-white bg-red-500 border-4 border-white rounded-r-xl',
-              { 'border-none': jobStatus !== 'failed' }
+              'btn btn-lg flex-1 text-white border-none bg-red-500 rounded-r-xl',
+              { 'btn-active': jobStatus === 'failed' }
             )}
             onClick={handleStatusSelect('failed')}
           >
-            <span className="text-4xl">
-              {abreviateNumber(data.data[0].failed)}
-            </span>
-            <span>FAILED</span>
+            <div className="flex flex-col">
+              <span className="text-3xl">
+                {abreviateNumber(data.data[0].failed)}
+              </span>
+              <span className="text-sm">FAILED</span>
+            </div>
           </button>
         </div>
       ) : null}
