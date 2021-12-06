@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
 import JobFilters from 'src/components/JobFilters';
@@ -23,6 +23,8 @@ const App = () => {
     sortBy,
     sortDesc
   );
+
+  useEffect(() => setPage(1), [name, property, value, status]);
 
   if (!data && !error) return null;
 
