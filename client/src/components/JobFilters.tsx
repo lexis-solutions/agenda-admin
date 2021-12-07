@@ -102,13 +102,19 @@ const JobFilters: React.FC<PropsType> = ({
             <span>Job Name</span>
           </label>
           <Autocomplete
-            menuStyle={{ position: 'absolute', zIndex: 999 }}
+            menuStyle={{
+              position: 'absolute',
+              zIndex: 999,
+              borderWidth: 2,
+              borderRadius: 8,
+              marginTop: 8,
+            }}
             getItemValue={(item) => item.name}
             items={options}
             renderItem={(item, isHighlighted) => (
               <div
                 key={item._id}
-                className={classNames('text-md p-2', {
+                className={classNames('text-md p-2 border-b-2', {
                   'bg-gray-200': isHighlighted,
                   'bg-white': !isHighlighted,
                 })}
