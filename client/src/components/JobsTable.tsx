@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
-import { SortType } from 'src/types';
+import { JobType, SortType } from 'src/types';
 
-interface PropType {
+interface PropsType {
   sortBy: SortType;
   setSortBy: (sortBy: SortType) => void;
   sortDesc: boolean;
   setSortDesc: (sortDesc: boolean) => void;
-  data: any;
+  data: JobType[];
 }
 
-const JobsTable: React.FC<PropType> = ({
+const JobsTable: React.FC<PropsType> = ({
   sortBy,
   sortDesc,
   setSortBy,
@@ -59,8 +59,8 @@ const JobsTable: React.FC<PropType> = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((job: any) => (
-            <JobsTableRow job={job} key={job._id} />
+          {data.map((job: JobType) => (
+            <JobsTableRow job={job} key={job.job._id} />
           ))}
         </tbody>
       </table>
