@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { API_URL } from 'src/constants';
-import useJobsOverview from 'src/hooks/useJobsOverview';
+import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
 
@@ -48,7 +48,11 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useJobsOverview(jobName, jobProperty, jobValue);
+  const { data } = useJobsOverview({
+    name: jobName,
+    property: jobProperty,
+    value: jobValue,
+  });
 
   useEffect(() => {
     fetchNames(term).then(({ data }) => setOptions([ALL_JOBS, ...data]));

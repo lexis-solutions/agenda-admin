@@ -3,7 +3,7 @@ import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
 import JobFilters from 'src/components/JobFilters';
 import { SortType, StatusType } from 'src/types';
-import useJobsList from './hooks/useJobsList';
+import { useJobsList } from './hooks/useJobsList';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -14,15 +14,15 @@ const App = () => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
 
-  const { data, error } = useJobsList(
+  const { data, error } = useJobsList({
     name,
     property,
     value,
     status,
     page,
     sortBy,
-    sortDesc
-  );
+    sortDesc,
+  });
 
   useEffect(() => setPage(1), [name, property, value, status]);
 
