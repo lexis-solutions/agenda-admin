@@ -9,6 +9,13 @@ import { abbreviateNumber } from 'src/utils/formatter';
 
 const ALL_JOBS = { _id: 1, name: 'All jobs' };
 const DEBOUNCE_DELAY = 500;
+const STATUS_BUTTONS: { name: StatusType; color: string }[] = [
+  { name: 'scheduled', color: 'bg-black' },
+  { name: 'queued', color: 'bg-blue-400' },
+  { name: 'running', color: 'bg-yellow-500' },
+  { name: 'completed', color: 'bg-green-500' },
+  { name: 'failed', color: 'bg-red-500' },
+];
 
 interface PropsType {
   jobName: string;
@@ -144,76 +151,23 @@ const JobFilters: React.FC<PropsType> = ({
       </div>
       {data && data.data.length ? (
         <div className="flex w-full m-2 btn-group">
-          <button
-            className={classNames(
-              'btn btn-lg flex-1 text-white border-none bg-black rounded-l-xl',
-              { 'btn-active': jobStatus === 'scheduled' }
-            )}
-            onClick={handleStatusSelect('scheduled')}
-          >
-            <div className="flex flex-col">
-              <span className="text-3xl">
-                {abbreviateNumber(data.data[0].scheduled)}
-              </span>
-              <span className="text-sm">SCHEDULED</span>
-            </div>
-          </button>
-          <button
-            className={classNames(
-              'btn btn-lg flex-1 text-white border-none bg-blue-400',
-              { 'btn-active': jobStatus === 'queued' }
-            )}
-            onClick={handleStatusSelect('queued')}
-          >
-            <div className="flex flex-col">
-              <span className="text-3xl">
-                {abbreviateNumber(data.data[0].queued)}
-              </span>
-              <span className="text-sm">QUEUED</span>
-            </div>
-          </button>
-          <button
-            className={classNames(
-              'btn btn-lg flex-1 text-white border-none bg-yellow-500',
-              { 'btn-active': jobStatus === 'running' }
-            )}
-            onClick={handleStatusSelect('running')}
-          >
-            <div className="flex flex-col">
-              <span className="text-3xl">
-                {abbreviateNumber(data.data[0].running)}
-              </span>
-              <span className="text-sm">RUNNING</span>
-            </div>
-          </button>
-          <button
-            className={classNames(
-              'btn btn-lg flex-1 text-white border-none bg-green-500',
-              { 'btn-active': jobStatus === 'completed' }
-            )}
-            onClick={handleStatusSelect('completed')}
-          >
-            <div className="flex flex-col">
-              <span className="text-3xl">
-                {abbreviateNumber(data.data[0].completed)}
-              </span>
-              <span className="text-sm">COMPLETED</span>
-            </div>
-          </button>
-          <button
-            className={classNames(
-              'btn btn-lg flex-1 text-white border-none bg-red-500 rounded-r-xl',
-              { 'btn-active': jobStatus === 'failed' }
-            )}
-            onClick={handleStatusSelect('failed')}
-          >
-            <div className="flex flex-col">
-              <span className="text-3xl">
-                {abbreviateNumber(data.data[0].failed)}
-              </span>
-              <span className="text-sm">FAILED</span>
-            </div>
-          </button>
+          {STATUS_BUTTONS.map(({ name, color }) => (
+            <button
+              key={name}
+              className={classNames(
+                `btn btn-lg flex-1 text-white border-none ${color}`,
+                { 'btn-active': jobStatus === name }
+              )}
+              onClick={handleStatusSelect(name)}
+            >
+              <div className="flex flex-col">
+                <span className="text-3xl">
+                  {abbreviateNumber(data.data[0][name])}
+                </span>
+                <span className="text-sm">{name}</span>
+              </div>
+            </button>
+          ))}
         </div>
       ) : null}
     </div>
