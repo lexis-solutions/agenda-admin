@@ -11,7 +11,7 @@ export const autocomplete = async (
   res: Response,
   next: NextFunction
 ) => {
-  const autocomplete = new RegExp(`^${req.query.autocomplete}.*`, 'i');
+  const autocomplete = new RegExp(`.*${req.query.autocomplete}.*`, 'i');
 
   const data = await agenda._collection
     .aggregate([
