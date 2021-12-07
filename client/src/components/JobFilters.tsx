@@ -3,9 +3,9 @@ import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { API_URL } from 'src/constants';
-import useJobsOvervoew from 'src/hooks/useJobsOvervoew';
+import useJobsOverview from 'src/hooks/useJobsOverview';
 import { StatusType } from 'src/types';
-import { abreviateNumber } from 'src/utils/formatter';
+import { abbreviateNumber } from 'src/utils/formatter';
 
 const ALL_JOBS = { _id: 1, name: 'All jobs' };
 const DEBOUNCE_DELAY = 500;
@@ -41,7 +41,7 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useJobsOvervoew(jobName, jobProperty, jobValue);
+  const { data } = useJobsOverview(jobName, jobProperty, jobValue);
 
   useEffect(() => {
     fetchNames(term).then(({ data }) => setOptions([ALL_JOBS, ...data]));
@@ -153,7 +153,7 @@ const JobFilters: React.FC<PropsType> = ({
           >
             <div className="flex flex-col">
               <span className="text-3xl">
-                {abreviateNumber(data.data[0].scheduled)}
+                {abbreviateNumber(data.data[0].scheduled)}
               </span>
               <span className="text-sm">SCHEDULED</span>
             </div>
@@ -167,7 +167,7 @@ const JobFilters: React.FC<PropsType> = ({
           >
             <div className="flex flex-col">
               <span className="text-3xl">
-                {abreviateNumber(data.data[0].queued)}
+                {abbreviateNumber(data.data[0].queued)}
               </span>
               <span className="text-sm">QUEUED</span>
             </div>
@@ -181,7 +181,7 @@ const JobFilters: React.FC<PropsType> = ({
           >
             <div className="flex flex-col">
               <span className="text-3xl">
-                {abreviateNumber(data.data[0].running)}
+                {abbreviateNumber(data.data[0].running)}
               </span>
               <span className="text-sm">RUNNING</span>
             </div>
@@ -195,7 +195,7 @@ const JobFilters: React.FC<PropsType> = ({
           >
             <div className="flex flex-col">
               <span className="text-3xl">
-                {abreviateNumber(data.data[0].completed)}
+                {abbreviateNumber(data.data[0].completed)}
               </span>
               <span className="text-sm">COMPLETED</span>
             </div>
@@ -209,7 +209,7 @@ const JobFilters: React.FC<PropsType> = ({
           >
             <div className="flex flex-col">
               <span className="text-3xl">
-                {abreviateNumber(data.data[0].failed)}
+                {abbreviateNumber(data.data[0].failed)}
               </span>
               <span className="text-sm">FAILED</span>
             </div>
