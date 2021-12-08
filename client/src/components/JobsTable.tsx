@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import useSWR from 'swr';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
-import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
-import { SortType } from 'src/types';
+import { JobType, SortType } from 'src/types';
 
-interface PropType {
-  page: number;
+interface PropsType {
+  sortBy: SortType;
+  setSortBy: (sortBy: SortType) => void;
+  sortDesc: boolean;
+  setSortDesc: (sortDesc: boolean) => void;
+  data: JobType[];
 }
 
-const JobsTable: React.FC<PropType> = ({ page }) => {
+const JobsTable: React.FC<PropsType> = ({
+  sortBy,
+  sortDesc,
+  setSortBy,
+  setSortDesc,
+  data,
+}) => {
   const [selectAll, setSelectAll] = useState(false);
-  const [sortBy, setSortBy] = useState<SortType>('lastRunAt');
-  const [sortDesc, setSortDesc] = useState(true);
-  const { data, error } = useSWR(
-    `${API_URL}/jobs?page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
-      sortDesc ? 'desc' : 'asc'
-    }`
-  );
-
-  if (!data && !error) return null;
 
   return (
     <div>
-      <table className="table w-full">
+      <table className="table w-screen max-w-7xl">
         <thead>
           <tr>
             <th>
@@ -60,8 +59,8 @@ const JobsTable: React.FC<PropType> = ({ page }) => {
           </tr>
         </thead>
         <tbody>
-          {data[0].jobs.map((job: any) => (
-            <JobsTableRow job={job} key={job._id} />
+          {data.map((job: JobType) => (
+            <JobsTableRow job={job} key={job.job._id} />
           ))}
         </tbody>
       </table>

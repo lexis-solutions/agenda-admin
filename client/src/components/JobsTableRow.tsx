@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { JobStatusType, StatusType } from 'src/types';
+import { JobType, StatusType } from 'src/types';
 import { formatRelativeTime } from 'src/utils/formatter';
 interface PropsType {
-  job: {
-    job: {
-      _id: string;
-      name: string;
-      lastRunAt: string;
-      nextRunAt: string;
-      repeatInterval: string;
-    };
-    status: JobStatusType;
-  };
+  job: JobType;
 }
 
 const statusColors = {
@@ -48,7 +39,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
 
             return (
               <span
-                className={`p-1 m-1 text-white bg-gray-500 text-2xs rounded-sm ${
+                className={`p-1 m-1 text-white text-2xs rounded-sm ${
                   statusColors[status as StatusType]
                 }`}
                 key={status}
@@ -86,7 +77,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
             Info
           </button>
           <button className="flex-1 m-1 text-white bg-blue-500 rounded-box btn-sm">
-            Reque
+            Requeue
           </button>
           <button className="flex-1 m-1 text-white bg-red-500 rounded-box btn-sm">
             Delete

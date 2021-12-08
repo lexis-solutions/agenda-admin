@@ -16,3 +16,14 @@ export interface JobStatusType {
   failed: boolean;
   running: boolean;
 }
+
+export interface JobType {
+  job: {
+    _id: string;
+    name: string;
+    lastRunAt: string;
+    nextRunAt: string;
+    repeatInterval: string;
+  };
+  status: JobStatusType;
+}
