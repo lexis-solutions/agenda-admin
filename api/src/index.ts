@@ -1,7 +1,5 @@
 require('tsconfig-paths/register');
-
-import dotenv from 'dotenv';
-dotenv.config();
+import 'src/config';
 
 import agenda from 'src/agenda';
 import app from 'src/app';
