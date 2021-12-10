@@ -2,7 +2,6 @@ import 'src/config';
 import agenda from 'src/agenda';
 
 export const setup = async () => {
-  await agenda.start();
   const time = new Date();
 
   await agenda._collection.insertMany([
@@ -43,6 +42,5 @@ export const setup = async () => {
 };
 
 export const teardown = async () => {
-  await agenda._collection.drop();
-  await agenda.stop();
+  await agenda._collection.deleteMany({});
 };
