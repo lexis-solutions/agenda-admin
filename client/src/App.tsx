@@ -14,7 +14,7 @@ const App = () => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
 
-  const { data, error } = useJobsList({
+  const { data } = useJobsList({
     name,
     property,
     value,
@@ -26,10 +26,8 @@ const App = () => {
 
   useEffect(() => setPage(1), [name, property, value, status]);
 
-  if (!data && !error) return null;
-
   return (
-    <div className="flex flex-col items-center justify-between p-16">
+    <div className="flex flex-col items-center justify-between max-w-screen-xl px-8 py-16 mx-auto space-y-4">
       <JobFilters
         jobName={name}
         jobProperty={property}
@@ -40,25 +38,27 @@ const App = () => {
         setJobValue={setValue}
         setJobStatus={setStatus}
       />
-      <JobsTable
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortDesc={sortDesc}
-        setSortDesc={setSortDesc}
-        data={data[0].jobs}
-      />
-      {data[0].jobs.length === 0 && (
-        <div className="flex items-center justify-center p-4 m-4">
-          <span className="text-xl text-gray-600 shadow-md">
-            No data found!
-          </span>
+      {data && (
+        <JobsTable
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          sortDesc={sortDesc}
+          setSortDesc={setSortDesc}
+          data={data[0].jobs}
+        />
+      )}
+      {data && data[0].jobs.length === 0 && (
+        <div className="p-4 m-4">
+          <span className="text-xl">No data found.</span>
         </div>
       )}
-      <PaginationButtons
-        page={page}
-        pagesCount={data[0].pages[0] ? data[0].pages[0].pagesCount : 1}
-        setPage={setPage}
-      />
+      {data && (
+        <PaginationButtons
+          page={page}
+          pagesCount={data[0].pages[0] ? data[0].pages[0].pagesCount : 1}
+          setPage={setPage}
+        />
+      )}
     </div>
   );
 };

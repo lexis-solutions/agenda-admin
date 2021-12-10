@@ -95,15 +95,16 @@ const JobFilters: React.FC<PropsType> = ({
     setJobStatus(jobStatus !== btnStatus ? btnStatus : '');
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className="flex flex-row">
         <div className="m-2 form-control">
-          <label className="text-gray-500 label">
+          <label className="label">
             <span>Job Name</span>
           </label>
           <Autocomplete
             menuStyle={{
               position: 'absolute',
+              overflow: 'hidden',
               zIndex: 999,
               borderWidth: 2,
               borderRadius: 8,
@@ -115,8 +116,8 @@ const JobFilters: React.FC<PropsType> = ({
               <div
                 key={item._id}
                 className={classNames('text-md p-2 border-b-2', {
-                  'bg-gray-200': isHighlighted,
-                  'bg-white': !isHighlighted,
+                  'bg-base-200': isHighlighted,
+                  'bg-base-100': !isHighlighted,
                 })}
               >
                 {item.name}
@@ -126,7 +127,7 @@ const JobFilters: React.FC<PropsType> = ({
               return (
                 <input
                   {...props}
-                  className="text-xl input input-bordered"
+                  className="input input-bordered"
                   placeholder="All jobs"
                 />
               );
@@ -137,22 +138,22 @@ const JobFilters: React.FC<PropsType> = ({
           />
         </div>
         <div className="m-2 form-control">
-          <label className="text-gray-500 label">Form Value</label>
+          <label className="label">Form Value</label>
           <div className="flex flex-row">
             <input
               className="rounded-r-none input input-bordered"
               type="text"
-              placeholder="property"
+              placeholder="Property"
               value={property}
               onChange={(e) => handlePropertyChange(e.target.value)}
             />
-            <span className="px-4 text-4xl text-center bg-gray-300 border-black">
+            <span className="px-4 mx-2 text-4xl text-center select-none bg-primary text-primary-content">
               =
             </span>
             <input
               className="rounded-l-none input input-bordered"
               type="text"
-              placeholder="value"
+              placeholder="Value"
               value={value}
               onChange={(e) => handleValueChange(e.target.value)}
             />
@@ -165,7 +166,7 @@ const JobFilters: React.FC<PropsType> = ({
             <button
               key={name}
               className={classNames(
-                `btn btn-lg flex-1 text-white border-none ${color}`,
+                `btn btn-lg flex-1 border-none no-animation ${color}`,
                 { 'btn-active': jobStatus === name }
               )}
               onClick={handleStatusSelect(name)}

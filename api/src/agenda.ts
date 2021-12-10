@@ -7,6 +7,7 @@ if (!process.env.CONNECTION_STRING) {
 const agenda = new Agenda({
   db: {
     address: process.env.CONNECTION_STRING,
+    collection: process.env.COLLECTION,
   },
 });
 

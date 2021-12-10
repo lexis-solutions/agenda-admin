@@ -1,6 +1,6 @@
-import arrowUp from 'src/svgs/chevron-up.svg';
-import arrowDown from 'src/svgs/chevron-down.svg';
 import { SortType } from 'src/types';
+import ChevronDown from 'src/svgs/ChevronDown';
+import cx from 'classnames';
 
 interface PropsType {
   title: string;
@@ -8,7 +8,7 @@ interface PropsType {
   currentColumn: SortType;
   setCurrentColumn: (column: SortType) => void;
   sortDesc: boolean;
-  setSortDesc: (sordDesc: boolean) => void;
+  setSortDesc: (sortDesc: boolean) => void;
 }
 
 const SortableColumnButton: React.FC<PropsType> = ({
@@ -20,7 +20,7 @@ const SortableColumnButton: React.FC<PropsType> = ({
   setSortDesc,
 }) => (
   <div
-    className="flex flex-row items-center justify-between cursor-pointer"
+    className="flex justify-between mr-3 -ml-3 btn btn-ghost btn-sm"
     onClick={() => {
       if (column === currentColumn) {
         setSortDesc(!sortDesc);
@@ -29,9 +29,13 @@ const SortableColumnButton: React.FC<PropsType> = ({
       }
     }}
   >
-    <div>{title}</div>
+    <div className="text-xs font-bold text-left">{title}</div>
     {column === currentColumn && (
-      <img src={sortDesc ? arrowDown : arrowUp} width={20} />
+      <ChevronDown
+        className={cx('transform transition-transform duration-200', {
+          'rotate-180': !sortDesc,
+        })}
+      />
     )}
   </div>
 );
