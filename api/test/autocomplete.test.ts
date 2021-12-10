@@ -4,7 +4,7 @@ import app from 'src/app';
 import supertest from 'supertest';
 import { setup, teardown } from 'test/common';
 
-describe('autocomplete tests', () => {
+describe('autocomplete controller tests', () => {
   beforeEach(setup);
   afterEach(teardown);
 

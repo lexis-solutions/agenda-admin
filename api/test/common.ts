@@ -15,6 +15,7 @@ export const setup = async () => {
       name: 'failed job',
       lastFinishedAt: time,
       failedAt: time,
+      failCount: 1,
     },
     {
       name: 'scheduled job',
