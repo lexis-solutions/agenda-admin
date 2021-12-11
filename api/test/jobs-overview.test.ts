@@ -35,7 +35,7 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when filtering by field value`, async () => {
+  test(`should return a correct overview when filtering by numeric field value`, async () => {
     await supertest(app)
       .get(`/api/overview?property=failCount&value=1`)
       .expect(200)
@@ -44,6 +44,20 @@ describe('jobs overview controller tests', () => {
         expect(body.data[0].scheduled).toBe(0);
         expect(body.data[0].completed).toBe(0);
         expect(body.data[0].failed).toBe(1);
+        expect(body.data[0].queued).toBe(0);
+        expect(body.data[0].repeating).toBe(0);
+      });
+  });
+
+  test(`should return a correct overview when filtering by text field value`, async () => {
+    await supertest(app)
+      .get(`/api/overview?property=data.type&value=completed`)
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body.data[0].running).toBe(0);
+        expect(body.data[0].scheduled).toBe(0);
+        expect(body.data[0].completed).toBe(1);
+        expect(body.data[0].failed).toBe(0);
         expect(body.data[0].queued).toBe(0);
         expect(body.data[0].repeating).toBe(0);
       });
