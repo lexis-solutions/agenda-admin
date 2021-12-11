@@ -27,7 +27,7 @@ const App = () => {
   useEffect(() => setPage(1), [name, property, value, status]);
 
   return (
-    <div className="flex flex-col items-center justify-between max-w-screen-xl px-8 py-16 mx-auto space-y-4">
+    <div className="flex flex-col items-center justify-between max-w-screen-xl p-8 mx-auto space-y-4">
       <JobFilters
         jobName={name}
         jobProperty={property}

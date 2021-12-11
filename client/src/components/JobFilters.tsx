@@ -1,13 +1,13 @@
-import classNames from 'classnames';
+import cx from 'classnames';
 import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { API_URL } from 'src/constants';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
+import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
 
-const ALL_JOBS = { _id: 1, name: 'All jobs' };
 const DEBOUNCE_DELAY = 500;
 const STATUS_BUTTONS: { name: StatusType; color: string }[] = [
   { name: 'scheduled', color: 'bg-black' },
@@ -28,8 +28,8 @@ interface PropsType {
   setJobStatus: (status: StatusType | '') => void;
 }
 
-const fetchNames = async (term: string) =>
-  await fetch(`${API_URL}/autocomplete?autocomplete=${term}`).then((res) =>
+const fetchNames = (term: string) =>
+  fetch(`${API_URL}/autocomplete?autocomplete=${term}`).then((res) =>
     res.json()
   );
 
@@ -55,28 +55,25 @@ const JobFilters: React.FC<PropsType> = ({
   });
 
   useEffect(() => {
-    fetchNames(term).then(({ data }) => setOptions([ALL_JOBS, ...data]));
+    fetchNames(term).then(({ data }) => setOptions(data));
   }, [term]);
 
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
 
-  const handleJobSelect = (job: string) =>
-    setJobName(job === ALL_JOBS.name ? '' : job);
-
   const debouncedSetJobProperty = useMemo(
-    () =>
-      debounce((val: string) => {
-        setJobProperty(val);
-      }, DEBOUNCE_DELAY),
+    () => debounce(setJobProperty, DEBOUNCE_DELAY),
     [setJobProperty]
   );
 
-  const handlePropertyChange = (val: string) => {
-    setProperty(val);
-    debouncedSetJobProperty(val);
-  };
+  const handlePropertyChange = useCallback(
+    (val: string) => {
+      setProperty(val);
+      debouncedSetJobProperty(val);
+    },
+    [debouncedSetJobProperty]
+  );
 
   const debouncedSetJobValue = useMemo(
     () =>
@@ -86,18 +83,24 @@ const JobFilters: React.FC<PropsType> = ({
     [setJobValue]
   );
 
-  const handleValueChange = (val: string) => {
-    setValue(val);
-    debouncedSetJobValue(val);
-  };
+  const handleValueChange = useCallback(
+    (val: string) => {
+      setValue(val);
+      debouncedSetJobValue(val);
+    },
+    [debouncedSetJobValue]
+  );
 
-  const handleStatusSelect = (btnStatus: StatusType) => () =>
-    setJobStatus(jobStatus !== btnStatus ? btnStatus : '');
+  const handleStatusSelect = useCallback(
+    (btnStatus: StatusType) => () =>
+      setJobStatus(jobStatus !== btnStatus ? btnStatus : ''),
+    [jobStatus, setJobStatus]
+  );
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex flex-row">
-        <div className="m-2 form-control">
+    <div className="flex flex-col w-full space-y-4">
+      <div className="flex flex-row space-x-4">
+        <div className="form-control">
           <label className="label">
             <span>Job Name</span>
           </label>
@@ -115,7 +118,7 @@ const JobFilters: React.FC<PropsType> = ({
             renderItem={(item, isHighlighted) => (
               <div
                 key={item._id}
-                className={classNames('text-md p-2 border-b-2', {
+                className={cx('text-md p-2 border-b-2', {
                   'bg-base-200': isHighlighted,
                   'bg-base-100': !isHighlighted,
                 })}
@@ -125,19 +128,30 @@ const JobFilters: React.FC<PropsType> = ({
             )}
             renderInput={(props) => {
               return (
-                <input
-                  {...props}
-                  className="input input-bordered"
-                  placeholder="All jobs"
-                />
+                <div className="relative">
+                  <input
+                    {...props}
+                    title={jobName}
+                    className="input input-bordered"
+                    placeholder="All jobs"
+                  />
+                  <button
+                    onClick={() => setJobName('')}
+                    className={cx('absolute right-0 m-2 btn-sm btn', {
+                      hidden: !jobName,
+                    })}
+                  >
+                    <XCircle />
+                  </button>
+                </div>
               );
             }}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            onSelect={handleJobSelect}
+            onSelect={setJobName}
           />
         </div>
-        <div className="m-2 form-control">
+        <div className="form-control">
           <label className="label">Form Value</label>
           <div className="flex flex-row">
             <input
@@ -160,27 +174,31 @@ const JobFilters: React.FC<PropsType> = ({
           </div>
         </div>
       </div>
-      {data && data.data.length ? (
-        <div className="flex w-full m-2 btn-group">
+      {!!data?.data.length && (
+        <div className="flex w-full overflow-hidden rounded-box tabs">
           {STATUS_BUTTONS.map(({ name, color }) => (
-            <button
+            <a
               key={name}
-              className={classNames(
-                `btn btn-lg flex-1 border-none no-animation ${color}`,
-                { 'btn-active': jobStatus === name }
+              className={cx(
+                'tab h-16 transition-colors duration-200 flex-1',
+                color,
+                {
+                  'bg-opacity-25': jobStatus && jobStatus !== name,
+                  'tab-active bg-opacity-100': jobStatus === name,
+                }
               )}
               onClick={handleStatusSelect(name)}
             >
-              <div className="flex flex-col">
-                <span className="text-3xl">
+              <div className="flex flex-col text-primary-content">
+                <span className="text-3xl font-bold">
                   {abbreviateNumber(data.data[0][name])}
                 </span>
                 <span className="text-sm">{name}</span>
               </div>
-            </button>
+            </a>
           ))}
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
