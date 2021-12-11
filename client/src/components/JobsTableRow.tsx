@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { JobType, StatusType } from 'src/types';
 import { formatRelativeTime } from 'src/utils/formatter';
+import cx from 'classnames';
+
 interface PropsType {
   job: JobType;
 }
@@ -39,9 +41,10 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
 
             return (
               <span
-                className={`p-1 m-1 text-white text-2xs rounded-sm ${
+                className={cx(
+                  'p-1 m-1 text-2xs text-primary-content rounded-sm',
                   statusColors[status as StatusType]
-                }`}
+                )}
                 key={status}
               >
                 {status === 'repeating' ? job.job.repeatInterval : status}
@@ -73,13 +76,13 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </td>
       <td>
         <div className="flex flex-wrap items-center justify-center">
-          <button className="flex-1 m-1 text-white bg-green-600 rounded-box btn-sm">
+          <button className="flex-1 m-1 bg-green-600 text-primary-content rounded-box btn-sm">
             Info
           </button>
-          <button className="flex-1 m-1 text-white bg-blue-500 rounded-box btn-sm">
+          <button className="flex-1 m-1 bg-blue-500 text-primary-content rounded-box btn-sm">
             Requeue
           </button>
-          <button className="flex-1 m-1 text-white bg-red-500 rounded-box btn-sm">
+          <button className="flex-1 m-1 bg-red-500 text-primary-content rounded-box btn-sm">
             Delete
           </button>
         </div>

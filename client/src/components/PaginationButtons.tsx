@@ -17,9 +17,16 @@ const PaginationButtons: React.FC<PropType> = ({
     [page, setPage]
   );
 
+  const handleFirstPage = useCallback(() => setPage(1), [setPage]);
+
   const handleNextPage = useCallback(
     () => page < pagesCount && setPage(page + 1),
     [page, pagesCount, setPage]
+  );
+
+  const handleLastPage = useCallback(
+    () => setPage(pagesCount),
+    [pagesCount, setPage]
   );
 
   const setCustomPage = useCallback(
@@ -42,7 +49,7 @@ const PaginationButtons: React.FC<PropType> = ({
       return range(1, pagesCount + 1).map((pg) => (
         <button
           key={pg}
-          className="btn btn-outline"
+          className="btn"
           onClick={() => setCustomPage(pg)}
           disabled={page === pg}
         >
@@ -61,21 +68,21 @@ const PaginationButtons: React.FC<PropType> = ({
       <>
         <button
           key={1}
-          className="btn btn-outline"
+          className="btn"
           onClick={() => setCustomPage(1)}
           disabled={page === 1}
         >
           {1}
         </button>
         {leftHiddenPages && (
-          <button className="btn btn-outline" onClick={setPageFromUserInput}>
+          <button className="btn" onClick={setPageFromUserInput}>
             ...
           </button>
         )}
         {range(start, end + 1).map((pg) => (
           <button
             key={pg}
-            className="btn btn-outline"
+            className="btn"
             onClick={() => setCustomPage(pg)}
             disabled={page === pg}
           >
@@ -83,13 +90,13 @@ const PaginationButtons: React.FC<PropType> = ({
           </button>
         ))}
         {rightHiddenPages && (
-          <button className="btn btn-outline" onClick={setPageFromUserInput}>
+          <button className="btn" onClick={setPageFromUserInput}>
             ...
           </button>
         )}
         <button
           key={pagesCount}
-          className="btn btn-outline"
+          className="btn"
           onClick={() => setCustomPage(pagesCount)}
           disabled={page === pagesCount}
         >
@@ -101,20 +108,26 @@ const PaginationButtons: React.FC<PropType> = ({
 
   return (
     <div className="btn-group">
-      <button
-        className="btn btn-outline"
-        onClick={handlePrevPage}
-        disabled={page <= 1}
-      >
+      <button className="btn" onClick={handleFirstPage} disabled={page <= 1}>
+        «
+      </button>
+      <button className="btn" onClick={handlePrevPage} disabled={page <= 1}>
         ‹
       </button>
       {renderPaginationButtons()}
       <button
-        className="btn btn-outline"
+        className="btn"
         onClick={handleNextPage}
         disabled={page >= pagesCount}
       >
         ›
+      </button>
+      <button
+        className="btn"
+        onClick={handleLastPage}
+        disabled={page >= pagesCount}
+      >
+        »
       </button>
     </div>
   );

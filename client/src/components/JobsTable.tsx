@@ -21,50 +21,48 @@ const JobsTable: React.FC<PropsType> = ({
   const [selectAll, setSelectAll] = useState(false);
 
   return (
-    <div>
-      <table className="table w-screen max-w-7xl">
-        <thead>
-          <tr>
-            <th>
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={selectAll}
-                onChange={() => setSelectAll(!selectAll)}
-              />
-            </th>
-            <th>Status</th>
-            <th>Name</th>
-            <th>
-              <SortableColumnButton
-                title="Next Run At"
-                column="nextRunAt"
-                currentColumn={sortBy}
-                setCurrentColumn={setSortBy}
-                sortDesc={sortDesc}
-                setSortDesc={setSortDesc}
-              />
-            </th>
-            <th>
-              <SortableColumnButton
-                title="Last Run At"
-                column="lastRunAt"
-                currentColumn={sortBy}
-                setCurrentColumn={setSortBy}
-                sortDesc={sortDesc}
-                setSortDesc={setSortDesc}
-              />
-            </th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((job: JobType) => (
-            <JobsTableRow job={job} key={job.job._id} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table w-full table-zebra">
+      <thead>
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={selectAll}
+              onChange={() => setSelectAll(!selectAll)}
+            />
+          </th>
+          <th>Status</th>
+          <th>Name</th>
+          <th>
+            <SortableColumnButton
+              title="Next Run At"
+              column="nextRunAt"
+              currentColumn={sortBy}
+              setCurrentColumn={setSortBy}
+              sortDesc={sortDesc}
+              setSortDesc={setSortDesc}
+            />
+          </th>
+          <th>
+            <SortableColumnButton
+              title="Last Run At"
+              column="lastRunAt"
+              currentColumn={sortBy}
+              setCurrentColumn={setSortBy}
+              sortDesc={sortDesc}
+              setSortDesc={setSortDesc}
+            />
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((job: JobType) => (
+          <JobsTableRow job={job} key={job.job._id} />
+        ))}
+      </tbody>
+    </table>
   );
 };
 
