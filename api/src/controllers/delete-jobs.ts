@@ -17,7 +17,7 @@ export const deleteJobs = async (
     },
   });
 
-  res.locals.message = `Deleted ${deletedJobs} jobs`;
+  res.locals.deleted = deletedJobs;
 
   next();
 };
