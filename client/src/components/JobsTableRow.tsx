@@ -79,15 +79,80 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </td>
       <td>
         <div className="flex flex-wrap items-center justify-between">
-          <button className="btn-ghost btn btn-sm">
+          <a href="#job-data" className="tab">
             <Info />
-          </button>
-          <button className="btn-ghost btn btn-sm">
+          </a>
+          <div id="job-data" className="modal">
+            <div className="space-y-4 modal-box">
+              <p className="text-2xl">{`Job data - ${job.job.name}`}</p>
+              <p>{`Last Run At: ${new Date(
+                job.job.lastRunAt
+              ).toLocaleString()}`}</p>
+              <p>{`Next Run At: ${new Date(
+                job.job.nextRunAt
+              ).toLocaleString()}`}</p>
+              <p>Job Data</p>
+              <div className="textarea textarea-bordered">
+                <pre>
+                  <code>{JSON.stringify(job.job.data, null, 2)}</code>
+                </pre>
+              </div>
+              {job.job.failCount && (
+                <>
+                  <p className="font-bold text-red-500">
+                    {`Fail Count: ${job.job.failCount}`}
+                  </p>
+                  <p className="font-bold text-red-500">
+                    {`Reason: ${job.job.failReason}`}
+                  </p>
+                  <p className="font-bold text-red-500">
+                    {`Failed At: ${new Date(
+                      job.job.failedAt!
+                    ).toLocaleString()}`}
+                  </p>
+                </>
+              )}
+              <div className="modal-action">
+                <a href="#" className="btn">
+                  Close
+                </a>
+              </div>
+            </div>
+          </div>
+          <a href="#requeue-job" className="tab">
             <Refresh />
-          </button>
-          <button className="btn-ghost btn btn-sm">
+          </a>
+          <div id="requeue-job" className="modal">
+            <div className="space-y-4 modal-box">
+              <p className="text-2xl">Requeue job?</p>
+              <p>{`Name: ${job.job.name}`}</p>
+              <div className="modal-action">
+                <a href="#" className="btn btn-primary">
+                  Requeue
+                </a>
+                <a href="#" className="btn">
+                  Close
+                </a>
+              </div>
+            </div>
+          </div>
+          <a href="#delete-job" className="tab">
             <Trash />
-          </button>
+          </a>
+          <div id="delete-job" className="modal">
+            <div className="space-y-4 modal-box">
+              <p className="text-2xl">Delete job?</p>
+              <p>{`Name: ${job.job.name}`}</p>
+              <div className="modal-action">
+                <a href="#" className="btn btn-primary">
+                  Delete
+                </a>
+                <a href="#" className="btn">
+                  Close
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </td>
     </tr>

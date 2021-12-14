@@ -24,6 +24,10 @@ export interface JobType {
     lastRunAt: string;
     nextRunAt: string;
     repeatInterval: string;
+    data?: any;
+    failCount?: number;
+    failReason?: string;
+    failedAt?: string;
   };
   status: JobStatusType;
 }
