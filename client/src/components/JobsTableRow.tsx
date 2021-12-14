@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { JobType, StatusType } from 'src/types';
 import { formatRelativeTime } from 'src/utils/formatter';
 import cx from 'classnames';
+import Info from 'src/svgs/Info';
+import Refresh from 'src/svgs/Refresh';
+import Trash from 'src/svgs/Trash';
 
 interface PropsType {
   job: JobType;
@@ -75,15 +78,15 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
         </div>
       </td>
       <td>
-        <div className="flex flex-wrap items-center justify-center">
-          <button className="flex-1 m-1 bg-green-600 text-primary-content rounded-box btn-sm">
-            Info
+        <div className="flex flex-wrap items-center justify-between">
+          <button className="btn-ghost btn btn-sm">
+            <Info />
           </button>
-          <button className="flex-1 m-1 bg-blue-500 text-primary-content rounded-box btn-sm">
-            Requeue
+          <button className="btn-ghost btn btn-sm">
+            <Refresh />
           </button>
-          <button className="flex-1 m-1 bg-red-500 text-primary-content rounded-box btn-sm">
-            Delete
+          <button className="btn-ghost btn btn-sm">
+            <Trash />
           </button>
         </div>
       </td>
