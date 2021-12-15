@@ -5,13 +5,14 @@ import { SWRConfig } from 'swr';
 import 'src/index.css';
 import App from 'src/App';
 import { REFRESH_INTERVAL } from 'src/constants';
+import { fetcher } from 'src/api';
 
 ReactDOM.render(
   <React.StrictMode>
     <SWRConfig
       value={{
         refreshInterval: REFRESH_INTERVAL,
-        fetcher: (url) => fetch(url).then((res) => res.json()),
+        fetcher,
       }}
     >
       <App />

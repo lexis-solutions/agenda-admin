@@ -2,7 +2,7 @@ import cx from 'classnames';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
-import { API_URL } from 'src/constants';
+import { fetchNames } from 'src/api';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
@@ -28,11 +28,6 @@ interface PropsType {
   setJobValue: (value: string) => void;
   setJobStatus: (status: StatusType | '') => void;
 }
-
-const fetchNames = (term: string) =>
-  fetch(`${API_URL}/autocomplete?autocomplete=${term}`).then((res) =>
-    res.json()
-  );
 
 const JobFilters: React.FC<PropsType> = ({
   jobName,
