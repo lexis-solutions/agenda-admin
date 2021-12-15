@@ -1,5 +1,5 @@
 import { API_URL, ITEMS_PER_PAGE } from 'src/constants';
-import { SortType, StatusType } from 'src/types';
+import { GetJobsResponseType, SortType, StatusType } from 'src/types';
 import useSWR from 'swr';
 
 interface ArgsType {
@@ -21,7 +21,7 @@ export const useJobsList = ({
   sortBy,
   sortDesc,
 }: ArgsType) =>
-  useSWR(
+  useSWR<GetJobsResponseType>(
     `${API_URL}/jobs?name=${name}&property=${property}&value=${value}&status=${status}&page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&sortBy=${sortBy}&sortType=${
       sortDesc ? 'desc' : 'asc'
     }`

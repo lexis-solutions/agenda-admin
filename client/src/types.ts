@@ -17,6 +17,15 @@ export interface JobStatusType {
   running: boolean;
 }
 
+export interface JobOverviewType {
+  repeating: number;
+  scheduled: number;
+  queued: number;
+  completed: number;
+  failed: number;
+  running: number;
+}
+
 export interface JobType {
   job: {
     _id: string;
@@ -31,3 +40,14 @@ export interface JobType {
   };
   status: JobStatusType;
 }
+
+export type GetJobsResponseType = {
+  pages: {
+    pagesCount: number;
+  }[];
+  jobs: JobType[];
+}[];
+
+export type JobsOverviewResponseType = {
+  data: JobOverviewType[];
+};
