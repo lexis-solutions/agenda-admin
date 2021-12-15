@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import JobsTable from 'src/components/JobsTable';
 import PaginationButtons from 'src/components/PaginationButtons';
 import JobFilters from 'src/components/JobFilters';
 import { SortType, StatusType } from 'src/types';
 import { useJobsList } from './hooks/useJobsList';
+import { deleteJobs, requeueJobs } from './api';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -14,7 +15,7 @@ const App = () => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
 
-  const { data } = useJobsList({
+  const { data, mutate } = useJobsList({
     name,
     property,
     value,
@@ -23,6 +24,22 @@ const App = () => {
     sortBy,
     sortDesc,
   });
+
+  const handleDeleteJobs = useCallback(
+    async (ids: string[]) => {
+      await deleteJobs(ids);
+      mutate();
+    },
+    [mutate]
+  );
+
+  const handleRequeueJobs = useCallback(
+    async (ids: string[]) => {
+      await requeueJobs(ids);
+      mutate();
+    },
+    [mutate]
+  );
 
   useEffect(() => setPage(1), [name, property, value, status]);
 
@@ -45,6 +62,8 @@ const App = () => {
           sortDesc={sortDesc}
           setSortDesc={setSortDesc}
           data={data[0].jobs}
+          onDeleteJobs={handleDeleteJobs}
+          onRequeueJobs={handleRequeueJobs}
         />
       )}
       {data && data[0].jobs.length === 0 && (

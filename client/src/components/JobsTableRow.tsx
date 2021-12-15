@@ -8,6 +8,8 @@ import Trash from 'src/svgs/Trash';
 
 interface PropsType {
   job: JobType;
+  onDeleteJobs: (ids: string[]) => void;
+  onRequeueJobs: (ids: string[]) => void;
 }
 
 const statusColors = {
@@ -19,7 +21,11 @@ const statusColors = {
   running: 'bg-yellow-500',
 };
 
-const JobsTableRow: React.FC<PropsType> = ({ job }) => {
+const JobsTableRow: React.FC<PropsType> = ({
+  job,
+  onDeleteJobs,
+  onRequeueJobs,
+}) => {
   const [checked, setChecked] = useState(false);
 
   const lastRunAt = formatRelativeTime(job.job.lastRunAt);
@@ -78,11 +84,11 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
         </div>
       </td>
       <td>
-        <div className="flex flex-wrap items-center justify-between">
-          <a href="#job-data" className="tab">
+        <div className="flex flex-wrap items-center justify-around">
+          <a href={`#job-data${job.job._id}`} className="tab">
             <Info />
           </a>
-          <div id="job-data" className="modal">
+          <div id={`job-data${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
               <p className="text-2xl">{`Job data - ${job.job.name}`}</p>
               <p>{`Last Run At: ${new Date(
@@ -119,15 +125,19 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
               </div>
             </div>
           </div>
-          <a href="#requeue-job" className="tab">
+          <a href={`#requeue-job${job.job._id}`} className="tab">
             <Refresh />
           </a>
-          <div id="requeue-job" className="modal">
+          <div id={`requeue-job${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
               <p className="text-2xl">Requeue job?</p>
               <p>{`Name: ${job.job.name}`}</p>
               <div className="modal-action">
-                <a href="#" className="btn btn-primary">
+                <a
+                  href="#"
+                  className="btn btn-primary"
+                  onClick={() => onRequeueJobs([job.job._id])}
+                >
                   Requeue
                 </a>
                 <a href="#" className="btn">
@@ -136,15 +146,19 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
               </div>
             </div>
           </div>
-          <a href="#delete-job" className="tab">
+          <a href={`#delete-job${job.job._id}`} className="tab">
             <Trash />
           </a>
-          <div id="delete-job" className="modal">
+          <div id={`delete-job${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
               <p className="text-2xl">Delete job?</p>
               <p>{`Name: ${job.job.name}`}</p>
               <div className="modal-action">
-                <a href="#" className="btn btn-primary">
+                <a
+                  href="#"
+                  className="btn btn-primary"
+                  onClick={() => onDeleteJobs([job.job._id])}
+                >
                   Delete
                 </a>
                 <a href="#" className="btn">

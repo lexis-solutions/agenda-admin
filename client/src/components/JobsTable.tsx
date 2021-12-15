@@ -9,6 +9,8 @@ interface PropsType {
   sortDesc: boolean;
   setSortDesc: (sortDesc: boolean) => void;
   data: JobType[];
+  onDeleteJobs: (ids: string[]) => void;
+  onRequeueJobs: (ids: string[]) => void;
 }
 
 const JobsTable: React.FC<PropsType> = ({
@@ -17,6 +19,8 @@ const JobsTable: React.FC<PropsType> = ({
   setSortBy,
   setSortDesc,
   data,
+  onDeleteJobs,
+  onRequeueJobs,
 }) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -59,7 +63,12 @@ const JobsTable: React.FC<PropsType> = ({
       </thead>
       <tbody>
         {data.map((job: JobType) => (
-          <JobsTableRow job={job} key={job.job._id} />
+          <JobsTableRow
+            job={job}
+            key={job.job._id}
+            onDeleteJobs={onDeleteJobs}
+            onRequeueJobs={onRequeueJobs}
+          />
         ))}
       </tbody>
     </table>
