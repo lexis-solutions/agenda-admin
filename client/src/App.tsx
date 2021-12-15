@@ -14,16 +14,22 @@ const App = () => {
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
+  const [jobListUpdatedAt, setJobListUpdatedAt] = useState(Date.now());
 
-  const { data, mutate } = useJobsList({
-    name,
-    property,
-    value,
-    status,
-    page,
-    sortBy,
-    sortDesc,
-  });
+  const { data, mutate } = useJobsList(
+    {
+      name,
+      property,
+      value,
+      status,
+      page,
+      sortBy,
+      sortDesc,
+    },
+    {
+      onSuccess: () => setJobListUpdatedAt(Date.now()),
+    }
+  );
 
   const handleDeleteJobs = useCallback(
     async (ids: string[]) => {
@@ -50,6 +56,7 @@ const App = () => {
         jobProperty={property}
         jobValue={value}
         jobStatus={status}
+        jobListUpdatedAt={jobListUpdatedAt}
         setJobName={setName}
         setJobProperty={setProperty}
         setJobValue={setValue}

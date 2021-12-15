@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 export const formatRelativeDateTime = (time: string) =>
   time ? DateTime.fromISO(time).toRelative() : '';
 
-export const formatLocalDateTime = (time: string) =>
+export const formatLocalDateTime = (time: string | undefined) =>
   time ? new Date(time).toLocaleString() : '';
 
 export const abbreviateNumber = (number: number) =>

@@ -36,8 +36,7 @@ const JobsTableRow: React.FC<PropsType> = ({
 
   const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
   const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
-  const formattedFailedAt =
-    job.job.failedAt && formatLocalDateTime(job.job.failedAt);
+  const formattedFailedAt = formatLocalDateTime(job.job.failedAt);
 
   return (
     <tr>
@@ -101,9 +100,9 @@ const JobsTableRow: React.FC<PropsType> = ({
               <div className="text-2xl">{`Job data - ${job.job.name}`}</div>
               <div>Last Run At: {formattedLastRunAt}</div>
               <div>Next Run At: {formattedNextRunAt}</div>
-              <div>Job Data</div>
+              <div>Job Data:</div>
               <div className="textarea textarea-bordered">
-                <pre>
+                <pre className="overflow-scroll">
                   <code>{JSON.stringify(job.job.data, null, 2)}</code>
                 </pre>
               </div>
@@ -156,7 +155,7 @@ const JobsTableRow: React.FC<PropsType> = ({
               <div className="modal-action">
                 <a
                   href="#"
-                  className="btn btn-primary"
+                  className="btn btn-warning"
                   onClick={() => onDeleteJobs([job.job._id])}
                 >
                   Delete

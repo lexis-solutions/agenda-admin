@@ -22,6 +22,7 @@ interface PropsType {
   jobProperty: string;
   jobValue: string;
   jobStatus: StatusType | '';
+  jobListUpdatedAt: number;
   setJobName: (name: string) => void;
   setJobProperty: (property: string) => void;
   setJobValue: (value: string) => void;
@@ -38,6 +39,7 @@ const JobFilters: React.FC<PropsType> = ({
   jobProperty,
   jobValue,
   jobStatus,
+  jobListUpdatedAt,
   setJobName,
   setJobProperty,
   setJobValue,
@@ -48,7 +50,7 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useJobsOverview({
+  const { data, mutate } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
@@ -61,6 +63,9 @@ const JobFilters: React.FC<PropsType> = ({
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
+  useEffect(() => {
+    mutate();
+  }, [mutate, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),
