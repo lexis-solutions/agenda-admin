@@ -131,6 +131,7 @@ const JobsTableRow: React.FC<PropsType> = ({
           <div id={`requeue-job${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
               <p className="text-2xl">Requeue job?</p>
+              <p>{`ID: ${job.job._id}`}</p>
               <p>{`Name: ${job.job.name}`}</p>
               <div className="modal-action">
                 <a
@@ -152,6 +153,7 @@ const JobsTableRow: React.FC<PropsType> = ({
           <div id={`delete-job${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
               <p className="text-2xl">Delete job?</p>
+              <p>{`ID: ${job.job._id}`}</p>
               <p>{`Name: ${job.job.name}`}</p>
               <div className="modal-action">
                 <a
