@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { JobType, StatusType } from 'src/types';
-import { formatRelativeTime } from 'src/utils/formatter';
+import {
+  formatLocalDateTime,
+  formatRelativeDateTime,
+} from 'src/utils/formatter';
 import cx from 'classnames';
 import Info from 'src/svgs/Info';
 import Refresh from 'src/svgs/Refresh';
@@ -28,8 +31,13 @@ const JobsTableRow: React.FC<PropsType> = ({
 }) => {
   const [checked, setChecked] = useState(false);
 
-  const lastRunAt = formatRelativeTime(job.job.lastRunAt);
-  const nextRunAt = formatRelativeTime(job.job.nextRunAt);
+  const relativeLastRunAt = formatRelativeDateTime(job.job.lastRunAt);
+  const relativeNextRunAt = formatRelativeDateTime(job.job.nextRunAt);
+
+  const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
+  const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
+  const formattedFailedAt =
+    job.job.failedAt && formatLocalDateTime(job.job.failedAt);
 
   return (
     <tr>
@@ -64,40 +72,36 @@ const JobsTableRow: React.FC<PropsType> = ({
       </td>
       <td>{job.job.name}</td>
       <td>
-        <div
-          data-tip={
-            job.job.nextRunAt && new Date(job.job.nextRunAt).toLocaleString()
-          }
-          className="tooltip"
-        >
-          {nextRunAt}
+        <div data-tip={formattedNextRunAt} className="tooltip">
+          {relativeNextRunAt}
         </div>
       </td>
       <td>
-        <div
-          data-tip={
-            job.job.lastRunAt && new Date(job.job.lastRunAt).toLocaleString()
-          }
-          className="tooltip"
-        >
-          {lastRunAt}
+        <div data-tip={formattedLastRunAt} className="tooltip">
+          {relativeLastRunAt}
         </div>
       </td>
       <td>
-        <div className="flex flex-wrap items-center justify-around">
-          <a href={`#job-data${job.job._id}`} className="tab">
+        <div className="flex flex-wrap">
+          {/* Info button */}
+          <a href={`#job-data@${job.job._id}`} className="btn btn-ghost">
             <Info />
           </a>
-          <div id={`job-data${job.job._id}`} className="modal">
+          {/* Requeue button */}
+          <a href={`#requeue-job@${job.job._id}`} className="btn btn-ghost">
+            <Refresh />
+          </a>
+          {/* Delete button */}
+          <a href={`#delete-job@${job.job._id}`} className="btn btn-ghost">
+            <Trash />
+          </a>
+          {/* Info modal */}
+          <div id={`job-data@${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
-              <p className="text-2xl">{`Job data - ${job.job.name}`}</p>
-              <p>{`Last Run At: ${new Date(
-                job.job.lastRunAt
-              ).toLocaleString()}`}</p>
-              <p>{`Next Run At: ${new Date(
-                job.job.nextRunAt
-              ).toLocaleString()}`}</p>
-              <p>Job Data</p>
+              <div className="text-2xl">{`Job data - ${job.job.name}`}</div>
+              <div>Last Run At: {formattedLastRunAt}</div>
+              <div>Next Run At: {formattedNextRunAt}</div>
+              <div>Job Data</div>
               <div className="textarea textarea-bordered">
                 <pre>
                   <code>{JSON.stringify(job.job.data, null, 2)}</code>
@@ -105,17 +109,15 @@ const JobsTableRow: React.FC<PropsType> = ({
               </div>
               {job.job.failCount && (
                 <>
-                  <p className="font-bold text-red-500">
+                  <div className="font-bold text-red-500">
                     {`Fail Count: ${job.job.failCount}`}
-                  </p>
-                  <p className="font-bold text-red-500">
+                  </div>
+                  <div className="font-bold text-red-500">
                     {`Reason: ${job.job.failReason}`}
-                  </p>
-                  <p className="font-bold text-red-500">
-                    {`Failed At: ${new Date(
-                      job.job.failedAt!
-                    ).toLocaleString()}`}
-                  </p>
+                  </div>
+                  <div className="font-bold text-red-500">
+                    Failed At: {formattedFailedAt}
+                  </div>
                 </>
               )}
               <div className="modal-action">
@@ -125,14 +127,12 @@ const JobsTableRow: React.FC<PropsType> = ({
               </div>
             </div>
           </div>
-          <a href={`#requeue-job${job.job._id}`} className="tab">
-            <Refresh />
-          </a>
-          <div id={`requeue-job${job.job._id}`} className="modal">
+          {/* Requeue modal */}
+          <div id={`requeue-job@${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
-              <p className="text-2xl">Requeue job?</p>
-              <p>{`ID: ${job.job._id}`}</p>
-              <p>{`Name: ${job.job.name}`}</p>
+              <div className="text-2xl">Requeue job</div>
+              <div>{`ID: ${job.job._id}`}</div>
+              <div>{`Name: ${job.job.name}`}</div>
               <div className="modal-action">
                 <a
                   href="#"
@@ -147,14 +147,12 @@ const JobsTableRow: React.FC<PropsType> = ({
               </div>
             </div>
           </div>
-          <a href={`#delete-job${job.job._id}`} className="tab">
-            <Trash />
-          </a>
-          <div id={`delete-job${job.job._id}`} className="modal">
+          {/* Delete modal */}
+          <div id={`delete-job@${job.job._id}`} className="modal">
             <div className="space-y-4 modal-box">
-              <p className="text-2xl">Delete job?</p>
-              <p>{`ID: ${job.job._id}`}</p>
-              <p>{`Name: ${job.job.name}`}</p>
+              <div className="text-2xl">Delete job</div>
+              <div>{`ID: ${job.job._id}`}</div>
+              <div>{`Name: ${job.job.name}`}</div>
               <div className="modal-action">
                 <a
                   href="#"
