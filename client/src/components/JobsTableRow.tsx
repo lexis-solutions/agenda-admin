@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { JobType, StatusType } from 'src/types';
-import { formatRelativeTime } from 'src/utils/formatter';
+import {
+  formatLocalDateTime,
+  formatRelativeDateTime,
+} from 'src/utils/formatter';
 import cx from 'classnames';
+import Info from 'src/svgs/Info';
+import Refresh from 'src/svgs/Refresh';
+import Trash from 'src/svgs/Trash';
 
 interface PropsType {
   job: JobType;
+  setModalJob: (job: JobType) => void;
 }
 
 const statusColors = {
@@ -16,11 +23,14 @@ const statusColors = {
   running: 'bg-yellow-500',
 };
 
-const JobsTableRow: React.FC<PropsType> = ({ job }) => {
+const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
   const [checked, setChecked] = useState(false);
 
-  const lastRunAt = formatRelativeTime(job.job.lastRunAt);
-  const nextRunAt = formatRelativeTime(job.job.nextRunAt);
+  const relativeLastRunAt = formatRelativeDateTime(job.job.lastRunAt);
+  const relativeNextRunAt = formatRelativeDateTime(job.job.nextRunAt);
+
+  const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
+  const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
 
   return (
     <tr>
@@ -55,36 +65,41 @@ const JobsTableRow: React.FC<PropsType> = ({ job }) => {
       </td>
       <td>{job.job.name}</td>
       <td>
-        <div
-          data-tip={
-            job.job.nextRunAt && new Date(job.job.nextRunAt).toLocaleString()
-          }
-          className="tooltip"
-        >
-          {nextRunAt}
+        <div data-tip={formattedNextRunAt} className="tooltip">
+          {relativeNextRunAt}
         </div>
       </td>
       <td>
-        <div
-          data-tip={
-            job.job.lastRunAt && new Date(job.job.lastRunAt).toLocaleString()
-          }
-          className="tooltip"
-        >
-          {lastRunAt}
+        <div data-tip={formattedLastRunAt} className="tooltip">
+          {relativeLastRunAt}
         </div>
       </td>
       <td>
-        <div className="flex flex-wrap items-center justify-center">
-          <button className="flex-1 m-1 bg-green-600 text-primary-content rounded-box btn-sm">
-            Info
-          </button>
-          <button className="flex-1 m-1 bg-blue-500 text-primary-content rounded-box btn-sm">
-            Requeue
-          </button>
-          <button className="flex-1 m-1 bg-red-500 text-primary-content rounded-box btn-sm">
-            Delete
-          </button>
+        <div className="flex flex-wrap">
+          {/* Info button */}
+          <a
+            href="#job-data"
+            className="btn btn-ghost"
+            onClick={() => setModalJob(job)}
+          >
+            <Info />
+          </a>
+          {/* Requeue button */}
+          <a
+            href="#requeue-job"
+            className="btn btn-ghost"
+            onClick={() => setModalJob(job)}
+          >
+            <Refresh />
+          </a>
+          {/* Delete button */}
+          <a
+            href="#delete-job"
+            className="btn btn-ghost"
+            onClick={() => setModalJob(job)}
+          >
+            <Trash />
+          </a>
         </div>
       </td>
     </tr>

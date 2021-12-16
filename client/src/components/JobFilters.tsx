@@ -2,7 +2,7 @@ import cx from 'classnames';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
-import { API_URL } from 'src/constants';
+import { fetchNames } from 'src/api';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
@@ -22,22 +22,19 @@ interface PropsType {
   jobProperty: string;
   jobValue: string;
   jobStatus: StatusType | '';
+  jobListUpdatedAt: number;
   setJobName: (name: string) => void;
   setJobProperty: (property: string) => void;
   setJobValue: (value: string) => void;
   setJobStatus: (status: StatusType | '') => void;
 }
 
-const fetchNames = (term: string) =>
-  fetch(`${API_URL}/autocomplete?autocomplete=${term}`).then((res) =>
-    res.json()
-  );
-
 const JobFilters: React.FC<PropsType> = ({
   jobName,
   jobProperty,
   jobValue,
   jobStatus,
+  jobListUpdatedAt,
   setJobName,
   setJobProperty,
   setJobValue,
@@ -48,7 +45,7 @@ const JobFilters: React.FC<PropsType> = ({
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data } = useJobsOverview({
+  const { data, mutate } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
@@ -61,6 +58,9 @@ const JobFilters: React.FC<PropsType> = ({
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
+  useEffect(() => {
+    mutate();
+  }, [mutate, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),
