@@ -31,15 +31,13 @@ export const getJobs = async (
   }
 
   if (req.query.property && req.query.value) {
-    let value;
     if (req.query.property.substring(req.query.property.length - 4) === '_id') {
-      value = new ObjectId(req.query.value);
+      query[req.query.property] = new ObjectId(req.query.value);
     } else {
-      value = /^\d+$/.test(req.query.value)
+      query[req.query.property] = /^\d+$/.test(req.query.value)
         ? +req.query.value
         : req.query.value;
     }
-    query[req.query.property] = value;
   } else if (req.query.property) {
     query[req.query.property] = { $exists: true };
   }
