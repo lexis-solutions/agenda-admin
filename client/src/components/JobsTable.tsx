@@ -31,7 +31,7 @@ const JobsTable: React.FC<PropsType> = ({
   const formattedFailedAt = formatLocalDateTime(modalJob?.job.failedAt);
 
   return (
-    <div>
+    <div className="w-full">
       <table className="table w-full table-zebra">
         <thead>
           <tr>
@@ -82,7 +82,7 @@ const JobsTable: React.FC<PropsType> = ({
       {/* Info modal */}
       <div id="job-data" className="modal">
         <div className="space-y-4 modal-box">
-          <div className="text-2xl">{`Job data - ${modalJob?.job.name}`}</div>
+          <div className="text-2xl">Job data - {modalJob?.job.name}</div>
           <div>Last Run At: {formattedLastRunAt}</div>
           <div>Next Run At: {formattedNextRunAt}</div>
           <div>Job Data:</div>
@@ -94,10 +94,10 @@ const JobsTable: React.FC<PropsType> = ({
           {modalJob?.job.failCount && (
             <>
               <div className="font-bold text-red-500">
-                {`Fail Count: ${modalJob?.job.failCount}`}
+                Fail Count: {modalJob?.job.failCount}
               </div>
               <div className="font-bold text-red-500">
-                {`Reason: ${modalJob?.job.failReason}`}
+                Reason: {modalJob?.job.failReason}
               </div>
               <div className="font-bold text-red-500">
                 Failed At: {formattedFailedAt}
@@ -115,8 +115,8 @@ const JobsTable: React.FC<PropsType> = ({
       <div id="requeue-job" className="modal">
         <div className="space-y-4 modal-box">
           <div className="text-2xl">Requeue job</div>
-          <div>{`ID: ${modalJob?.job._id}`}</div>
-          <div>{`Name: ${modalJob?.job.name}`}</div>
+          <div>ID: {modalJob?.job._id}</div>
+          <div>Name: {modalJob?.job.name}</div>
           <div className="modal-action">
             <a
               href="#!"
@@ -135,8 +135,8 @@ const JobsTable: React.FC<PropsType> = ({
       <div id="delete-job" className="modal">
         <div className="space-y-4 modal-box">
           <div className="text-2xl">Delete job</div>
-          <div>{`ID: ${modalJob?.job._id}`}</div>
-          <div>{`Name: ${modalJob?.job.name}`}</div>
+          <div>ID: {modalJob?.job._id}</div>
+          <div>Name: {modalJob?.job.name}</div>
           <div className="modal-action">
             <a
               href="#!"
