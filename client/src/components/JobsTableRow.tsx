@@ -8,20 +8,12 @@ import cx from 'classnames';
 import Info from 'src/svgs/Info';
 import Refresh from 'src/svgs/Refresh';
 import Trash from 'src/svgs/Trash';
+import { JOB_COLORS } from 'src/constants';
 
 interface PropsType {
   job: JobType;
   setModalJob: (job: JobType) => void;
 }
-
-const statusColors = {
-  repeating: 'bg-blue-400',
-  scheduled: 'bg-blue-400',
-  queued: 'bg-blue-800',
-  completed: 'bg-green-500',
-  failed: 'bg-red-500',
-  running: 'bg-yellow-500',
-};
 
 const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
   const [checked, setChecked] = useState(false);
@@ -53,7 +45,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
               <span
                 className={cx(
                   'p-1 m-1 text-2xs text-primary-content rounded-sm',
-                  statusColors[status as StatusType]
+                  JOB_COLORS[status as StatusType]
                 )}
                 key={status}
               >

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 import agenda from 'src/agenda';
 
 interface ReqQuery {
@@ -17,11 +18,16 @@ export const overview = async (
     query.name = req.query.name;
   }
 
-  if (req.query.property) {
-    const value = /^\d+$/.test(req.query.value)
-      ? +req.query.value
-      : req.query.value;
-    query[req.query.property] = value;
+  if (req.query.property && req.query.value) {
+    if (req.query.property.substring(req.query.property.length - 4) === '_id') {
+      query[req.query.property] = new ObjectId(req.query.value);
+    } else {
+      query[req.query.property] = /^\d+$/.test(req.query.value)
+        ? +req.query.value
+        : req.query.value;
+    }
+  } else if (req.query.property) {
+    query[req.query.property] = { $exists: true };
   }
 
   const data = await agenda._collection

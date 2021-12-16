@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 import agenda from 'src/agenda';
 import { StatusType } from 'src/types';
 
@@ -29,11 +30,18 @@ export const getJobs = async (
     query.name = req.query.name;
   }
 
-  if (req.query.property) {
-    const value = /^\d+$/.test(req.query.value)
-      ? +req.query.value
-      : req.query.value;
+  if (req.query.property && req.query.value) {
+    let value;
+    if (req.query.property.substring(req.query.property.length - 4) === '_id') {
+      value = new ObjectId(req.query.value);
+    } else {
+      value = /^\d+$/.test(req.query.value)
+        ? +req.query.value
+        : req.query.value;
+    }
     query[req.query.property] = value;
+  } else if (req.query.property) {
+    query[req.query.property] = { $exists: true };
   }
 
   const statusFilter: any = {};
