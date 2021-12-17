@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
 import agenda from 'src/agenda';
+import { buildJobQuery } from 'src/utils/build-job-query';
 
 interface ReqQuery {
   name: string | null;
@@ -13,22 +13,7 @@ export const overview = async (
   res: Response,
   next: NextFunction
 ) => {
-  const query: any = {};
-  if (req.query.name) {
-    query.name = req.query.name;
-  }
-
-  if (req.query.property && req.query.value) {
-    if (req.query.property.substring(req.query.property.length - 4) === '_id') {
-      query[req.query.property] = new ObjectId(req.query.value);
-    } else {
-      query[req.query.property] = /^\d+$/.test(req.query.value)
-        ? +req.query.value
-        : req.query.value;
-    }
-  } else if (req.query.property) {
-    query[req.query.property] = { $exists: true };
-  }
+  const query: any = buildJobQuery(req.query);
 
   const data = await agenda._collection
     .aggregate([

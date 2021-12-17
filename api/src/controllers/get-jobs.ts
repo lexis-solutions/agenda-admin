@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
 import agenda from 'src/agenda';
 import { StatusType } from 'src/types';
+import { buildJobQuery } from 'src/utils/build-job-query';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
@@ -24,23 +24,7 @@ export const getJobs = async (
 
   const sortBy = req.query.sortBy || 'lastRunAt';
   const sortType = req.query.sortType === 'asc' ? 1 : -1;
-
-  const query: any = {};
-  if (req.query.name) {
-    query.name = req.query.name;
-  }
-
-  if (req.query.property && req.query.value) {
-    if (req.query.property.substring(req.query.property.length - 4) === '_id') {
-      query[req.query.property] = new ObjectId(req.query.value);
-    } else {
-      query[req.query.property] = /^\d+$/.test(req.query.value)
-        ? +req.query.value
-        : req.query.value;
-    }
-  } else if (req.query.property) {
-    query[req.query.property] = { $exists: true };
-  }
+  const query = buildJobQuery(req.query);
 
   const statusFilter: any = {};
   if (req.query.status) {
