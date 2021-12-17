@@ -13,7 +13,12 @@ export const overview = async (
   res: Response,
   next: NextFunction
 ) => {
-  const query: any = buildJobQuery(req.query);
+  const { query } = buildJobQuery({
+    ...req.query,
+    status: null,
+    sortBy: 'lastRunAt',
+    sortType: 'desc',
+  });
 
   const data = await agenda._collection
     .aggregate([

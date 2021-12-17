@@ -21,15 +21,7 @@ export const getJobs = async (
 ) => {
   const page = req.query.page || 1;
   const itemsPerPage = +req.query.itemsPerPage || 20;
-
-  const sortBy = req.query.sortBy || 'lastRunAt';
-  const sortType = req.query.sortType === 'asc' ? 1 : -1;
-  const query = buildJobQuery(req.query);
-
-  const statusFilter: any = {};
-  if (req.query.status) {
-    statusFilter[`status.${req.query.status}`] = true;
-  }
+  const { query, statusFilter, sortBy, sortType } = buildJobQuery(req.query);
 
   const data = await agenda._collection
     .aggregate([
