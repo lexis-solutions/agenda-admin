@@ -4,6 +4,7 @@ export const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE || 20;
 export const REFRESH_INTERVAL = process.env.REACT_APP_REFRESH_INTERVAL
   ? parseInt(process.env.REACT_APP_REFRESH_INTERVAL)
   : 15000;
+
 export const JOB_COLORS = {
   scheduled: 'bg-black',
   queued: 'bg-blue-500',

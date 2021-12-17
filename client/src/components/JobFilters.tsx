@@ -209,7 +209,7 @@ const JobFilters: React.FC<PropsType> = ({
         </div>
       )}
       <div>
-        <button className="btn btn-ghost" onClick={handleClearFilters}>
+        <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
           Clear Filters
         </button>
       </div>
