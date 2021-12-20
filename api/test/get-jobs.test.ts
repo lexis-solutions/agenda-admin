@@ -29,6 +29,24 @@ describe('get jobs controller tests', () => {
       });
   });
 
+  test('should filter jobs by id', async () => {
+    await supertest(app)
+      .get('/api/jobs?property=_id&value=61bb7cd3a056e9d1c01faf5a')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body[0].jobs[0].job.name).toBe('completed job');
+      });
+  });
+
+  test('should return all jobs with property if no value is provided', async () => {
+    await supertest(app)
+      .get('/api/jobs?property=data')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body[0].jobs.length).toBe(6);
+      });
+  });
+
   test.each([
     'completed',
     'failed',
