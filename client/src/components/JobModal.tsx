@@ -44,46 +44,43 @@ const JobModal: React.FC<PropsType> = ({
     return () => window.removeEventListener('keydown', closeModalOnEsc);
   }, [job, closeModal]);
 
+  if (!job) return null;
+
   return (
-    job && (
-      <div id={id} className="modal" onClick={() => closeModal()}>
-        <div
-          className="space-y-4 modal-box"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="text-2xl">{title}</div>
-          <div className="flex flex-row">
-            ID: {job.job._id}
-            <button
-              className="ml-2 tooltip btn btn-xs btn-ghost btn-square"
-              data-tip="Copy ID"
-              onClick={() => handleCopy('id', job.job._id)}
-            >
-              {copied === 'id' ? (
-                <ClipboardCheck className="text-success" />
-              ) : (
-                <ClipboardCopy />
-              )}
-            </button>
-          </div>
-          <div className="flex flex-row">
-            Name: {job?.job.name}
-            <button
-              className="ml-2 tooltip btn btn-xs btn-ghost btn-square"
-              data-tip="Copy Name"
-              onClick={() => handleCopy('name', job.job.name)}
-            >
-              {copied === 'name' ? (
-                <ClipboardCheck className="text-success" />
-              ) : (
-                <ClipboardCopy />
-              )}
-            </button>
-          </div>
-          {children}
+    <div id={id} className="modal" onClick={() => closeModal()}>
+      <div className="space-y-4 modal-box" onClick={(e) => e.stopPropagation()}>
+        <div className="text-2xl">{title}</div>
+        <div className="flex flex-row">
+          ID: {job.job._id}
+          <button
+            className="ml-2 tooltip btn btn-xs btn-ghost btn-square"
+            data-tip="Copy ID"
+            onClick={() => handleCopy('id', job.job._id)}
+          >
+            {copied === 'id' ? (
+              <ClipboardCheck className="text-success" />
+            ) : (
+              <ClipboardCopy />
+            )}
+          </button>
         </div>
+        <div className="flex flex-row">
+          Name: {job?.job.name}
+          <button
+            className="ml-2 tooltip btn btn-xs btn-ghost btn-square"
+            data-tip="Copy Name"
+            onClick={() => handleCopy('name', job.job.name)}
+          >
+            {copied === 'name' ? (
+              <ClipboardCheck className="text-success" />
+            ) : (
+              <ClipboardCopy />
+            )}
+          </button>
+        </div>
+        {children}
       </div>
-    )
+    </div>
   );
 };
 
