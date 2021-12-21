@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from 'src/agenda';
+import { buildJobQuery } from 'src/utils/build-job-query';
 
 interface ReqQuery {
   name: string | null;
@@ -12,17 +13,12 @@ export const overview = async (
   res: Response,
   next: NextFunction
 ) => {
-  const query: any = {};
-  if (req.query.name) {
-    query.name = req.query.name;
-  }
-
-  if (req.query.property) {
-    const value = /^\d+$/.test(req.query.value)
-      ? +req.query.value
-      : req.query.value;
-    query[req.query.property] = value;
-  }
+  const { query } = buildJobQuery({
+    ...req.query,
+    status: null,
+    sortBy: 'lastRunAt',
+    sortType: 'desc',
+  });
 
   const data = await agenda._collection
     .aggregate([

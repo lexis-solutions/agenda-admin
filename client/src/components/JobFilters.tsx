@@ -3,18 +3,20 @@ import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { fetchNames } from 'src/api';
+import { JOB_COLORS } from 'src/constants';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
 
 const DEBOUNCE_DELAY = 500;
-const STATUS_BUTTONS: { name: StatusType; color: string }[] = [
-  { name: 'scheduled', color: 'bg-black' },
-  { name: 'queued', color: 'bg-blue-400' },
-  { name: 'running', color: 'bg-yellow-500' },
-  { name: 'completed', color: 'bg-green-500' },
-  { name: 'failed', color: 'bg-red-500' },
+
+const STATUS_BUTTONS: StatusType[] = [
+  'scheduled',
+  'queued',
+  'running',
+  'completed',
+  'failed',
 ];
 
 interface PropsType {
@@ -97,6 +99,13 @@ const JobFilters: React.FC<PropsType> = ({
     [jobStatus, setJobStatus]
   );
 
+  const handleClearFilters = () => {
+    setJobName('');
+    setJobProperty('');
+    setJobValue('');
+    setJobStatus('');
+  };
+
   return (
     <div className="flex flex-col w-full space-y-4">
       <div className="flex flex-row space-x-4">
@@ -176,12 +185,12 @@ const JobFilters: React.FC<PropsType> = ({
       </div>
       {!!data?.data.length && (
         <div className="flex w-full overflow-hidden rounded-box tabs">
-          {STATUS_BUTTONS.map(({ name, color }) => (
+          {STATUS_BUTTONS.map((name) => (
             <a
               key={name}
               className={cx(
                 'tab h-16 transition-colors duration-200 flex-1',
-                color,
+                JOB_COLORS[name],
                 {
                   'bg-opacity-25': jobStatus && jobStatus !== name,
                   'tab-active bg-opacity-100': jobStatus === name,
@@ -199,6 +208,11 @@ const JobFilters: React.FC<PropsType> = ({
           ))}
         </div>
       )}
+      <div>
+        <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
+          Clear Filters
+        </button>
+      </div>
     </div>
   );
 };

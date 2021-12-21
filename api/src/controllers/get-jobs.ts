@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from 'src/agenda';
 import { StatusType } from 'src/types';
+import { buildJobQuery } from 'src/utils/build-job-query';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
@@ -20,26 +21,7 @@ export const getJobs = async (
 ) => {
   const page = req.query.page || 1;
   const itemsPerPage = +req.query.itemsPerPage || 20;
-
-  const sortBy = req.query.sortBy || 'lastRunAt';
-  const sortType = req.query.sortType === 'asc' ? 1 : -1;
-
-  const query: any = {};
-  if (req.query.name) {
-    query.name = req.query.name;
-  }
-
-  if (req.query.property) {
-    const value = /^\d+$/.test(req.query.value)
-      ? +req.query.value
-      : req.query.value;
-    query[req.query.property] = value;
-  }
-
-  const statusFilter: any = {};
-  if (req.query.status) {
-    statusFilter[`status.${req.query.status}`] = true;
-  }
+  const { query, statusFilter, sortBy, sortType } = buildJobQuery(req.query);
 
   const data = await agenda._collection
     .aggregate([
