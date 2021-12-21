@@ -15,6 +15,7 @@ const App = () => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState<StatusType | ''>('');
   const [jobListUpdatedAt, setJobListUpdatedAt] = useState(Date.now());
+  const [selected] = useState(new Set<string>());
 
   const { data, mutate } = useJobsList(
     {
@@ -50,41 +51,57 @@ const App = () => {
   useEffect(() => setPage(1), [name, property, value, status]);
 
   return (
-    <div className="flex flex-col items-center justify-between max-w-screen-xl p-8 mx-auto space-y-4">
-      <JobFilters
-        jobName={name}
-        jobProperty={property}
-        jobValue={value}
-        jobStatus={status}
-        jobListUpdatedAt={jobListUpdatedAt}
-        setJobName={setName}
-        setJobProperty={setProperty}
-        setJobValue={setValue}
-        setJobStatus={setStatus}
-      />
-      {data && (
-        <JobsTable
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          sortDesc={sortDesc}
-          setSortDesc={setSortDesc}
-          data={data[0].jobs}
-          onDeleteJobs={handleDeleteJobs}
-          onRequeueJobs={handleRequeueJobs}
+    <div className="max-w-screen-xl mx-auto">
+      <div className="flex flex-col items-center justify-between p-8 space-y-4">
+        <JobFilters
+          jobName={name}
+          jobProperty={property}
+          jobValue={value}
+          jobStatus={status}
+          jobListUpdatedAt={jobListUpdatedAt}
+          setJobName={setName}
+          setJobProperty={setProperty}
+          setJobValue={setValue}
+          setJobStatus={setStatus}
         />
-      )}
-      {data && data[0].jobs.length === 0 && (
-        <div className="p-4 m-4">
-          <span className="text-xl">No data found.</span>
+        {data && (
+          <JobsTable
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortDesc={sortDesc}
+            setSortDesc={setSortDesc}
+            data={data[0].jobs}
+            onDeleteJobs={handleDeleteJobs}
+            onRequeueJobs={handleRequeueJobs}
+          />
+        )}
+        {data && data[0].jobs.length === 0 && (
+          <div className="p-4 m-4">
+            <span className="text-xl">No data found.</span>
+          </div>
+        )}
+      </div>
+      <div className="sticky bottom-0 z-10 flex flex-row items-center justify-between w-full p-2 bg-white border-t">
+        {data && (
+          <PaginationButtons
+            page={page}
+            pagesCount={data[0].pages[0] ? data[0].pages[0].pagesCount : 1}
+            setPage={setPage}
+          />
+        )}
+        <div className="flex flex-row items-center space-x-2">
+          <div>{selected.size} jobs selected</div>
+          <button className="btn btn-sm btn-ghost text-primary">
+            Select All
+          </button>
+          <button className="btn btn-sm btn-ghost text-secondary">
+            Requeue All
+          </button>
+          <button className="btn btn-sm btn-ghost text-warning">
+            Delete All
+          </button>
         </div>
-      )}
-      {data && (
-        <PaginationButtons
-          page={page}
-          pagesCount={data[0].pages[0] ? data[0].pages[0].pagesCount : 1}
-          setPage={setPage}
-        />
-      )}
+      </div>
     </div>
   );
 };
