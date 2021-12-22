@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch } from 'react';
 import { JobType, StatusType } from 'src/types';
 import {
   formatLocalDateTime,
@@ -13,16 +13,33 @@ import { JOB_COLORS } from 'src/constants';
 interface PropsType {
   job: JobType;
   setModalJob: (job: JobType) => void;
+  selected: Set<string>;
+  setSelected: Dispatch<Set<string>>;
 }
 
-const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
-  const [checked, setChecked] = useState(false);
-
+const JobsTableRow: React.FC<PropsType> = ({
+  job,
+  setModalJob,
+  selected,
+  setSelected,
+}) => {
   const relativeLastRunAt = formatRelativeDateTime(job.job.lastRunAt);
   const relativeNextRunAt = formatRelativeDateTime(job.job.nextRunAt);
 
   const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
   const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
+
+  const addJobToSelected = (id: string) => {
+    const newSet = new Set(selected);
+    newSet.add(id);
+    return newSet;
+  };
+
+  const removeJobFromSelected = (id: string) => {
+    const newSet = new Set(selected);
+    newSet.delete(id);
+    return newSet;
+  };
 
   return (
     <tr>
@@ -30,8 +47,14 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
         <input
           type="checkbox"
           className="checkbox"
-          checked={checked}
-          onChange={() => setChecked(!checked)}
+          checked={selected.has(job.job._id)}
+          onChange={() =>
+            setSelected(
+              selected.has(job.job._id)
+                ? removeJobFromSelected(job.job._id)
+                : addJobToSelected(job.job._id)
+            )
+          }
         />
       </th>
       <td>

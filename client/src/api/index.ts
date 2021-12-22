@@ -1,4 +1,5 @@
 import { API_URL } from 'src/constants';
+import { StatusType } from 'src/types';
 import { Fetcher } from 'swr';
 
 export const fetcher: Fetcher<any> = (url) =>
@@ -9,8 +10,8 @@ export const fetchNames = (term: string) =>
     res.json()
   );
 
-export const deleteJobs = (ids: string[]) =>
-  fetch(`${API_URL}/delete`, {
+export const deleteJobsById = (ids: string[]) =>
+  fetch(`${API_URL}/delete/id`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -18,11 +19,43 @@ export const deleteJobs = (ids: string[]) =>
     body: JSON.stringify({ ids }),
   }).then((res) => res.json());
 
-export const requeueJobs = (ids: string[]) =>
-  fetch(`${API_URL}/requeue`, {
+export const requeueJobsById = (ids: string[]) =>
+  fetch(`${API_URL}/requeue/id`, {
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'POST',
     body: JSON.stringify({ ids }),
   }).then((res) => res.json());
+
+export const deleteJobsByQuery = ({
+  name,
+  property,
+  value,
+  status,
+}: {
+  name: string;
+  property: string;
+  value: string;
+  status: StatusType | '';
+}) =>
+  fetch(
+    `${API_URL}/delete/query?name=${name}&property=${property}&value=${value}&status=${status}`,
+    { method: 'DELETE' }
+  );
+
+export const requeueJobsByQuery = ({
+  name,
+  property,
+  value,
+  status,
+}: {
+  name: string;
+  property: string;
+  value: string;
+  status: StatusType | '';
+}) =>
+  fetch(
+    `${API_URL}/requeue/query?name=${name}&property=${property}&value=${value}&status=${status}`,
+    { method: 'POST' }
+  );

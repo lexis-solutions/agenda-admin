@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
 import { JobType, SortType } from 'src/types';
@@ -13,16 +13,20 @@ interface PropsType {
   data: JobType[];
   onDeleteJobs: (ids: string[]) => void;
   onRequeueJobs: (ids: string[]) => void;
+  selected: Set<string>;
+  setSelected: Dispatch<Set<string>>;
 }
 
 const JobsTable: React.FC<PropsType> = ({
   data,
   sortBy,
   sortDesc,
+  selected,
   setSortBy,
   setSortDesc,
   onDeleteJobs,
   onRequeueJobs,
+  setSelected,
 }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [modalJob, setModalJob] = useState<JobType | null>(null);
@@ -30,6 +34,10 @@ const JobsTable: React.FC<PropsType> = ({
   const formattedLastRunAt = formatLocalDateTime(modalJob?.job.lastRunAt);
   const formattedNextRunAt = formatLocalDateTime(modalJob?.job.nextRunAt);
   const formattedFailedAt = formatLocalDateTime(modalJob?.job.failedAt);
+
+  useEffect(() => {
+    if (selected.size !== data.length) setSelectAll(false);
+  }, [selected, data]);
 
   return (
     <div className="w-full">
@@ -41,7 +49,15 @@ const JobsTable: React.FC<PropsType> = ({
                 type="checkbox"
                 className="checkbox"
                 checked={selectAll}
-                onChange={() => setSelectAll(!selectAll)}
+                onChange={() => {
+                  if (selectAll) {
+                    setSelected(new Set<string>());
+                  } else {
+                    const ids = data ? data.map((job) => job.job._id) : [];
+                    setSelected(new Set(ids));
+                  }
+                  setSelectAll(!selectAll);
+                }}
               />
             </th>
             <th>Status</th>
@@ -75,6 +91,8 @@ const JobsTable: React.FC<PropsType> = ({
               job={job}
               key={job?.job._id}
               setModalJob={setModalJob}
+              selected={selected}
+              setSelected={setSelected}
             />
           ))}
         </tbody>
