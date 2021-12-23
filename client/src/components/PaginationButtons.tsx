@@ -1,17 +1,11 @@
 import { range } from 'lodash';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import { JobsListContext } from 'src/context/JobsListContext';
 
-interface PropType {
-  page: number;
-  pagesCount: number;
-  setPage: (page: number) => void;
-}
+const PaginationButtons: React.FC = () => {
+  const { data, page, setPage } = useContext(JobsListContext)!;
+  const pagesCount = data && data[0].pages[0] ? data[0].pages[0].pagesCount : 1;
 
-const PaginationButtons: React.FC<PropType> = ({
-  page,
-  pagesCount,
-  setPage,
-}) => {
   const handlePrevPage = useCallback(
     () => page > 1 && setPage(page - 1),
     [page, setPage]

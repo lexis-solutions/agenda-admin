@@ -1,9 +1,10 @@
 import cx from 'classnames';
 import { debounce } from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { fetchNames } from 'src/api';
 import { JOB_COLORS } from 'src/constants';
+import { JobsListContext } from 'src/context/JobsListContext';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
@@ -19,29 +20,19 @@ const STATUS_BUTTONS: StatusType[] = [
   'failed',
 ];
 
-interface PropsType {
-  jobName: string;
-  jobProperty: string;
-  jobValue: string;
-  jobStatus: StatusType | '';
-  jobListUpdatedAt: number;
-  setJobName: (name: string) => void;
-  setJobProperty: (property: string) => void;
-  setJobValue: (value: string) => void;
-  setJobStatus: (status: StatusType | '') => void;
-}
+const JobFilters: React.FC = () => {
+  const {
+    name: jobName,
+    setName: setJobName,
+    property: jobProperty,
+    setProperty: setJobProperty,
+    value: jobValue,
+    setValue: setJobValue,
+    status: jobStatus,
+    setStatus: setJobStatus,
+    jobListUpdatedAt,
+  } = useContext(JobsListContext)!;
 
-const JobFilters: React.FC<PropsType> = ({
-  jobName,
-  jobProperty,
-  jobValue,
-  jobStatus,
-  jobListUpdatedAt,
-  setJobName,
-  setJobProperty,
-  setJobValue,
-  setJobStatus,
-}) => {
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');

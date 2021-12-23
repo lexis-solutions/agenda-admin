@@ -1,33 +1,24 @@
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
-import { JobType, SortType } from 'src/types';
+import { JobsListContext } from 'src/context/JobsListContext';
+import { JobType } from 'src/types';
 import { formatLocalDateTime } from 'src/utils/formatter';
 import JobModal from './JobModal';
 
-interface PropsType {
-  sortBy: SortType;
-  setSortBy: (sortBy: SortType) => void;
-  sortDesc: boolean;
-  setSortDesc: (sortDesc: boolean) => void;
-  data: JobType[];
-  onDeleteJobs: (ids: string[]) => void;
-  onRequeueJobs: (ids: string[]) => void;
-  selected: Set<string>;
-  setSelected: Dispatch<Set<string>>;
-}
+const JobsTable: React.FC = () => {
+  const {
+    data,
+    sortBy,
+    setSortBy,
+    sortDesc,
+    setSortDesc,
+    selected,
+    setSelected,
+    handleDeleteJobs,
+    handleRequeueJobs,
+  } = useContext(JobsListContext)!;
 
-const JobsTable: React.FC<PropsType> = ({
-  data,
-  sortBy,
-  sortDesc,
-  selected,
-  setSortBy,
-  setSortDesc,
-  onDeleteJobs,
-  onRequeueJobs,
-  setSelected,
-}) => {
   const [selectAll, setSelectAll] = useState(false);
   const [modalJob, setModalJob] = useState<JobType | null>(null);
 
@@ -36,8 +27,12 @@ const JobsTable: React.FC<PropsType> = ({
   const formattedFailedAt = formatLocalDateTime(modalJob?.job.failedAt);
 
   useEffect(() => {
-    if (selected.size !== data.length) setSelectAll(false);
+    if (data && selected.size !== data[0].jobs.length) {
+      setSelectAll(false);
+    }
   }, [selected, data]);
+
+  if (!data) return null;
 
   return (
     <div className="w-full">
@@ -53,7 +48,9 @@ const JobsTable: React.FC<PropsType> = ({
                   if (selectAll) {
                     setSelected(new Set<string>());
                   } else {
-                    const ids = data ? data.map((job) => job.job._id) : [];
+                    const ids = data
+                      ? data[0].jobs.map((job) => job.job._id)
+                      : [];
                     setSelected(new Set(ids));
                   }
                   setSelectAll(!selectAll);
@@ -86,13 +83,11 @@ const JobsTable: React.FC<PropsType> = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((job: JobType) => (
+          {data[0].jobs.map((job: JobType) => (
             <JobsTableRow
               job={job}
               key={job?.job._id}
               setModalJob={setModalJob}
-              selected={selected}
-              setSelected={setSelected}
             />
           ))}
         </tbody>
@@ -144,7 +139,7 @@ const JobsTable: React.FC<PropsType> = ({
             className="btn btn-primary"
             onClick={() => {
               if (modalJob) {
-                onRequeueJobs([modalJob.job._id]);
+                handleRequeueJobs([modalJob.job._id]);
                 setModalJob(null);
               }
             }}
@@ -169,7 +164,7 @@ const JobsTable: React.FC<PropsType> = ({
             className="btn btn-warning"
             onClick={() => {
               if (modalJob) {
-                onDeleteJobs([modalJob.job._id]);
+                handleDeleteJobs([modalJob.job._id]);
                 setModalJob(null);
               }
             }}
