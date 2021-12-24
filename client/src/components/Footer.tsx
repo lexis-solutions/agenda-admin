@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useState } from 'react';
 import cx from 'classnames';
 import { deleteJobsByQuery, requeueJobsByQuery } from 'src/api';
 import PaginationButtons from 'src/components/PaginationButtons';
@@ -20,6 +20,8 @@ const Footer: React.FC = () => {
     handleDeleteJobs,
     handleRequeueJobs,
   } = useContext(JobsListContext)!;
+
+  const [renderModals, setRenderModals] = useState(false);
 
   const handleBulkDelete = useCallback(async () => {
     if (selectFiltered) {
@@ -87,52 +89,82 @@ const Footer: React.FC = () => {
         >
           {selectFiltered ? 'Unselect All' : 'Select All'}
         </button>
-        <a href="#bulk-requeue" className="btn btn-sm btn-ghost text-secondary">
+        <a
+          href="#bulk-requeue"
+          className="btn btn-sm btn-ghost text-secondary"
+          onClick={() => setRenderModals(true)}
+        >
           Requeue Selected
         </a>
-        <a href="#bulk-delete" className="btn btn-sm btn-ghost text-warning">
+        <a
+          href="#bulk-delete"
+          className="btn btn-sm btn-ghost text-warning"
+          onClick={() => setRenderModals(true)}
+        >
           Delete Selected
         </a>
-        {/* Bulk requeue modal */}
-        <Modal id="bulk-requeue">
-          <div className="text-xl">
-            {`Requeue ${
-              selectFiltered && data[0].pages[0]
-                ? data[0].pages[0].itemsCount
-                : selected.size
-            } jobs?`}
-          </div>
-          <div className="modal-action">
-            <a
-              href="#!"
-              className="btn btn-primary"
-              onClick={handleBulkRequeue}
-            >
-              Requeue
-            </a>
-            <a href="#!" className="btn">
-              Close
-            </a>
-          </div>
-        </Modal>
-        {/* Bulk delete modal */}
-        <Modal id="bulk-delete">
-          <div className="text-xl">
-            {`Delete ${
-              selectFiltered && data[0].pages[0]
-                ? data[0].pages[0].itemsCount
-                : selected.size
-            } jobs?`}
-          </div>
-          <div className="modal-action">
-            <a href="#!" className="btn btn-warning" onClick={handleBulkDelete}>
-              Delete
-            </a>
-            <a href="#!" className="btn">
-              Close
-            </a>
-          </div>
-        </Modal>
+        {renderModals && (
+          <>
+            {/* Bulk requeue modal */}
+            <Modal id="bulk-requeue" onClose={() => setRenderModals(false)}>
+              <div className="text-xl">
+                {`Requeue ${
+                  selectFiltered && data[0].pages[0]
+                    ? data[0].pages[0].itemsCount
+                    : selected.size
+                } jobs?`}
+              </div>
+              <div className="modal-action">
+                <a
+                  href="#!"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    handleBulkRequeue();
+                    setRenderModals(false);
+                  }}
+                >
+                  Requeue
+                </a>
+                <a
+                  href="#!"
+                  className="btn"
+                  onClick={() => setRenderModals(false)}
+                >
+                  Close
+                </a>
+              </div>
+            </Modal>
+            {/* Bulk delete modal */}
+            <Modal id="bulk-delete" onClose={() => setRenderModals(false)}>
+              <div className="text-xl">
+                {`Delete ${
+                  selectFiltered && data[0].pages[0]
+                    ? data[0].pages[0].itemsCount
+                    : selected.size
+                } jobs?`}
+              </div>
+              <div className="modal-action">
+                <a
+                  href="#!"
+                  className="btn btn-warning"
+                  onClick={() => {
+                    handleBulkDelete();
+                    setRenderModals(false);
+                  }}
+                >
+                  Delete
+                </a>
+                <a
+                  href="#!"
+                  className="btn"
+                  onClick={() => setRenderModals(false)}
+                >
+                  Close
+                </a>
+              </div>
+            </Modal>
+          </>
+        )}
       </div>
     </div>
   );

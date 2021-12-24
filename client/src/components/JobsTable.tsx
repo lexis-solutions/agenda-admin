@@ -102,90 +102,94 @@ const JobsTable: React.FC = () => {
           ))}
         </tbody>
       </table>
-      {/* Info modal */}
-      <JobModal
-        id="job-data"
-        title="Job Info"
-        job={modalJob}
-        onClose={() => setModalJob(null)}
-      >
-        <div>Last Run At: {formattedLastRunAt}</div>
-        <div>Next Run At: {formattedNextRunAt}</div>
-        <div>Job Data:</div>
-        <div className="textarea textarea-bordered">
-          <pre className="overflow-scroll">
-            <code>{JSON.stringify(modalJob?.job.data, null, 2)}</code>
-          </pre>
-        </div>
-        {modalJob?.job.failCount && (
-          <>
-            <div className="font-bold text-red-500">
-              Fail Count: {modalJob?.job.failCount}
-            </div>
-            <div className="font-bold text-red-500">
-              Reason: {modalJob?.job.failReason}
-            </div>
-            <div className="font-bold text-red-500">
-              Failed At: {formattedFailedAt}
-            </div>
-          </>
-        )}
-        <div className="modal-action">
-          <a href="#!" onClick={() => setModalJob(null)} className="btn">
-            Close
-          </a>
-        </div>
-      </JobModal>
-      {/* Requeue modal */}
-      <JobModal
-        id="requeue-job"
-        title="Requeue Job"
-        job={modalJob}
-        onClose={() => setModalJob(null)}
-      >
-        <div className="modal-action">
-          <a
-            href="#!"
-            className="btn btn-primary"
-            onClick={() => {
-              if (modalJob) {
-                handleRequeueJobs([modalJob.job._id]);
-                setModalJob(null);
-              }
-            }}
+      {modalJob && (
+        <>
+          {/* Info modal */}
+          <JobModal
+            id="job-data"
+            title="Job Info"
+            job={modalJob}
+            onClose={() => setModalJob(null)}
           >
-            Requeue
-          </a>
-          <a href="#!" onClick={() => setModalJob(null)} className="btn">
-            Close
-          </a>
-        </div>
-      </JobModal>
-      {/* Delete modal */}
-      <JobModal
-        id="delete-job"
-        title="Delete Job"
-        job={modalJob}
-        onClose={() => setModalJob(null)}
-      >
-        <div className="modal-action">
-          <a
-            href="#!"
-            className="btn btn-warning"
-            onClick={() => {
-              if (modalJob) {
-                handleDeleteJobs([modalJob.job._id]);
-                setModalJob(null);
-              }
-            }}
+            <div>Last Run At: {formattedLastRunAt}</div>
+            <div>Next Run At: {formattedNextRunAt}</div>
+            <div>Job Data:</div>
+            <div className="textarea textarea-bordered">
+              <pre className="overflow-scroll">
+                <code>{JSON.stringify(modalJob?.job.data, null, 2)}</code>
+              </pre>
+            </div>
+            {modalJob?.job.failCount && (
+              <>
+                <div className="font-bold text-red-500">
+                  Fail Count: {modalJob?.job.failCount}
+                </div>
+                <div className="font-bold text-red-500">
+                  Reason: {modalJob?.job.failReason}
+                </div>
+                <div className="font-bold text-red-500">
+                  Failed At: {formattedFailedAt}
+                </div>
+              </>
+            )}
+            <div className="modal-action">
+              <a href="#!" onClick={() => setModalJob(null)} className="btn">
+                Close
+              </a>
+            </div>
+          </JobModal>
+          {/* Requeue modal */}
+          <JobModal
+            id="requeue-job"
+            title="Requeue Job"
+            job={modalJob}
+            onClose={() => setModalJob(null)}
           >
-            Delete
-          </a>
-          <a href="#!" onClick={() => setModalJob(null)} className="btn">
-            Close
-          </a>
-        </div>
-      </JobModal>
+            <div className="modal-action">
+              <a
+                href="#!"
+                className="btn btn-primary"
+                onClick={() => {
+                  if (modalJob) {
+                    handleRequeueJobs([modalJob.job._id]);
+                    setModalJob(null);
+                  }
+                }}
+              >
+                Requeue
+              </a>
+              <a href="#!" onClick={() => setModalJob(null)} className="btn">
+                Close
+              </a>
+            </div>
+          </JobModal>
+          {/* Delete modal */}
+          <JobModal
+            id="delete-job"
+            title="Delete Job"
+            job={modalJob}
+            onClose={() => setModalJob(null)}
+          >
+            <div className="modal-action">
+              <a
+                href="#!"
+                className="btn btn-warning"
+                onClick={() => {
+                  if (modalJob) {
+                    handleDeleteJobs([modalJob.job._id]);
+                    setModalJob(null);
+                  }
+                }}
+              >
+                Delete
+              </a>
+              <a href="#!" onClick={() => setModalJob(null)} className="btn">
+                Close
+              </a>
+            </div>
+          </JobModal>
+        </>
+      )}
     </div>
   );
 };

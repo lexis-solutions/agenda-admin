@@ -5,17 +5,17 @@ interface PropsType {
   onClose?: () => void;
 }
 
-const closeModalOnEsc = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') {
-    window.location.href = '#!';
-  }
-};
-
 const Modal: React.FC<PropsType> = ({ id, onClose, children }) => {
   useEffect(() => {
+    const closeModalOnEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        window.location.href = '#!';
+        if (onClose) onClose();
+      }
+    };
     window.addEventListener('keydown', closeModalOnEsc);
     return () => window.removeEventListener('keydown', closeModalOnEsc);
-  }, []);
+  }, [onClose]);
 
   return (
     <div
