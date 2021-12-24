@@ -8,7 +8,7 @@ import Modal from 'src/components/Modal';
 const Footer: React.FC = () => {
   const {
     data,
-    mutate,
+    refreshJobsList,
     name,
     property,
     value,
@@ -25,13 +25,13 @@ const Footer: React.FC = () => {
     if (selectFiltered) {
       await deleteJobsByQuery({ name, property, value, status });
       setSelectFiltered(false);
-      mutate();
+      refreshJobsList();
     } else {
       await handleDeleteJobs(Array.from(selected));
       setSelected(new Set());
     }
   }, [
-    mutate,
+    refreshJobsList,
     handleDeleteJobs,
     selectFiltered,
     setSelectFiltered,
@@ -47,13 +47,13 @@ const Footer: React.FC = () => {
     if (selectFiltered) {
       await requeueJobsByQuery({ name, property, value, status });
       setSelectFiltered(false);
-      mutate();
+      refreshJobsList();
     } else {
       await handleRequeueJobs(Array.from(selected));
       setSelected(new Set());
     }
   }, [
-    mutate,
+    refreshJobsList,
     handleRequeueJobs,
     selectFiltered,
     selected,
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
   if (!data) return null;
 
   return (
-    <div className="sticky bottom-0 z-10 flex flex-row items-center justify-between w-full p-2 border-t bg-base-100">
+    <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
       <PaginationButtons />
       <div className="flex flex-row items-center space-x-2">
         <div>

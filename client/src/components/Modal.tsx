@@ -14,6 +14,7 @@ const closeModalOnEsc = (e: KeyboardEvent) => {
 const Modal: React.FC<PropsType> = ({ id, onClose, children }) => {
   useEffect(() => {
     window.addEventListener('keydown', closeModalOnEsc);
+    return () => window.removeEventListener('keydown', closeModalOnEsc);
   }, []);
 
   return (

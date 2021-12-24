@@ -38,7 +38,7 @@ const JobFilters: React.FC = () => {
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data, mutate } = useJobsOverview({
+  const { data, mutate: refreshJobsList } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
@@ -52,8 +52,8 @@ const JobFilters: React.FC = () => {
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
   useEffect(() => {
-    mutate();
-  }, [mutate, jobListUpdatedAt]);
+    refreshJobsList();
+  }, [refreshJobsList, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),

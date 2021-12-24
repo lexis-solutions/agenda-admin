@@ -12,7 +12,7 @@ import { KeyedMutator } from 'swr';
 
 interface ContextValueType {
   data: GetJobsResponseType | null;
-  mutate: KeyedMutator<GetJobsResponseType>;
+  refreshJobsList: KeyedMutator<GetJobsResponseType>;
   name: string;
   setName: Dispatch<string>;
   property: string;
@@ -88,7 +88,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
     <JobsListContext.Provider
       value={{
         data: data || null,
-        mutate,
+        refreshJobsList: mutate,
         name,
         setName,
         property,
