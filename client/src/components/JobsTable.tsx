@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
 import { JobsListContext } from 'src/context/JobsListContext';
@@ -15,6 +15,7 @@ const JobsTable: React.FC = () => {
     setSortDesc,
     selected,
     setSelected,
+    selectFiltered,
     handleDeleteJobs,
     handleRequeueJobs,
   } = useContext(JobsListContext)!;
@@ -26,11 +27,28 @@ const JobsTable: React.FC = () => {
   const formattedNextRunAt = formatLocalDateTime(modalJob?.job.nextRunAt);
   const formattedFailedAt = formatLocalDateTime(modalJob?.job.failedAt);
 
+  const updateSelectedJobs = useCallback(
+    (allAreSelected: boolean) => {
+      setSelectAll(allAreSelected);
+      if (!allAreSelected) {
+        setSelected(new Set<string>());
+      } else {
+        const ids = data ? data[0].jobs.map((job) => job.job._id) : [];
+        setSelected(new Set(ids));
+      }
+    },
+    [data, setSelected]
+  );
+
   useEffect(() => {
     if (data && selected.size !== data[0].jobs.length) {
       setSelectAll(false);
     }
   }, [selected, data]);
+
+  useEffect(() => {
+    updateSelectedJobs(selectFiltered);
+  }, [selectFiltered, updateSelectedJobs]);
 
   if (!data) return null;
 
@@ -45,15 +63,7 @@ const JobsTable: React.FC = () => {
                 className="checkbox"
                 checked={selectAll}
                 onChange={() => {
-                  if (selectAll) {
-                    setSelected(new Set<string>());
-                  } else {
-                    const ids = data
-                      ? data[0].jobs.map((job) => job.job._id)
-                      : [];
-                    setSelected(new Set(ids));
-                  }
-                  setSelectAll(!selectAll);
+                  updateSelectedJobs(!selectAll);
                 }}
               />
             </th>

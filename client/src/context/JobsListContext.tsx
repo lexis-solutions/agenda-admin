@@ -1,6 +1,7 @@
 import {
   createContext,
   Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useState,
@@ -9,30 +10,31 @@ import { deleteJobsById, requeueJobsById } from 'src/api';
 import { useJobsList } from 'src/hooks/useJobsList';
 import { SortType, StatusType, GetJobsResponseType } from 'src/types';
 import { KeyedMutator } from 'swr';
+import { REFRESH_INTERVAL } from 'src/constants';
 
 interface ContextValueType {
   data: GetJobsResponseType | null;
   refreshJobsList: KeyedMutator<GetJobsResponseType>;
   name: string;
-  setName: Dispatch<string>;
+  setName: Dispatch<SetStateAction<string>>;
   property: string;
-  setProperty: Dispatch<string>;
+  setProperty: Dispatch<SetStateAction<string>>;
   value: string;
-  setValue: Dispatch<string>;
+  setValue: Dispatch<SetStateAction<string>>;
   status: StatusType | '';
-  setStatus: Dispatch<StatusType | ''>;
+  setStatus: Dispatch<SetStateAction<StatusType | ''>>;
   page: number;
-  setPage: Dispatch<number>;
+  setPage: Dispatch<SetStateAction<number>>;
   sortBy: SortType;
-  setSortBy: Dispatch<SortType>;
+  setSortBy: Dispatch<SetStateAction<SortType>>;
   sortDesc: boolean;
-  setSortDesc: Dispatch<boolean>;
+  setSortDesc: Dispatch<SetStateAction<boolean>>;
   jobListUpdatedAt: number;
-  setJobListUpdatedAt: Dispatch<number>;
+  setJobListUpdatedAt: Dispatch<SetStateAction<number>>;
   selectFiltered: boolean;
-  setSelectFiltered: Dispatch<boolean>;
+  setSelectFiltered: Dispatch<SetStateAction<boolean>>;
   selected: Set<string>;
-  setSelected: Dispatch<Set<string>>;
+  setSelected: Dispatch<SetStateAction<Set<string>>>;
   handleDeleteJobs: (ids: string[]) => void;
   handleRequeueJobs: (ids: string[]) => void;
 }
@@ -62,6 +64,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
       sortDesc,
     },
     {
+      refreshInterval: selected.size !== 0 ? undefined : REFRESH_INTERVAL,
       onSuccess: () => setJobListUpdatedAt(Date.now()),
     }
   );
