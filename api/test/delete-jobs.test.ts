@@ -13,7 +13,7 @@ describe('delete jobs controller tests', () => {
     expect(beforeDelete.length).toBe(1);
 
     await supertest(app)
-      .delete(`/api/delete`)
+      .delete(`/api/delete/id`)
       .send({ ids: [beforeDelete[0].attrs._id] })
       .expect(200)
       .expect(({ body }) => {

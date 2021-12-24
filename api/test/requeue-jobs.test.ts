@@ -13,7 +13,7 @@ describe('requeue jobs controller tests', () => {
     expect(beforeRequeue.length).toBe(1);
 
     await supertest(app)
-      .post(`/api/requeue`)
+      .post(`/api/requeue/id`)
       .send({ ids: [beforeRequeue[0].attrs._id] })
       .expect(200)
       .expect(({ body }) => {
