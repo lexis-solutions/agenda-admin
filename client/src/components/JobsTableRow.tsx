@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback } from 'react';
 import { JobType, StatusType } from 'src/types';
 import {
   formatLocalDateTime,
@@ -9,7 +9,7 @@ import Info from 'src/svgs/Info';
 import Refresh from 'src/svgs/Refresh';
 import Trash from 'src/svgs/Trash';
 import { JOB_COLORS } from 'src/constants';
-import { JobsListContext } from 'src/context/JobsListContext';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 
 interface PropsType {
   job: JobType;
@@ -17,7 +17,7 @@ interface PropsType {
 }
 
 const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
-  const { selected, setSelected } = useContext(JobsListContext)!;
+  const { selected, setSelected } = useJobsListContext();
 
   const relativeLastRunAt = formatRelativeDateTime(job.job.lastRunAt);
   const relativeNextRunAt = formatRelativeDateTime(job.job.nextRunAt);
@@ -25,17 +25,23 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
   const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
   const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
 
-  const addJobToSelected = (id: string) => {
-    const newSet = new Set(selected);
-    newSet.add(id);
-    setSelected(newSet);
-  };
+  const addJobToSelected = useCallback(
+    (id: string) => {
+      const newSet = new Set(selected);
+      newSet.add(id);
+      setSelected(newSet);
+    },
+    [selected, setSelected]
+  );
 
-  const removeJobFromSelected = (id: string) => {
-    const newSet = new Set(selected);
-    newSet.delete(id);
-    setSelected(newSet);
-  };
+  const removeJobFromSelected = useCallback(
+    (id: string) => {
+      const newSet = new Set(selected);
+      newSet.delete(id);
+      setSelected(newSet);
+    },
+    [selected, setSelected]
+  );
 
   return (
     <tr>

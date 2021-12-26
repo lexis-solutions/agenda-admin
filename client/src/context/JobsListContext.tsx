@@ -12,7 +12,7 @@ import { SortType, StatusType, GetJobsResponseType } from 'src/types';
 import { KeyedMutator } from 'swr';
 import { REFRESH_INTERVAL } from 'src/constants';
 
-interface ContextValueType {
+interface JobsListContextType {
   data: GetJobsResponseType | null;
   refreshJobsList: KeyedMutator<GetJobsResponseType>;
   name: string;
@@ -39,7 +39,34 @@ interface ContextValueType {
   handleRequeueJobs: (ids: string[]) => void;
 }
 
-export const JobsListContext = createContext<ContextValueType | null>(null);
+const defaultValue: JobsListContextType = {
+  data: null,
+  name: '',
+  property: '',
+  value: '',
+  status: '',
+  page: 1,
+  sortBy: 'lastRunAt',
+  sortDesc: true,
+  jobListUpdatedAt: 0,
+  selectFiltered: false,
+  selected: new Set<string>(),
+  refreshJobsList: async () => undefined,
+  setName: () => null,
+  setProperty: () => null,
+  setValue: () => null,
+  setStatus: () => null,
+  setPage: () => null,
+  setSortBy: () => null,
+  setSortDesc: () => null,
+  setJobListUpdatedAt: () => null,
+  setSelectFiltered: () => null,
+  setSelected: () => null,
+  handleDeleteJobs: () => null,
+  handleRequeueJobs: () => null,
+};
+
+export const JobsListContext = createContext<JobsListContextType>(defaultValue);
 
 export const JobsListContextProvider: React.FC = ({ children }) => {
   const [page, setPage] = useState(1);

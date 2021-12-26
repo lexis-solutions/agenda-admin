@@ -1,9 +1,9 @@
-import { useContext, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import cx from 'classnames';
 import { deleteJobsByQuery, requeueJobsByQuery } from 'src/api';
 import PaginationButtons from 'src/components/PaginationButtons';
-import { JobsListContext } from 'src/context/JobsListContext';
 import Modal from 'src/components/Modal';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 
 const Footer: React.FC = () => {
   const {
@@ -19,9 +19,13 @@ const Footer: React.FC = () => {
     setSelected,
     handleDeleteJobs,
     handleRequeueJobs,
-  } = useContext(JobsListContext)!;
+  } = useJobsListContext();
 
   const [renderModals, setRenderModals] = useState(false);
+  const selectedJobsCount =
+    selectFiltered && data && data[0].pages[0]
+      ? data[0].pages[0].itemsCount
+      : selected.size;
 
   const handleBulkDelete = useCallback(async () => {
     if (selectFiltered) {
@@ -73,13 +77,7 @@ const Footer: React.FC = () => {
     <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
       <PaginationButtons />
       <div className="flex flex-row items-center space-x-2">
-        <div>
-          {`${
-            selectFiltered && data[0].pages[0]
-              ? data[0].pages[0].itemsCount
-              : selected.size
-          } jobs selected`}
-        </div>
+        <div>{selectedJobsCount} jobs selected</div>
         <button
           className={cx('btn btn-sm', {
             'btn-ghost text-primary': !selectFiltered,

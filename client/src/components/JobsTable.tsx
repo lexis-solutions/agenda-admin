@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import JobsTableRow from 'src/components/JobsTableRow';
 import SortableColumnButton from 'src/components/SortableColumnButton';
-import { JobsListContext } from 'src/context/JobsListContext';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 import { JobType } from 'src/types';
 import { formatLocalDateTime } from 'src/utils/formatter';
 import JobModal from './JobModal';
@@ -18,7 +18,7 @@ const JobsTable: React.FC = () => {
     selectFiltered,
     handleDeleteJobs,
     handleRequeueJobs,
-  } = useContext(JobsListContext)!;
+  } = useJobsListContext();
 
   const [selectAll, setSelectAll] = useState(false);
   const [modalJob, setModalJob] = useState<JobType | null>(null);

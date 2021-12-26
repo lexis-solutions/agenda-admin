@@ -1,3 +1,4 @@
+import { Document } from 'mongodb';
 import { StatusType } from 'src/types';
 import { buildJobQuery } from './build-job-query';
 
@@ -8,7 +9,7 @@ export const buildGetJobsQuery = (requestQuery: {
   status: StatusType | null;
   sortBy: 'lastRunAt' | 'nextRunAt';
   sortType: 'desc' | 'asc';
-}) => {
+}): Document[] => {
   const { query, statusFilter, sortBy, sortType } = buildJobQuery(requestQuery);
   return [
     {

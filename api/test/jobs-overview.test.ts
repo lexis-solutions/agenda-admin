@@ -7,9 +7,9 @@ describe('jobs overview controller tests', () => {
   beforeEach(setup);
   afterEach(teardown);
 
-  test(`should return a correct overview`, async () => {
+  test('should return a correct overview', async () => {
     await supertest(app)
-      .get(`/api/overview`)
+      .get('/api/overview')
       .expect(200)
       .expect(({ body }) => {
         expect(body.data[0].running).toBe(1);
@@ -21,7 +21,7 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when filtering by id`, async () => {
+  test('should return a correct overview when filtering by id', async () => {
     await supertest(app)
       .get('/api/overview?property=_id&value=61bb7cd3a056e9d1c01faf5a')
       .expect(200)
@@ -35,9 +35,9 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when only property is provided`, async () => {
+  test('should return a correct overview when only property is provided', async () => {
     await supertest(app)
-      .get(`/api/overview?property=data`)
+      .get('/api/overview?property=data')
       .expect(200)
       .expect(({ body }) => {
         expect(body.data[0].running).toBe(1);
@@ -49,9 +49,9 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when filtering by name`, async () => {
+  test('should return a correct overview when filtering by name', async () => {
     await supertest(app)
-      .get(`/api/overview?name=completed job`)
+      .get('/api/overview?name=completed job')
       .expect(200)
       .expect(({ body }) => {
         expect(body.data[0].running).toBe(0);
@@ -63,9 +63,9 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when filtering by numeric field value`, async () => {
+  test('should return a correct overview when filtering by numeric field value', async () => {
     await supertest(app)
-      .get(`/api/overview?property=failCount&value=1`)
+      .get('/api/overview?property=failCount&value=1')
       .expect(200)
       .expect(({ body }) => {
         expect(body.data[0].running).toBe(0);
@@ -77,9 +77,9 @@ describe('jobs overview controller tests', () => {
       });
   });
 
-  test(`should return a correct overview when filtering by text field value`, async () => {
+  test('should return a correct overview when filtering by text field value', async () => {
     await supertest(app)
-      .get(`/api/overview?property=data.type&value=completed`)
+      .get('/api/overview?property=data.type&value=completed')
       .expect(200)
       .expect(({ body }) => {
         expect(body.data[0].running).toBe(0);

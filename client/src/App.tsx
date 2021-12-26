@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import JobsTable from 'src/components/JobsTable';
 import JobFilters from 'src/components/JobFilters';
-import { JobsListContext } from './context/JobsListContext';
 import Footer from './components/Footer';
+import { useJobsListContext } from './hooks/useJobsListContext';
 
 const App = () => {
-  const { data } = useContext(JobsListContext)!;
+  const { data } = useJobsListContext();
 
   return (
     <div className="max-w-screen-xl mx-auto">

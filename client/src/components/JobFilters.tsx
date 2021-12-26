@@ -1,10 +1,10 @@
 import cx from 'classnames';
 import { debounce } from 'lodash';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { fetchNames } from 'src/api';
 import { JOB_COLORS } from 'src/constants';
-import { JobsListContext } from 'src/context/JobsListContext';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
@@ -31,14 +31,14 @@ const JobFilters: React.FC = () => {
     status: jobStatus,
     setStatus: setJobStatus,
     jobListUpdatedAt,
-  } = useContext(JobsListContext)!;
+  } = useJobsListContext();
 
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data, mutate: refreshJobsList } = useJobsOverview({
+  const { data, mutate: refreshOverview } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
@@ -52,8 +52,8 @@ const JobFilters: React.FC = () => {
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
   useEffect(() => {
-    refreshJobsList();
-  }, [refreshJobsList, jobListUpdatedAt]);
+    refreshOverview();
+  }, [refreshOverview, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),
