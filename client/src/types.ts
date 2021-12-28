@@ -44,6 +44,7 @@ export interface JobType {
 export type GetJobsResponseType = {
   pages: {
     pagesCount: number;
+    itemsCount: number;
   }[];
   jobs: JobType[];
 }[];

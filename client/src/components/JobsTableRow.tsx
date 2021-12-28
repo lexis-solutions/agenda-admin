@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { JobType, StatusType } from 'src/types';
 import {
   formatLocalDateTime,
@@ -9,6 +9,7 @@ import Info from 'src/svgs/Info';
 import Refresh from 'src/svgs/Refresh';
 import Trash from 'src/svgs/Trash';
 import { JOB_COLORS } from 'src/constants';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 
 interface PropsType {
   job: JobType;
@@ -16,7 +17,7 @@ interface PropsType {
 }
 
 const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
-  const [checked, setChecked] = useState(false);
+  const { selected, setSelected } = useJobsListContext();
 
   const relativeLastRunAt = formatRelativeDateTime(job.job.lastRunAt);
   const relativeNextRunAt = formatRelativeDateTime(job.job.nextRunAt);
@@ -24,14 +25,36 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
   const formattedLastRunAt = formatLocalDateTime(job.job.lastRunAt);
   const formattedNextRunAt = formatLocalDateTime(job.job.nextRunAt);
 
+  const addJobToSelected = useCallback(
+    (id: string) => {
+      const newSet = new Set(selected);
+      newSet.add(id);
+      setSelected(newSet);
+    },
+    [selected, setSelected]
+  );
+
+  const removeJobFromSelected = useCallback(
+    (id: string) => {
+      const newSet = new Set(selected);
+      newSet.delete(id);
+      setSelected(newSet);
+    },
+    [selected, setSelected]
+  );
+
   return (
     <tr>
       <th>
         <input
           type="checkbox"
           className="checkbox"
-          checked={checked}
-          onChange={() => setChecked(!checked)}
+          checked={selected.has(job.job._id)}
+          onChange={() =>
+            selected.has(job.job._id)
+              ? removeJobFromSelected(job.job._id)
+              : addJobToSelected(job.job._id)
+          }
         />
       </th>
       <td>

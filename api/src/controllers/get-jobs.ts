@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import agenda from 'src/agenda';
 import { StatusType } from 'src/types';
-import { buildJobQuery } from 'src/utils/build-job-query';
+import { buildGetJobsQuery } from 'src/utils/build-get-jobs-query';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
@@ -21,55 +21,11 @@ export const getJobs = async (
 ) => {
   const page = req.query.page || 1;
   const itemsPerPage = +req.query.itemsPerPage || 20;
-  const { query, statusFilter, sortBy, sortType } = buildJobQuery(req.query);
+  const query = buildGetJobsQuery(req.query);
 
   const data = await agenda._collection
     .aggregate([
-      {
-        $match: query,
-      },
-      {
-        $sort: { [sortBy]: sortType },
-      },
-      {
-        $project: {
-          job: '$$ROOT',
-          status: {
-            running: {
-              $and: ['$lastRunAt', { $gt: ['$lastRunAt', '$lastFinishedAt'] }],
-            },
-            scheduled: {
-              $and: ['$nextRunAt', { $gte: ['$nextRunAt', new Date()] }],
-            },
-            queued: {
-              $and: [
-                '$nextRunAt',
-                { $gte: [new Date(), '$nextRunAt'] },
-                { $gte: ['$nextRunAt', '$lastFinishedAt'] },
-              ],
-            },
-            completed: {
-              $and: [
-                '$lastFinishedAt',
-                { $gt: ['$lastFinishedAt', '$failedAt'] },
-              ],
-            },
-            failed: {
-              $and: [
-                '$lastFinishedAt',
-                '$failedAt',
-                { $eq: ['$lastFinishedAt', '$failedAt'] },
-              ],
-            },
-            repeating: {
-              $and: ['$repeatInterval', { $ne: ['$repeatInterval', null] }],
-            },
-          },
-        },
-      },
-      {
-        $match: statusFilter,
-      },
+      ...query,
       {
         $facet: {
           pages: [
@@ -79,6 +35,7 @@ export const getJobs = async (
                 pagesCount: {
                   $ceil: { $divide: ['$itemsCount', itemsPerPage] },
                 },
+                itemsCount: '$itemsCount',
               },
             },
           ],

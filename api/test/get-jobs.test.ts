@@ -9,7 +9,7 @@ describe('get jobs controller tests', () => {
 
   test('should sort jobs descending', async () => {
     await supertest(app)
-      .get(`/api/jobs?sortBy=data.id&sortType=desc`)
+      .get('/api/jobs?sortBy=data.id&sortType=desc')
       .expect(200)
       .expect(({ body }) => {
         expect(body[0].jobs.map((job: any) => job.job.data.id)).toStrictEqual([
@@ -20,7 +20,7 @@ describe('get jobs controller tests', () => {
 
   test('should sort jobs ascending', async () => {
     await supertest(app)
-      .get(`/api/jobs?sortBy=data.id&sortType=asc`)
+      .get('/api/jobs?sortBy=data.id&sortType=asc')
       .expect(200)
       .expect(({ body }) => {
         expect(body[0].jobs.map((job: any) => job.job.data.id)).toStrictEqual([

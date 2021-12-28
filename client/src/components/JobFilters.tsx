@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { fetchNames } from 'src/api';
 import { JOB_COLORS } from 'src/constants';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
@@ -19,35 +20,25 @@ const STATUS_BUTTONS: StatusType[] = [
   'failed',
 ];
 
-interface PropsType {
-  jobName: string;
-  jobProperty: string;
-  jobValue: string;
-  jobStatus: StatusType | '';
-  jobListUpdatedAt: number;
-  setJobName: (name: string) => void;
-  setJobProperty: (property: string) => void;
-  setJobValue: (value: string) => void;
-  setJobStatus: (status: StatusType | '') => void;
-}
+const JobFilters: React.FC = () => {
+  const {
+    name: jobName,
+    setName: setJobName,
+    property: jobProperty,
+    setProperty: setJobProperty,
+    value: jobValue,
+    setValue: setJobValue,
+    status: jobStatus,
+    setStatus: setJobStatus,
+    jobListUpdatedAt,
+  } = useJobsListContext();
 
-const JobFilters: React.FC<PropsType> = ({
-  jobName,
-  jobProperty,
-  jobValue,
-  jobStatus,
-  jobListUpdatedAt,
-  setJobName,
-  setJobProperty,
-  setJobValue,
-  setJobStatus,
-}) => {
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<any[]>([]);
 
-  const { data, mutate } = useJobsOverview({
+  const { data, mutate: refreshOverview } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
@@ -61,8 +52,8 @@ const JobFilters: React.FC<PropsType> = ({
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
   useEffect(() => {
-    mutate();
-  }, [mutate, jobListUpdatedAt]);
+    refreshOverview();
+  }, [refreshOverview, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),
