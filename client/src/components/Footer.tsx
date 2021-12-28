@@ -26,6 +26,9 @@ const Footer: React.FC = () => {
     selectFiltered && data && data[0].pages[0]
       ? data[0].pages[0].itemsCount
       : selected.size;
+  const jobsMsg = `${selectedJobsCount} ${
+    selectedJobsCount === 1 ? 'job' : 'jobs'
+  }`;
 
   const handleBulkDelete = useCallback(async () => {
     if (selectFiltered) {
@@ -76,8 +79,8 @@ const Footer: React.FC = () => {
   return (
     <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
       <PaginationButtons />
-      <div className="flex flex-row items-center space-x-2">
-        <div>{selectedJobsCount} jobs selected</div>
+      <div className="flex flex-row items-center">
+        <div>{jobsMsg} selected</div>
         <button
           className={cx('btn btn-sm', {
             'btn-ghost text-primary': !selectFiltered,
@@ -105,13 +108,7 @@ const Footer: React.FC = () => {
           <>
             {/* Bulk requeue modal */}
             <Modal id="bulk-requeue" onClose={() => setRenderModals(false)}>
-              <div className="text-xl">
-                {`Requeue ${
-                  selectFiltered && data[0].pages[0]
-                    ? data[0].pages[0].itemsCount
-                    : selected.size
-                } jobs?`}
-              </div>
+              <div className="text-xl">Requeue {jobsMsg}</div>
               <div className="modal-action">
                 <a
                   href="#!"
@@ -134,13 +131,7 @@ const Footer: React.FC = () => {
             </Modal>
             {/* Bulk delete modal */}
             <Modal id="bulk-delete" onClose={() => setRenderModals(false)}>
-              <div className="text-xl">
-                {`Delete ${
-                  selectFiltered && data[0].pages[0]
-                    ? data[0].pages[0].itemsCount
-                    : selected.size
-                } jobs?`}
-              </div>
+              <div className="text-xl">Delete {jobsMsg}</div>
               <div className="modal-action">
                 <a
                   href="#!"
