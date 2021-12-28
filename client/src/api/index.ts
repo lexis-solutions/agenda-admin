@@ -59,3 +59,17 @@ export const requeueJobsByQuery = ({
     `${API_URL}/requeue/query?name=${name}&property=${property}&value=${value}&status=${status}`,
     { method: 'POST' }
   );
+
+export const createNewJob = (job: {
+  name: string;
+  repeatInterval?: string;
+  schedule?: string;
+  data?: string;
+}) =>
+  fetch(`${API_URL}/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(job),
+  }).then((res) => res.json());

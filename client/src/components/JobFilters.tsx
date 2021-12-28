@@ -106,7 +106,7 @@ const JobFilters: React.FC = () => {
           </label>
           <Autocomplete
             menuStyle={{
-              position: 'absolute',
+              position: 'fixed',
               overflow: 'hidden',
               zIndex: 999,
               borderWidth: 2,
