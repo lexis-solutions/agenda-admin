@@ -13,8 +13,8 @@ describe('create job controller tests', () => {
       .post('/api/create')
       .send({
         name: 'New job',
-        schedule: 'in 10 seconds',
-        data: {},
+        schedule: '10 seconds',
+        data: null,
       })
       .expect(200);
 
@@ -28,7 +28,7 @@ describe('create job controller tests', () => {
       .send({
         name: 'New job',
         repeatInterval: '10 seconds',
-        data: {},
+        data: null,
       })
       .expect(200);
 
