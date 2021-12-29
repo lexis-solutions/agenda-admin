@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node-dev --watch src src/index.ts",
+    "start": "nodemon src/index.ts",
     "test": "ENV=testing ./node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
