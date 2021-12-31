@@ -11,7 +11,7 @@ export const authentication = (
   }
 
   const username = process.env.AGENDA_USERNAME || 'admin';
-  const password = process.env.AGENDA_PASSWORD || 'password';
+  const password = process.env.AGENDA_PASSWORD || '';
 
   if (process.env.NODE_ENV !== 'development' && !password) {
     throw new Error('Password cannot be empty!');
