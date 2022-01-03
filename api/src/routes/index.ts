@@ -7,6 +7,7 @@ import {
   requeueJobsById,
   requeueJobsByQuery,
 } from 'src/controllers/requeue-jobs';
+import { createNewJob } from 'src/controllers/create-job';
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.route('/delete/id').delete(deleteJobsById);
 router.route('/requeue/id').post(requeueJobsById);
 router.route('/delete/query').delete(deleteJobsByQuery);
 router.route('/requeue/query').post(requeueJobsByQuery);
+router.route('/jobs').post(createNewJob);
 
 export default router;

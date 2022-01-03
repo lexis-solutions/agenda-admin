@@ -1,14 +1,13 @@
 import cx from 'classnames';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import Autocomplete from 'react-autocomplete';
-import { fetchNames } from 'src/api';
 import { JOB_COLORS } from 'src/constants';
 import { useJobsListContext } from 'src/hooks/useJobsListContext';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
 import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
+import JobNamesAutocomplete from './JobNamesAutocomplete';
 
 const DEBOUNCE_DELAY = 500;
 
@@ -36,17 +35,12 @@ const JobFilters: React.FC = () => {
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
-  const [options, setOptions] = useState<any[]>([]);
 
   const { data, mutate: refreshOverview } = useJobsOverview({
     name: jobName,
     property: jobProperty,
     value: jobValue,
   });
-
-  useEffect(() => {
-    fetchNames(term).then(({ data }) => setOptions(data));
-  }, [term]);
 
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
@@ -104,28 +98,7 @@ const JobFilters: React.FC = () => {
           <label className="label">
             <span>Job Name</span>
           </label>
-          <Autocomplete
-            menuStyle={{
-              position: 'absolute',
-              overflow: 'hidden',
-              zIndex: 999,
-              borderWidth: 2,
-              borderRadius: 8,
-              marginTop: 8,
-            }}
-            getItemValue={(item) => item.name}
-            items={options}
-            renderItem={(item, isHighlighted) => (
-              <div
-                key={item._id}
-                className={cx('text-md p-2 border-b-2', {
-                  'bg-base-200': isHighlighted,
-                  'bg-base-100': !isHighlighted,
-                })}
-              >
-                {item.name}
-              </div>
-            )}
+          <JobNamesAutocomplete
             renderInput={(props) => {
               return (
                 <div className="relative">

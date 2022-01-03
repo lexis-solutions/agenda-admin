@@ -78,7 +78,9 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
           })}
         </div>
       </td>
-      <td>{job.job.name}</td>
+      <td className="max-w-sm">
+        <span className="whitespace-normal">{job.job.name}</span>
+      </td>
       <td>
         <div data-tip={formattedNextRunAt} className="tooltip">
           {relativeNextRunAt}

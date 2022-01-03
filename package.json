@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint \"**/src/**/*.{js,ts,jsx,tsx}\" --fix",
-    "dev": "concurrently \"yarn --cwd ./client start\" \"yarn --cwd ./api start\""
+    "dev": "NODE_ENV=development concurrently \"yarn --cwd ./client start\" \"yarn --cwd ./api start\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
