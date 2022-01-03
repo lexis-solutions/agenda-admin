@@ -16,7 +16,7 @@ interface FormValuesType {
   data?: string;
 }
 
-const CreateJobSchema = Yup.object().shape({
+const createJobSchema = Yup.object().shape({
   name: Yup.string().required('Job name is required!'),
   schedule: Yup.string()
     .test('valid-human-interval', 'Invalid time format!', (value) => {
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
       setRenderModal(false);
       alert('done');
     },
-    validationSchema: CreateJobSchema,
+    validationSchema: createJobSchema,
   });
 
   return (

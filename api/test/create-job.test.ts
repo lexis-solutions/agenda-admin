@@ -10,7 +10,7 @@ describe('create job controller tests', () => {
 
   test('should create a scheduled job', async () => {
     await supertest(app)
-      .post('/api/create')
+      .post('/api/jobs')
       .send({
         name: 'New job',
         schedule: '10 seconds',
@@ -24,7 +24,7 @@ describe('create job controller tests', () => {
 
   test('should create a repeating job', async () => {
     await supertest(app)
-      .post('/api/create')
+      .post('/api/jobs')
       .send({
         name: 'New job',
         repeatInterval: '10 seconds',

@@ -6,16 +6,12 @@ export const authentication = (
   res: Response,
   next: NextFunction
 ) => {
-  if (process.env.NODE_ENV === 'testing') {
+  if (process.env.NODE_ENV === 'testing' || process.env.AGENDA_PASSWORD) {
     return next();
   }
 
   const username = process.env.AGENDA_USERNAME || 'admin';
   const password = process.env.AGENDA_PASSWORD || '';
-
-  if (process.env.NODE_ENV !== 'development' && !password) {
-    throw new Error('Password cannot be empty!');
-  }
 
   basicAuth({
     users: {

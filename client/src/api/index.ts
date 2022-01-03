@@ -66,7 +66,7 @@ export const createNewJob = (job: {
   schedule?: string;
   data?: string;
 }) =>
-  fetch(`${API_URL}/create`, {
+  fetch(`${API_URL}/jobs`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

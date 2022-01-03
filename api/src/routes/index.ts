@@ -18,6 +18,6 @@ router.route('/delete/id').delete(deleteJobsById);
 router.route('/requeue/id').post(requeueJobsById);
 router.route('/delete/query').delete(deleteJobsByQuery);
 router.route('/requeue/query').post(requeueJobsByQuery);
-router.route('/create').post(createNewJob);
+router.route('/jobs').post(createNewJob);
 
 export default router;
