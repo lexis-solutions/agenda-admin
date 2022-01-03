@@ -6,7 +6,7 @@ export const authentication = (
   res: Response,
   next: NextFunction
 ) => {
-  if (process.env.NODE_ENV === 'testing' || process.env.AGENDA_PASSWORD) {
+  if (process.env.NODE_ENV === 'testing' || !process.env.AGENDA_PASSWORD) {
     return next();
   }
 
