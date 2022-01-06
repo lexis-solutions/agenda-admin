@@ -66,7 +66,11 @@ const JobNamesAutocomplete: React.FC<PropsType> = ({
 
   return (
     <Autocomplete
-      menuStyle={{ ...menuStyle, ...defaultMenuStyle }}
+      menuStyle={{
+        ...menuStyle,
+        ...defaultMenuStyle,
+        display: options.length === 0 ? 'none' : 'block',
+      }}
       getItemValue={(item) => item.name}
       items={options}
       renderItem={renderItem || defaultRenderItem}

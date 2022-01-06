@@ -1,12 +1,12 @@
 import cx from 'classnames';
 import { debounce } from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { JOB_COLORS } from 'src/constants';
 import { useJobsListContext } from 'src/hooks/useJobsListContext';
 import { useJobsOverview } from 'src/hooks/useJobsOverview';
-import XCircle from 'src/svgs/Backspace';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
+import InputField from './InputField';
 import JobNamesAutocomplete from './JobNamesAutocomplete';
 
 const DEBOUNCE_DELAY = 500;
@@ -99,26 +99,17 @@ const JobFilters: React.FC = () => {
             <span>Job Name</span>
           </label>
           <JobNamesAutocomplete
-            renderInput={(props) => {
-              return (
-                <div className="relative">
-                  <input
-                    {...props}
-                    title={jobName}
-                    className="input input-bordered"
-                    placeholder="All jobs"
-                  />
-                  <button
-                    onClick={() => setJobName('')}
-                    className={cx('absolute right-0 m-2 btn-sm btn', {
-                      hidden: !jobName,
-                    })}
-                  >
-                    <XCircle />
-                  </button>
-                </div>
-              );
-            }}
+            renderInput={(props) => (
+              <InputField
+                showButton={!jobName}
+                onClear={() => setJobName('')}
+                inputProps={{
+                  title: jobName,
+                  placeholder: 'All jobs',
+                  ...props,
+                }}
+              />
+            )}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
             onSelect={setJobName}
@@ -127,27 +118,37 @@ const JobFilters: React.FC = () => {
         <div className="form-control">
           <label className="label">Form Value</label>
           <div className="flex flex-row">
-            <input
+            <InputField
               className="rounded-r-none input input-bordered"
-              type="text"
-              placeholder="Property"
-              value={property}
-              onChange={(e) => handlePropertyChange(e.target.value)}
+              showButton={!property}
+              onClear={() => setJobProperty('')}
+              inputProps={{
+                type: 'text',
+                value: property,
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                  handlePropertyChange(e.target.value),
+                placeholder: 'Property',
+              }}
             />
             <span className="px-4 mx-2 text-4xl text-center select-none bg-primary text-primary-content">
               =
             </span>
-            <input
+            <InputField
               className="rounded-l-none input input-bordered"
-              type="text"
-              placeholder="Value"
-              value={value}
-              onChange={(e) => handleValueChange(e.target.value)}
+              showButton={!value}
+              onClear={() => setJobValue('')}
+              inputProps={{
+                type: 'text',
+                value: value,
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleValueChange(e.target.value),
+                placeholder: 'Value',
+              }}
             />
           </div>
         </div>
       </div>
-      {!!data?.data.length && (
+      {
         <div className="flex w-full overflow-hidden rounded-box tabs">
           {STATUS_BUTTONS.map((name) => (
             <a
@@ -164,14 +165,16 @@ const JobFilters: React.FC = () => {
             >
               <div className="flex flex-col text-primary-content">
                 <span className="text-3xl font-bold">
-                  {abbreviateNumber(data.data[0][name])}
+                  {abbreviateNumber(
+                    data && data.data.length ? data.data[0][name] : 0
+                  )}
                 </span>
                 <span className="text-sm">{name}</span>
               </div>
             </a>
           ))}
         </div>
-      )}
+      }
       <div>
         <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
           Clear Filters

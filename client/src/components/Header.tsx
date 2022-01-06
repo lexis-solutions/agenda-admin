@@ -8,6 +8,7 @@ import { createNewJob } from 'src/api';
 import { isUndefined } from 'lodash';
 import Plus from 'src/svgs/Plus';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
+import Info from 'src/svgs/Info';
 
 interface FormValuesType {
   name: string;
@@ -16,12 +17,16 @@ interface FormValuesType {
   data?: string;
 }
 
+const cronRegex = new RegExp(
+  /^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/
+);
+
 const createJobSchema = Yup.object().shape({
   name: Yup.string().required('Job name is required!'),
   schedule: Yup.string()
     .test('valid-human-interval', 'Invalid time format!', (value) => {
       const time = humanInterval(value);
-      return isUndefined(time) || !isNaN(time);
+      return !isNaN(Number(value)) || isUndefined(time) || !isNaN(time);
     })
     .when('repeatInterval', {
       is: (repeatInterval: string | undefined) => !repeatInterval,
@@ -33,8 +38,17 @@ const createJobSchema = Yup.object().shape({
     'valid-human-interval',
     'Invalid time format!',
     (value) => {
+      if (isUndefined(value)) {
+        return true;
+      }
+
       const time = humanInterval(value);
-      return isUndefined(time) || !isNaN(time);
+      return (
+        !isNaN(Number(value)) ||
+        cronRegex.test(value) ||
+        isUndefined(time) ||
+        !isNaN(time)
+      );
     }
   ),
   data: Yup.string().test(
@@ -55,6 +69,12 @@ const createJobSchema = Yup.object().shape({
 
 const Header: React.FC = () => {
   const [renderModal, setRenderModal] = useState(false);
+  const [renderAlert, setRenderAlert] = useState(false);
+
+  const showAlert = () => {
+    setRenderAlert(true);
+    setTimeout(() => setRenderAlert(false), 5000);
+  };
 
   const formik = useFormik<FormValuesType>({
     initialValues: {
@@ -63,12 +83,9 @@ const Header: React.FC = () => {
       repeatInterval: '',
       data: 'null',
     },
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       await createNewJob(values);
-      resetForm();
-      window.location.href = '#!';
-      setRenderModal(false);
-      alert('done');
+      showAlert();
     },
     validationSchema: createJobSchema,
   });
@@ -110,7 +127,15 @@ const Header: React.FC = () => {
               onSelect={(value) => formik.setFieldValue('name', value)}
             />
             <label className="label" htmlFor="schedule">
-              Schedule
+              <div className="flex flex-row items-center">
+                Schedule
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="Number or human-readable interval"
+                >
+                  <Info className="max-w-4 max-h-4" />
+                </div>
+              </div>
             </label>
             {formik.errors.schedule && formik.touched.schedule ? (
               <div className="text-error">{formik.errors.schedule}</div>
@@ -124,7 +149,15 @@ const Header: React.FC = () => {
               value={formik.values.schedule}
             />
             <label className="label" htmlFor="repeatInterval">
-              Repeat Interval
+              <div className="flex flex-row items-center">
+                Repeat Interval
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="Number, human-readable interval, or cron expression"
+                >
+                  <Info className="max-w-4 max-h-4" />
+                </div>
+              </div>
             </label>
             {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
               <div className="text-error">{formik.errors.repeatInterval}</div>
@@ -163,6 +196,11 @@ const Header: React.FC = () => {
               </a>
             </div>
           </form>
+          {renderAlert && (
+            <div className="sticky left-0 right-0 alert alert-success">
+              <label>Job successfully created!</label>
+            </div>
+          )}
         </Modal>
       )}
     </div>

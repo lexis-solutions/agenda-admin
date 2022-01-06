@@ -114,8 +114,8 @@ const JobsTable: React.FC = () => {
             <div>Last Run At: {formattedLastRunAt}</div>
             <div>Next Run At: {formattedNextRunAt}</div>
             <div>Job Data:</div>
-            <div className="textarea textarea-bordered">
-              <pre className="overflow-scroll">
+            <div className="h-48 overflow-scroll resize-y textarea textarea-bordered">
+              <pre>
                 <code>{JSON.stringify(modalJob?.job.data, null, 2)}</code>
               </pre>
             </div>
@@ -125,10 +125,15 @@ const JobsTable: React.FC = () => {
                   Fail Count: {modalJob?.job.failCount}
                 </div>
                 <div className="font-bold text-red-500">
-                  Reason: {modalJob?.job.failReason}
+                  Failed At: {formattedFailedAt}
                 </div>
                 <div className="font-bold text-red-500">
-                  Failed At: {formattedFailedAt}
+                  Reason:
+                  <div className="h-48 overflow-scroll resize-y textarea textarea-bordered">
+                    <pre>
+                      <code>{modalJob?.job.failReason}</code>
+                    </pre>
+                  </div>
                 </div>
               </>
             )}
