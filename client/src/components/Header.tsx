@@ -8,7 +8,6 @@ import { createNewJob } from 'src/api';
 import { isUndefined } from 'lodash';
 import Plus from 'src/svgs/Plus';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
-import Info from 'src/svgs/Info';
 
 interface FormValuesType {
   name: string;
@@ -24,7 +23,7 @@ const cronRegex = new RegExp(
 const createJobSchema = Yup.object().shape({
   name: Yup.string().required('Job name is required!'),
   schedule: Yup.string()
-    .test('valid-human-interval', 'Invalid time format!', (value) => {
+    .test('valid-human-interval', 'Invalid time format', (value) => {
       const time = humanInterval(value);
       return !isNaN(Number(value)) || isUndefined(time) || !isNaN(time);
     })
@@ -36,7 +35,7 @@ const createJobSchema = Yup.object().shape({
     }),
   repeatInterval: Yup.string().test(
     'valid-human-interval',
-    'Invalid time format!',
+    'Invalid time format',
     (value) => {
       if (isUndefined(value)) {
         return true;
@@ -97,10 +96,10 @@ const Header: React.FC = () => {
         <a
           href="#create-job"
           onClick={() => setRenderModal(true)}
-          className="m-2 btn bg-primary text-primary-content"
+          className="mt-4 btn bg-primary text-primary-content"
         >
           <Plus />
-          New Job
+          <span className="ml-2">New Job</span>
         </a>
       </div>
       {renderModal && (
@@ -142,10 +141,10 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.schedule}
             />
-            <span className="m-2 text-xs">
+            <span className="my-2 text-xs text-base-content">
               Number or{' '}
               <a
-                className="link text-primary"
+                className="link"
                 href="https://www.npmjs.com/package/human-interval"
                 target="_blank"
                 rel="noreferrer"
@@ -154,15 +153,7 @@ const Header: React.FC = () => {
               </a>
             </span>
             <label className="label" htmlFor="repeatInterval">
-              <div className="flex flex-row items-center">
-                Repeat Interval
-                <div
-                  className="tooltip tooltip-right"
-                  data-tip="Number, human-readable interval, or cron expression"
-                >
-                  <Info className="max-w-4 max-h-4" />
-                </div>
-              </div>
+              <div className="flex flex-row items-center">Repeat Interval</div>
             </label>
             {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
               <div className="text-error">{formik.errors.repeatInterval}</div>
@@ -175,10 +166,10 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.repeatInterval}
             />
-            <span className="m-2 text-xs">
+            <span className="my-2 text-xs text-base-content">
               Number,{' '}
               <a
-                className="link text-primary"
+                className="link"
                 href="https://www.npmjs.com/package/human-interval"
                 target="_blank"
                 rel="noreferrer"
@@ -187,7 +178,7 @@ const Header: React.FC = () => {
               </a>{' '}
               or{' '}
               <a
-                className="link text-primary"
+                className="link"
                 href="https://crontab.guru/"
                 target="_blank"
                 rel="noreferrer"

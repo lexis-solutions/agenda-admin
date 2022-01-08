@@ -93,7 +93,7 @@ const JobFilters: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full space-y-4">
-      <div className="flex flex-row space-x-4">
+      <div className="flex flex-row items-end space-x-4">
         <div className="form-control">
           <label className="label">
             <span>Job Name</span>
@@ -147,6 +147,10 @@ const JobFilters: React.FC = () => {
             />
           </div>
         </div>
+        <div className="flex-1" />
+        <button className="btn btn-ghost" onClick={handleClearFilters}>
+          Clear Filters
+        </button>
       </div>
       {
         <div className="flex w-full overflow-hidden rounded-box tabs">
@@ -175,14 +179,6 @@ const JobFilters: React.FC = () => {
           ))}
         </div>
       }
-      <div>
-        <button
-          className="absolute top-0 right-0 m-2 btn btn-ghost btn-sm"
-          onClick={handleClearFilters}
-        >
-          Clear Filters
-        </button>
-      </div>
     </div>
   );
 };

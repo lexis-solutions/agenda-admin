@@ -53,7 +53,7 @@ const JobNamesAutocomplete: React.FC<PropsType> = ({
     (item, isHighlighted) => (
       <div
         key={item._id}
-        className={cx('text-md p-2 border-b-2', {
+        className={cx('text-md p-2', {
           'bg-base-200': isHighlighted,
           'bg-base-100': !isHighlighted,
         })}

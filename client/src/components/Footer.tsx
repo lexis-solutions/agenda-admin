@@ -77,32 +77,33 @@ const Footer: React.FC = () => {
   if (!data) return null;
 
   return (
-    <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
+    <div className="fixed px-4 bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
       <div className="flex flex-row items-center space-x-1">
         <div>{jobsMsg} selected</div>
         <button
-          className={cx('btn btn-sm', {
-            'btn-ghost text-primary': !selectFiltered,
-            'bg-primary text-base-100': selectFiltered,
-          })}
+          className={cx('btn btn-link btn-xs')}
           onClick={() => setSelectFiltered(!selectFiltered)}
         >
           {selectFiltered ? 'Unselect All' : 'Select All'}
         </button>
-        <a
-          href="#bulk-requeue"
-          className="btn btn-sm btn-ghost text-secondary"
-          onClick={() => setRenderModals(true)}
-        >
-          Requeue Selected
-        </a>
-        <a
-          href="#bulk-delete"
-          className="btn btn-sm btn-ghost text-warning"
-          onClick={() => setRenderModals(true)}
-        >
-          Delete Selected
-        </a>
+        {selectedJobsCount > 0 && (
+          <a
+            href="#bulk-requeue"
+            className="btn btn-sm btn-ghost text-secondary"
+            onClick={() => setRenderModals(true)}
+          >
+            Requeue Selected
+          </a>
+        )}
+        {selectedJobsCount > 0 && (
+          <a
+            href="#bulk-delete"
+            className="btn btn-sm btn-ghost text-warning"
+            onClick={() => setRenderModals(true)}
+          >
+            Delete Selected
+          </a>
+        )}
         {renderModals && (
           <>
             {/* Bulk requeue modal */}
