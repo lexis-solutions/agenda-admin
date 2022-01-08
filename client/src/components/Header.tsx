@@ -91,16 +91,18 @@ const Header: React.FC = () => {
   });
 
   return (
-    <div className="relative flex w-full">
+    <div className="relative flex flex-col w-full">
       <JobFilters />
-      <a
-        href="#create-job"
-        onClick={() => setRenderModal(true)}
-        className="absolute top-0 right-0 m-2 btn bg-primary text-primary-content"
-      >
-        <Plus />
-        New Job
-      </a>
+      <div className="flex justify-end w-full">
+        <a
+          href="#create-job"
+          onClick={() => setRenderModal(true)}
+          className="m-2 btn bg-primary text-primary-content"
+        >
+          <Plus />
+          New Job
+        </a>
+      </div>
       {renderModal && (
         <Modal id="create-job" onClose={() => setRenderModal(false)}>
           <div className="text-xl">Create Job</div>
@@ -127,15 +129,7 @@ const Header: React.FC = () => {
               onSelect={(value) => formik.setFieldValue('name', value)}
             />
             <label className="label" htmlFor="schedule">
-              <div className="flex flex-row items-center">
-                Schedule
-                <div
-                  className="tooltip tooltip-right"
-                  data-tip="Number or human-readable interval"
-                >
-                  <Info className="max-w-4 max-h-4" />
-                </div>
-              </div>
+              <div className="flex flex-row items-center">Schedule</div>
             </label>
             {formik.errors.schedule && formik.touched.schedule ? (
               <div className="text-error">{formik.errors.schedule}</div>
@@ -148,6 +142,17 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.schedule}
             />
+            <span className="m-2 text-xs">
+              Number or{' '}
+              <a
+                className="link text-primary"
+                href="https://www.npmjs.com/package/human-interval"
+                target="_blank"
+                rel="noreferrer"
+              >
+                human-readable interval
+              </a>
+            </span>
             <label className="label" htmlFor="repeatInterval">
               <div className="flex flex-row items-center">
                 Repeat Interval
@@ -170,6 +175,26 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.repeatInterval}
             />
+            <span className="m-2 text-xs">
+              Number,{' '}
+              <a
+                className="link text-primary"
+                href="https://www.npmjs.com/package/human-interval"
+                target="_blank"
+                rel="noreferrer"
+              >
+                human-readable interval,
+              </a>{' '}
+              or{' '}
+              <a
+                className="link text-primary"
+                href="https://crontab.guru/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                cron expression
+              </a>
+            </span>
             <label className="label" htmlFor="data">
               Data
             </label>
@@ -183,6 +208,11 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.data}
             />
+            {renderAlert && (
+              <div className="sticky left-0 right-0 m-2 alert alert-success">
+                <label>Job successfully created!</label>
+              </div>
+            )}
             <div className="modal-action">
               <button className="btn btn-primary" type="submit">
                 Submit
@@ -196,11 +226,6 @@ const Header: React.FC = () => {
               </a>
             </div>
           </form>
-          {renderAlert && (
-            <div className="sticky left-0 right-0 alert alert-success">
-              <label>Job successfully created!</label>
-            </div>
-          )}
         </Modal>
       )}
     </div>

@@ -130,7 +130,7 @@ const JobFilters: React.FC = () => {
                 placeholder: 'Property',
               }}
             />
-            <span className="px-4 mx-2 text-4xl text-center select-none bg-primary text-primary-content">
+            <span className="px-4 mx-2 text-4xl text-center select-none bg-base-300 text-primary-content">
               =
             </span>
             <InputField
@@ -176,7 +176,10 @@ const JobFilters: React.FC = () => {
         </div>
       }
       <div>
-        <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
+        <button
+          className="absolute top-0 right-0 m-2 btn btn-ghost btn-sm"
+          onClick={handleClearFilters}
+        >
           Clear Filters
         </button>
       </div>

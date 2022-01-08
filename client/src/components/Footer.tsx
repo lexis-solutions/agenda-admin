@@ -78,8 +78,7 @@ const Footer: React.FC = () => {
 
   return (
     <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
-      <PaginationButtons />
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center space-x-1">
         <div>{jobsMsg} selected</div>
         <button
           className={cx('btn btn-sm', {
@@ -155,6 +154,7 @@ const Footer: React.FC = () => {
           </>
         )}
       </div>
+      <PaginationButtons />
     </div>
   );
 };
