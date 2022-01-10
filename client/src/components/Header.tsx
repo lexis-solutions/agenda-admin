@@ -16,12 +16,16 @@ interface FormValuesType {
   data?: string;
 }
 
+const cronRegex = new RegExp(
+  /^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/
+);
+
 const createJobSchema = Yup.object().shape({
   name: Yup.string().required('Job name is required!'),
   schedule: Yup.string()
-    .test('valid-human-interval', 'Invalid time format!', (value) => {
+    .test('valid-human-interval', 'Invalid time format', (value) => {
       const time = humanInterval(value);
-      return isUndefined(time) || !isNaN(time);
+      return !isNaN(Number(value)) || isUndefined(time) || !isNaN(time);
     })
     .when('repeatInterval', {
       is: (repeatInterval: string | undefined) => !repeatInterval,
@@ -31,10 +35,19 @@ const createJobSchema = Yup.object().shape({
     }),
   repeatInterval: Yup.string().test(
     'valid-human-interval',
-    'Invalid time format!',
+    'Invalid time format',
     (value) => {
+      if (isUndefined(value)) {
+        return true;
+      }
+
       const time = humanInterval(value);
-      return isUndefined(time) || !isNaN(time);
+      return (
+        !isNaN(Number(value)) ||
+        cronRegex.test(value) ||
+        isUndefined(time) ||
+        !isNaN(time)
+      );
     }
   ),
   data: Yup.string().test(
@@ -55,6 +68,12 @@ const createJobSchema = Yup.object().shape({
 
 const Header: React.FC = () => {
   const [renderModal, setRenderModal] = useState(false);
+  const [renderAlert, setRenderAlert] = useState(false);
+
+  const showAlert = () => {
+    setRenderAlert(true);
+    setTimeout(() => setRenderAlert(false), 5000);
+  };
 
   const formik = useFormik<FormValuesType>({
     initialValues: {
@@ -63,27 +82,26 @@ const Header: React.FC = () => {
       repeatInterval: '',
       data: 'null',
     },
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       await createNewJob(values);
-      resetForm();
-      window.location.href = '#!';
-      setRenderModal(false);
-      alert('done');
+      showAlert();
     },
     validationSchema: createJobSchema,
   });
 
   return (
-    <div className="relative flex w-full">
+    <div className="relative flex flex-col w-full">
       <JobFilters />
-      <a
-        href="#create-job"
-        onClick={() => setRenderModal(true)}
-        className="absolute top-0 right-0 m-2 btn bg-primary text-primary-content"
-      >
-        <Plus />
-        New Job
-      </a>
+      <div className="flex justify-end w-full">
+        <a
+          href="#create-job"
+          onClick={() => setRenderModal(true)}
+          className="mt-4 btn bg-primary text-primary-content"
+        >
+          <Plus />
+          <span className="ml-2">New Job</span>
+        </a>
+      </div>
       {renderModal && (
         <Modal id="create-job" onClose={() => setRenderModal(false)}>
           <div className="text-xl">Create Job</div>
@@ -110,7 +128,7 @@ const Header: React.FC = () => {
               onSelect={(value) => formik.setFieldValue('name', value)}
             />
             <label className="label" htmlFor="schedule">
-              Schedule
+              <div className="flex flex-row items-center">Schedule</div>
             </label>
             {formik.errors.schedule && formik.touched.schedule ? (
               <div className="text-error">{formik.errors.schedule}</div>
@@ -123,8 +141,19 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.schedule}
             />
+            <span className="my-2 text-xs text-base-content">
+              Number or{' '}
+              <a
+                className="link"
+                href="https://www.npmjs.com/package/human-interval"
+                target="_blank"
+                rel="noreferrer"
+              >
+                human-readable interval
+              </a>
+            </span>
             <label className="label" htmlFor="repeatInterval">
-              Repeat Interval
+              <div className="flex flex-row items-center">Repeat Interval</div>
             </label>
             {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
               <div className="text-error">{formik.errors.repeatInterval}</div>
@@ -137,6 +166,26 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.repeatInterval}
             />
+            <span className="my-2 text-xs text-base-content">
+              Number,{' '}
+              <a
+                className="link"
+                href="https://www.npmjs.com/package/human-interval"
+                target="_blank"
+                rel="noreferrer"
+              >
+                human-readable interval,
+              </a>{' '}
+              or{' '}
+              <a
+                className="link"
+                href="https://crontab.guru/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                cron expression
+              </a>
+            </span>
             <label className="label" htmlFor="data">
               Data
             </label>
@@ -150,6 +199,11 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               value={formik.values.data}
             />
+            {renderAlert && (
+              <div className="sticky left-0 right-0 m-2 alert alert-success">
+                <label>Job successfully created!</label>
+              </div>
+            )}
             <div className="modal-action">
               <button className="btn btn-primary" type="submit">
                 Submit

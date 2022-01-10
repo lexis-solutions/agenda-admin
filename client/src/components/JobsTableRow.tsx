@@ -96,7 +96,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
           {/* Info button */}
           <a
             href="#job-data"
-            className="btn btn-ghost"
+            className="btn btn-ghost no-animation"
             onClick={() => setModalJob(job)}
           >
             <Info />
@@ -104,7 +104,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
           {/* Requeue button */}
           <a
             href="#requeue-job"
-            className="btn btn-ghost"
+            className="btn btn-ghost no-animation"
             onClick={() => setModalJob(job)}
           >
             <Refresh />
@@ -112,7 +112,7 @@ const JobsTableRow: React.FC<PropsType> = ({ job, setModalJob }) => {
           {/* Delete button */}
           <a
             href="#delete-job"
-            className="btn btn-ghost"
+            className="btn btn-ghost no-animation"
             onClick={() => setModalJob(job)}
           >
             <Trash />

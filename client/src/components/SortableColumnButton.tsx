@@ -20,7 +20,7 @@ const SortableColumnButton: React.FC<PropsType> = ({
   setSortDesc,
 }) => (
   <div
-    className="flex justify-between mr-3 -ml-3 btn btn-ghost btn-sm"
+    className="flex justify-between mr-3 -ml-3 no-animation btn btn-ghost btn-sm"
     onClick={() => {
       if (column === currentColumn) {
         setSortDesc(!sortDesc);
