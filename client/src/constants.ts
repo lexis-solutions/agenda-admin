@@ -4,6 +4,9 @@ export const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE || 20;
 export const REFRESH_INTERVAL = process.env.REACT_APP_REFRESH_INTERVAL
   ? parseInt(process.env.REACT_APP_REFRESH_INTERVAL)
   : 15000;
+export const LOGO_URL =
+  process.env.REACT_APP_LOGO_URL ||
+  'https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png';
 
 export const JOB_COLORS = {
   scheduled: 'bg-black',

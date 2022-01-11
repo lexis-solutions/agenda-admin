@@ -8,6 +8,7 @@ import { createNewJob } from 'src/api';
 import { isUndefined } from 'lodash';
 import Plus from 'src/svgs/Plus';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
+import { LOGO_URL } from 'src/constants';
 
 interface FormValuesType {
   name: string;
@@ -91,6 +92,10 @@ const Header: React.FC = () => {
 
   return (
     <div className="relative flex flex-col w-full">
+      <div className="flex items-center mb-2 space-x-2">
+        <img src={LOGO_URL} width={50} height={50} />
+        <span className="text-xl">Agenda Admin</span>
+      </div>
       <JobFilters />
       <div className="flex justify-end w-full">
         <a
