@@ -1,10 +1,10 @@
 import 'src/config';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 
 beforeAll(async () => {
-  await agenda.start();
+  await getAgendaInstance().start();
 });
 
 afterAll(async () => {
-  await agenda.close({ force: true });
+  await getAgendaInstance().close({ force: true });
 });

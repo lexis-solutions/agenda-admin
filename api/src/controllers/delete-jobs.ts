@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { ObjectId } from 'mongodb';
 import { buildGetJobsQuery } from 'src/utils/build-get-jobs-query';
 import { StatusType } from 'src/types';
@@ -25,8 +25,10 @@ export const deleteJobsByQuery = async (
   next: NextFunction
 ) => {
   const query = buildGetJobsQuery(req.query);
-  const jobs = await agenda._collection.aggregate([...query]).toArray();
-  const deletedJobs = await agenda.cancel({
+  const jobs = await getAgendaInstance()
+    ._collection.aggregate([...query])
+    .toArray();
+  const deletedJobs = await getAgendaInstance().cancel({
     _id: {
       $in: jobs.map((job) => new ObjectId(job._id)),
     },
@@ -42,7 +44,7 @@ export const deleteJobsById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const deletedJobs = await agenda.cancel({
+  const deletedJobs = await getAgendaInstance().cancel({
     _id: {
       $in: req.body.ids.map((id) => new ObjectId(id)),
     },

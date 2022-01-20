@@ -1,10 +1,20 @@
 {
+  "name": "agenda-admin",
+  "version": "1.0.0",
+  "main": "api/dist/main.js",
+  "types": "api/dist/index.d.ts",
   "private": true,
+  "files": [
+    "api/dist",
+    "client/build",
+    "api/package.json"
+  ],
   "workspaces": [
     "api",
     "client"
   ],
   "scripts": {
+    "build": "concurrently \"yarn --cwd ./client build\" \"yarn --cwd ./api build\"",
     "prepare": "husky install",
     "lint": "eslint \"**/src/**/*.{js,ts,jsx,tsx}\" --fix",
     "dev": "NODE_ENV=development concurrently \"yarn --cwd ./client start\" \"yarn --cwd ./api start\""
