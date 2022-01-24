@@ -21,8 +21,32 @@ Required version of MongoDB: >2.6.0
 ---
 
 ### Middleware usage
+Agenda Admin can be used as express middleware, using the `mountAgendaAdmin` function. As an argument, it takes an object with the following fields:
+- `publicUrl` - the URL at which the the middleware should be mounted
+- `expressApp` - the express app
+- `agenda` - an agenda instance
 
-Coming soon
+#### Example:
+
+```
+const express = require('express');
+const Agenda = require('agenda');
+const { mountAgendaAdmin } = require('agenda-admin');
+
+const app = express();
+
+// Other express middleware
+
+const agenda = new Agenda({ db: { address: 'mongodb://127.0.0.1/agendaDb' } });
+
+mountAgendaAdmin({ 
+  publicUrl: 'http://localhost:4000/agenda-admin',
+  expressApp: app, 
+  agenda
+});
+
+app.listen(4000);
+```
 
 ---
 

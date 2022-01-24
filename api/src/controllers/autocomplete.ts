@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { AUTOCOMPLETE_ITEMS } from 'src/constants';
 
 interface ReqQuery {
@@ -13,8 +13,8 @@ export const autocomplete = async (
 ) => {
   const autocomplete = new RegExp(`.*${req.query.autocomplete}.*`, 'i');
 
-  const data = await agenda._collection
-    .aggregate([
+  const data = await getAgendaInstance()
+    ._collection.aggregate([
       {
         $match: { name: { $regex: autocomplete } },
       },

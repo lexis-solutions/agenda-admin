@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { StatusType } from 'src/types';
 import { buildGetJobsQuery } from 'src/utils/build-get-jobs-query';
 
@@ -23,8 +23,8 @@ export const getJobs = async (
   const itemsPerPage = +req.query.itemsPerPage || 20;
   const query = buildGetJobsQuery(req.query);
 
-  const data = await agenda._collection
-    .aggregate([
+  const data = await getAgendaInstance()
+    ._collection.aggregate([
       ...query,
       {
         $facet: {

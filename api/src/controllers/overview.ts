@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { buildJobQuery } from 'src/utils/build-job-query';
 
 interface ReqQuery {
@@ -20,8 +20,8 @@ export const overview = async (
     sortType: 'desc',
   });
 
-  const data = await agenda._collection
-    .aggregate([
+  const data = await getAgendaInstance()
+    ._collection.aggregate([
       { $match: query },
       {
         $project: {

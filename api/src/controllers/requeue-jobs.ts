@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { ObjectId } from 'mongodb';
 import { StatusType } from 'src/types';
 import { buildGetJobsQuery } from 'src/utils/build-get-jobs-query';
@@ -25,9 +25,11 @@ export const requeueJobsByQuery = async (
   next: NextFunction
 ) => {
   const query = buildGetJobsQuery(req.query);
-  const jobs = await agenda._collection.aggregate([...query]).toArray();
+  const jobs = await getAgendaInstance()
+    ._collection.aggregate([...query])
+    .toArray();
   const requeuedJobs = await Promise.all(
-    jobs.map(({ job }) => agenda.now(job.name, job.data))
+    jobs.map(({ job }) => getAgendaInstance().now(job.name, job.data))
   );
 
   res.locals.requeued = requeuedJobs;
@@ -40,8 +42,8 @@ export const requeueJobsById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const jobs = await agenda._collection
-    .find({
+  const jobs = await getAgendaInstance()
+    ._collection.find({
       _id: {
         $in: req.body.ids.map((id) => new ObjectId(id)),
       },
@@ -49,7 +51,7 @@ export const requeueJobsById = async (
     .toArray();
 
   const requeuedJobs = await Promise.all(
-    jobs.map((job) => agenda.now(job.name, job.data))
+    jobs.map((job) => getAgendaInstance().now(job.name, job.data))
   );
 
   res.locals.requeued = requeuedJobs;
