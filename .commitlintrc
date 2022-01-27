@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "@commitlint/config-conventional"
+  ],
+  "plugins": [
+    "selective-scope"
+  ],
+  "rules": {
+    "selective-scope": [
+      2,
+      "always",
+      {
+        "feat": [null, "api", "client"],
+        "fix": [null, "api", "client"]
+      }
+    ]
+  }
+}
