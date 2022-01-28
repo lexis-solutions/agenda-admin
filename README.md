@@ -102,3 +102,7 @@ You can also run `yarn start` in the `api` and `client` directories.
 #### Running tests
 
 Inside the `api` directory create an `.env.testing` file with `CONNECTION_STRING` and `COLLECTION` variables, then run `yarn test`.
+
+#### Commit messages
+
+Agenda Admin uses [conventional commits format](https://www.conventionalcommits.org/en/v1.0.0/).
