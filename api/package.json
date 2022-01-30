@@ -1,6 +1,6 @@
 {
   "name": "agenda-admin",
-  "version": "0.0.0-semantic-release",
+  "version": "0.0.0",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "files": [
