@@ -1,5 +1,6 @@
 require('tsconfig-paths/register');
-import 'src/config';
+import dotenv from 'dotenv-flow';
+dotenv.config();
 
 import { getAgendaInstance } from 'src/agenda-instance';
 import app from 'src/app';
