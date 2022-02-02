@@ -8,7 +8,6 @@ interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
   sortType: 'desc' | 'asc';
   page: number;
-  itemsPerPage: number;
   status: StatusType | null;
   name: string | null;
   property: string | null;

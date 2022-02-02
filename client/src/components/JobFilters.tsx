@@ -30,11 +30,14 @@ const JobFilters: React.FC = () => {
     status: jobStatus,
     setStatus: setJobStatus,
     jobListUpdatedAt,
+    refreshRate,
+    setRefreshInterval,
   } = useJobsListContext();
 
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
+  const [interval, setInterval] = useState(15);
 
   const { data, mutate: refreshOverview } = useJobsOverview({
     name: jobName,
@@ -45,6 +48,7 @@ const JobFilters: React.FC = () => {
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
+  useEffect(() => setInterval(refreshRate), [refreshRate]);
   useEffect(() => {
     refreshOverview();
   }, [refreshOverview, jobListUpdatedAt]);
@@ -84,6 +88,22 @@ const JobFilters: React.FC = () => {
     [jobStatus, setJobStatus]
   );
 
+  const debouncedSetRefreshInterval = useMemo(
+    () =>
+      debounce((i: number) => {
+        setRefreshInterval(i);
+      }, DEBOUNCE_DELAY),
+    [setRefreshInterval]
+  );
+
+  const handleRefreshIntervalChange = useCallback(
+    (i: number) => {
+      setInterval(i);
+      debouncedSetRefreshInterval(i);
+    },
+    [debouncedSetRefreshInterval, setInterval]
+  );
+
   const handleClearFilters = () => {
     setJobName('');
     setJobProperty('');
@@ -101,7 +121,7 @@ const JobFilters: React.FC = () => {
           <JobNamesAutocomplete
             renderInput={(props) => (
               <InputField
-                showButton={!jobName}
+                showButton={!!jobName}
                 onClear={() => setJobName('')}
                 inputProps={{
                   title: jobName,
@@ -120,7 +140,7 @@ const JobFilters: React.FC = () => {
           <div className="flex flex-row">
             <InputField
               className="rounded-r-none input input-bordered"
-              showButton={!property}
+              showButton={!!property}
               onClear={() => setJobProperty('')}
               inputProps={{
                 type: 'text',
@@ -135,7 +155,7 @@ const JobFilters: React.FC = () => {
             </span>
             <InputField
               className="rounded-l-none input input-bordered"
-              showButton={!value}
+              showButton={!!value}
               onClear={() => setJobValue('')}
               inputProps={{
                 type: 'text',
@@ -146,6 +166,22 @@ const JobFilters: React.FC = () => {
               }}
             />
           </div>
+        </div>
+        <div className="form-control">
+          <label className="label">Refresh Interval (seconds)</label>
+          <InputField
+            className="input input-bordered"
+            showButton={false}
+            onClear={() => null}
+            inputProps={{
+              type: 'number',
+              min: 0,
+              value: interval / 1000,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                handleRefreshIntervalChange(+e.target.value * 1000),
+              placeholder: 'Refresh interval in seconds',
+            }}
+          />
         </div>
         <div className="flex-1" />
         <button className="btn btn-ghost" onClick={handleClearFilters}>

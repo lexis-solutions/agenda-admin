@@ -4,7 +4,6 @@ import { SWRConfig } from 'swr';
 
 import 'src/index.css';
 import App from 'src/App';
-import { REFRESH_INTERVAL } from 'src/constants';
 import { fetcher } from 'src/api';
 import { JobsListContextProvider } from './context/JobsListContext';
 
@@ -12,7 +11,7 @@ ReactDOM.render(
   <React.StrictMode>
     <SWRConfig
       value={{
-        refreshInterval: REFRESH_INTERVAL,
+        refreshInterval: 15000,
         fetcher,
       }}
     >
