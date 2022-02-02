@@ -1,4 +1,3 @@
-import 'src/config';
 import app from 'src/app';
 import supertest from 'supertest';
 import { setup, teardown } from './common';

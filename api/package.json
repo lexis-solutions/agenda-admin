@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "start": "NODE_ENV=development nodemon src/index.ts",
-    "test": "NODE_ENV=testing ./node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit"
+    "test": "NODE_ENV=test ./node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "agenda": "^4.2.1",
