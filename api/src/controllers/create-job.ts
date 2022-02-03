@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 
 interface RequestBodyType {
   name: string;
@@ -14,7 +14,7 @@ export const createNewJob = async (
   next: NextFunction
 ) => {
   const { name, repeatInterval, schedule, data } = req.body;
-  const job = agenda.create(name, JSON.parse(data));
+  const job = getAgendaInstance().create(name, JSON.parse(data));
 
   if (schedule) {
     job.schedule(schedule);

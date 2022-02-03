@@ -1,9 +1,12 @@
 require('tsconfig-paths/register');
-import 'src/config';
+import dotenv from 'dotenv-flow';
+dotenv.config();
 
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import app from 'src/app';
 
-agenda.start().then(() => {
-  app.listen(4000, () => console.info('App running on port 4000'));
-});
+getAgendaInstance()
+  .start()
+  .then(() => {
+    app.listen(4000, () => console.info('App running on port 4000'));
+  });

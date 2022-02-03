@@ -1,17 +1,24 @@
 {
+  "name": "agenda-admin-workspace",
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "api",
     "client"
   ],
   "scripts": {
+    "build": "./build.sh",
+    "publish": "yarn --cwd api publish",
     "prepare": "husky install",
     "lint": "eslint \"**/src/**/*.{js,ts,jsx,tsx}\" --fix",
     "dev": "NODE_ENV=development concurrently \"yarn --cwd ./client start\" \"yarn --cwd ./api start\""
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
+    "commitlint-plugin-selective-scope": "^1.0.0",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "require": [ "tsconfig-paths/register", "typescript-transform-paths" ]
+  },
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
@@ -22,7 +25,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "declaration": true,
+    "outDir": "dist/",
     "jsx": "react-jsx",
     "plugins": [
       {
@@ -30,5 +34,5 @@
       }
     ]
   },
-  "include": [ "src", "test" ]
+  "include": [ "src/**/*" ]
 }

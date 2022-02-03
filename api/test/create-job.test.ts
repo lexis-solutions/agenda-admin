@@ -1,8 +1,7 @@
-import 'src/config';
 import app from 'src/app';
 import supertest from 'supertest';
 import { setup, teardown } from './common';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 
 describe('create job controller tests', () => {
   beforeEach(setup);
@@ -18,7 +17,7 @@ describe('create job controller tests', () => {
       })
       .expect(200);
 
-    const created = await agenda.jobs({ name: 'New job' });
+    const created = await getAgendaInstance().jobs({ name: 'New job' });
     expect(created.length).toBe(1);
   });
 
@@ -32,7 +31,7 @@ describe('create job controller tests', () => {
       })
       .expect(200);
 
-    const created = await agenda.jobs({ name: 'New job' });
+    const created = await getAgendaInstance().jobs({ name: 'New job' });
     expect(created.length).toBe(1);
   });
 });

@@ -1,11 +1,10 @@
-import 'src/config';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 import { ObjectId } from 'mongodb';
 
 export const setup = async () => {
   const time = new Date();
 
-  await agenda._collection.insertMany([
+  await getAgendaInstance()._collection.insertMany([
     {
       _id: new ObjectId('61bb7cd3a056e9d1c01faf5a'),
       name: 'completed job',
@@ -67,5 +66,5 @@ export const setup = async () => {
 };
 
 export const teardown = async () => {
-  await agenda._collection.deleteMany({});
+  await getAgendaInstance()._collection.deleteMany({});
 };

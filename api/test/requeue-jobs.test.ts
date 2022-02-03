@@ -1,15 +1,16 @@
-import 'src/config';
 import app from 'src/app';
 import supertest from 'supertest';
 import { setup, teardown } from './common';
-import agenda from 'src/agenda';
+import { getAgendaInstance } from 'src/agenda-instance';
 
 describe('requeue jobs controller tests', () => {
   beforeEach(setup);
   afterEach(teardown);
 
   test('should requeue a job by id', async () => {
-    const beforeRequeue = await agenda.jobs({ name: 'completed job' });
+    const beforeRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(beforeRequeue.length).toBe(1);
 
     await supertest(app)
@@ -20,12 +21,16 @@ describe('requeue jobs controller tests', () => {
         expect(body.requeued.length).toBe(1);
       });
 
-    const afterRequeue = await agenda.jobs({ name: 'completed job' });
+    const afterRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(afterRequeue.length).toBe(2);
   });
 
   test('should requeue a job by name', async () => {
-    const beforeRequeue = await agenda.jobs({ name: 'completed job' });
+    const beforeRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(beforeRequeue.length).toBe(1);
 
     await supertest(app)
@@ -36,12 +41,16 @@ describe('requeue jobs controller tests', () => {
         expect(body.requeued.length).toBe(1);
       });
 
-    const afterRequeue = await agenda.jobs({ name: 'completed job' });
+    const afterRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(afterRequeue.length).toBe(2);
   });
 
   test('should requeue a job by property value', async () => {
-    const beforeRequeue = await agenda.jobs({ name: 'completed job' });
+    const beforeRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(beforeRequeue.length).toBe(1);
 
     await supertest(app)
@@ -52,12 +61,16 @@ describe('requeue jobs controller tests', () => {
         expect(body.requeued.length).toBe(1);
       });
 
-    const afterRequeue = await agenda.jobs({ name: 'completed job' });
+    const afterRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(afterRequeue.length).toBe(2);
   });
 
   test('should requeue a job by status', async () => {
-    const beforeRequeue = await agenda.jobs({ name: 'completed job' });
+    const beforeRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(beforeRequeue.length).toBe(1);
 
     await supertest(app)
@@ -68,7 +81,9 @@ describe('requeue jobs controller tests', () => {
         expect(body.requeued.length).toBe(1);
       });
 
-    const afterRequeue = await agenda.jobs({ name: 'completed job' });
+    const afterRequeue = await getAgendaInstance().jobs({
+      name: 'completed job',
+    });
     expect(afterRequeue.length).toBe(2);
   });
 });
