@@ -1,4 +1,5 @@
 export const API_URL = 'http://localhost:4000/api';
+export const DEFAULT_REFRESH_INTERVAL = 15000;
 
 export const JOB_COLORS = {
   scheduled: 'bg-black',

@@ -30,14 +30,14 @@ const JobFilters: React.FC = () => {
     status: jobStatus,
     setStatus: setJobStatus,
     jobListUpdatedAt,
-    refreshRate,
+    refreshInterval,
     setRefreshInterval,
   } = useJobsListContext();
 
   const [term, setTerm] = useState('');
   const [property, setProperty] = useState('');
   const [value, setValue] = useState('');
-  const [interval, setInterval] = useState(15);
+  const [refreshRate, setRefreshRate] = useState(refreshInterval);
 
   const { data, mutate: refreshOverview } = useJobsOverview({
     name: jobName,
@@ -48,7 +48,7 @@ const JobFilters: React.FC = () => {
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
-  useEffect(() => setInterval(refreshRate), [refreshRate]);
+  useEffect(() => setRefreshRate(refreshInterval), [refreshInterval]);
   useEffect(() => {
     refreshOverview();
   }, [refreshOverview, jobListUpdatedAt]);
@@ -98,10 +98,10 @@ const JobFilters: React.FC = () => {
 
   const handleRefreshIntervalChange = useCallback(
     (i: number) => {
-      setInterval(i);
+      setRefreshRate(i);
       debouncedSetRefreshInterval(i);
     },
-    [debouncedSetRefreshInterval, setInterval]
+    [debouncedSetRefreshInterval, setRefreshRate]
   );
 
   const handleClearFilters = () => {
@@ -176,7 +176,7 @@ const JobFilters: React.FC = () => {
             inputProps={{
               type: 'number',
               min: 0,
-              value: interval / 1000,
+              value: +refreshRate / 1000,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 handleRefreshIntervalChange(+e.target.value * 1000),
               placeholder: 'Refresh interval in seconds',

@@ -61,13 +61,14 @@ docker run -p 4000:4000 \
 
 ### Environment configuration
 
-| name                       | description                                                     | required | default value |
-|----------------------------|-----------------------------------------------------------------|----------|---------------|
-| CONNECTION_STRING          | MongoDB connection string                                       | yes      |               |
-| COLLECTION                 | MongoDB collection of jobs                                      | no       | agendaJobs    |
-| AGENDA_USERNAME            | username                                                        | no       | admin         |
-| AGENDA_PASSWORD            | If no password is provided, no  authentication will be required | no       |               |
-| ITEMS_PER_PAGE             | Number of jobs per page                                         | no       | 20            |
+| name              | description                                                         | required | default value |
+|-------------------|---------------------------------------------------------------------|----------|---------------|
+| CONNECTION_STRING | MongoDB connection string                                           | yes      |               |
+| COLLECTION        | MongoDB collection of jobs                                          | no       | agendaJobs    |
+| ITEMS_PER_PAGE    | Number of jobs per page                                             | no       | 20            |
+| AGENDA_USERNAME   | Username used for authentication (only when a password is provided) | no       | admin         |
+| AGENDA_PASSWORD   | If no password is provided, no authentication will be required      | no       |               |
+
 ---
 
 ### Contributing

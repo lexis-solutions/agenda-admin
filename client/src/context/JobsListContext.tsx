@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { deleteJobsById, requeueJobsById } from 'src/api';
+import { DEFAULT_REFRESH_INTERVAL } from 'src/constants';
 import { useJobsList } from 'src/hooks/useJobsList';
 import { SortType, StatusType, GetJobsResponseType } from 'src/types';
 import { KeyedMutator } from 'swr';
@@ -36,7 +37,7 @@ interface JobsListContextType {
   setSelected: Dispatch<SetStateAction<Set<string>>>;
   handleDeleteJobs: (ids: string[]) => void;
   handleRequeueJobs: (ids: string[]) => void;
-  refreshRate: number;
+  refreshInterval: number;
   setRefreshInterval: (i: number) => void;
 }
 
@@ -52,7 +53,7 @@ const defaultValue: JobsListContextType = {
   jobListUpdatedAt: 0,
   selectFiltered: false,
   selected: new Set<string>(),
-  refreshRate: 15000,
+  refreshInterval: DEFAULT_REFRESH_INTERVAL,
   refreshJobsList: async () => undefined,
   setName: () => null,
   setProperty: () => null,
@@ -82,7 +83,9 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
   const [jobListUpdatedAt, setJobListUpdatedAt] = useState(Date.now());
   const [selectFiltered, setSelectFiltered] = useState(false);
   const [selected, setSelected] = useState(new Set<string>());
-  const [refreshRate, setRefreshRate] = useState(15);
+  const [refreshRate, setRefreshRate] = useState(
+    localStorage.getItem('refreshInterval') || DEFAULT_REFRESH_INTERVAL
+  );
 
   const { data, mutate } = useJobsList(
     {
@@ -95,7 +98,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
       sortDesc,
     },
     {
-      refreshInterval: selected.size !== 0 ? undefined : refreshRate,
+      refreshInterval: selected.size !== 0 ? undefined : +refreshRate,
       onSuccess: () => setJobListUpdatedAt(Date.now()),
     }
   );
@@ -123,13 +126,6 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
     },
     [mutate]
   );
-
-  useEffect(() => {
-    const i = localStorage.getItem('refreshInterval')
-      ? +localStorage.getItem('refreshInterval')!
-      : 15000;
-    setRefreshInterval(i);
-  }, [setRefreshInterval]);
 
   useEffect(() => setPage(1), [name, property, value, status, setPage]);
 
@@ -160,7 +156,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
         setSelected,
         handleDeleteJobs,
         handleRequeueJobs,
-        refreshRate,
+        refreshInterval: +refreshRate,
         setRefreshInterval,
       }}
     >
