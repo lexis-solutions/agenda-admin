@@ -61,29 +61,13 @@ docker run -p 4000:4000 \
 
 ### Environment configuration
 
-#### CONNECTION_STRING
-
-MongoDB connection string.
-
-#### COLLECTION
-
-MongoDB collection of jobs, default collection name is agendaJobs
-
-#### AGENDA_USERNAME
-
-Default username is admin
-
-#### AGENDA_PASSWORD
-
-If no password is provided, no authentication will be required
-
-#### REACT_APP_ITEMS_PER_PAGE
-
-Items per page(optional, default value is 20)
-
-#### REACT_APP_REFRESH_INTERVAL
-
-Jobs list refresh interval(optional, default value is 15000 milliseconds)
+| name              | description                                                         | required | default value |
+|-------------------|---------------------------------------------------------------------|----------|---------------|
+| CONNECTION_STRING | MongoDB connection string                                           | yes      |               |
+| COLLECTION        | MongoDB collection of jobs                                          | no       | agendaJobs    |
+| ITEMS_PER_PAGE    | Number of jobs per page                                             | no       | 20            |
+| AGENDA_USERNAME   | Username used for authentication (only when a password is provided) | no       | admin         |
+| AGENDA_PASSWORD   | If no password is provided, no authentication will be required      | no       |               |
 
 ---
 
@@ -102,3 +86,7 @@ You can also run `yarn start` in the `api` and `client` directories.
 #### Running tests
 
 Inside the `api` directory create an `.env.testing` file with `CONNECTION_STRING` and `COLLECTION` variables, then run `yarn test`.
+
+#### Commit messages
+
+Agenda Admin uses [conventional commits format](https://www.conventionalcommits.org/en/v1.0.0/).

@@ -19,7 +19,7 @@ const InputField: React.FC<PropsType> = ({
     <button
       onClick={onClear}
       className={cx('absolute right-0 m-2 btn-sm btn', {
-        hidden: showButton,
+        hidden: !showButton,
       })}
     >
       <XCircle />

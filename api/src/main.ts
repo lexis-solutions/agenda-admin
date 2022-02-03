@@ -20,13 +20,13 @@ export const mountAgendaAdmin = async ({
 }: ParamsType) => {
   const parsedUrl = new URL(publicUrl);
 
-  const indexHtml = path.join(__dirname, '../../client/build/index.html');
+  const indexHtml = path.join(__dirname, '../public/index.html');
   const updatedIndexHtml = fs
     .readFileSync(indexHtml, 'utf-8')
     .replace(/__PUBLIC_URL_PLACEHOLDER__/g, publicUrl);
   fs.writeFileSync(indexHtml, updatedIndexHtml);
 
-  const directory = path.join(__dirname, '../../client/build/static/js');
+  const directory = path.join(__dirname, '../public/static/js');
   const files = fs
     .readdirSync(directory)
     .filter((file) => file.endsWith('.js'))
