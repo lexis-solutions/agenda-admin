@@ -7,10 +7,10 @@ import {
   useState,
 } from 'react';
 import { deleteJobsById, requeueJobsById } from 'src/api';
+import { DEFAULT_REFRESH_INTERVAL } from 'src/constants';
 import { useJobsList } from 'src/hooks/useJobsList';
 import { SortType, StatusType, GetJobsResponseType } from 'src/types';
 import { KeyedMutator } from 'swr';
-import { REFRESH_INTERVAL } from 'src/constants';
 
 interface JobsListContextType {
   data: GetJobsResponseType | null;
@@ -37,6 +37,8 @@ interface JobsListContextType {
   setSelected: Dispatch<SetStateAction<Set<string>>>;
   handleDeleteJobs: (ids: string[]) => void;
   handleRequeueJobs: (ids: string[]) => void;
+  refreshInterval: number;
+  setRefreshInterval: (i: number) => void;
 }
 
 const defaultValue: JobsListContextType = {
@@ -51,6 +53,7 @@ const defaultValue: JobsListContextType = {
   jobListUpdatedAt: 0,
   selectFiltered: false,
   selected: new Set<string>(),
+  refreshInterval: DEFAULT_REFRESH_INTERVAL,
   refreshJobsList: async () => undefined,
   setName: () => null,
   setProperty: () => null,
@@ -64,6 +67,7 @@ const defaultValue: JobsListContextType = {
   setSelected: () => null,
   handleDeleteJobs: () => null,
   handleRequeueJobs: () => null,
+  setRefreshInterval: () => null,
 };
 
 export const JobsListContext = createContext<JobsListContextType>(defaultValue);
@@ -79,6 +83,9 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
   const [jobListUpdatedAt, setJobListUpdatedAt] = useState(Date.now());
   const [selectFiltered, setSelectFiltered] = useState(false);
   const [selected, setSelected] = useState(new Set<string>());
+  const [refreshRate, setRefreshRate] = useState(
+    localStorage.getItem('refreshInterval') || DEFAULT_REFRESH_INTERVAL
+  );
 
   const { data, mutate } = useJobsList(
     {
@@ -91,9 +98,17 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
       sortDesc,
     },
     {
-      refreshInterval: selected.size !== 0 ? undefined : REFRESH_INTERVAL,
+      refreshInterval: selected.size !== 0 ? undefined : +refreshRate,
       onSuccess: () => setJobListUpdatedAt(Date.now()),
     }
+  );
+
+  const setRefreshInterval = useCallback(
+    (i: number) => {
+      setRefreshRate(i);
+      localStorage.setItem('refreshInterval', i.toString());
+    },
+    [setRefreshRate]
   );
 
   const handleDeleteJobs = useCallback(
@@ -141,6 +156,8 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
         setSelected,
         handleDeleteJobs,
         handleRequeueJobs,
+        refreshInterval: +refreshRate,
+        setRefreshInterval,
       }}
     >
       {children}

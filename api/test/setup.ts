@@ -1,4 +1,3 @@
-import 'src/config';
 import { getAgendaInstance } from 'src/agenda-instance';
 
 beforeAll(async () => {
