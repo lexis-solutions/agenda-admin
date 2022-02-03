@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import humanInterval from 'human-interval';
+
 import JobFilters from 'src/components/JobFilters';
-import Modal from 'src/components/Modal';
-import { createNewJob } from 'src/api';
-import { isUndefined } from 'lodash';
-import Plus from 'src/svgs/Plus';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
+import Modal from 'src/components/Modal';
+import Plus from 'src/svgs/Plus';
+import { createNewJob } from 'src/api';
+import humanInterval from 'human-interval';
+import { isUndefined } from 'lodash';
+import { useFormik } from 'formik';
+import { useState } from 'react';
 
 interface FormValuesType {
   name: string;

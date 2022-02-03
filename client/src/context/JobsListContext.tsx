@@ -1,16 +1,17 @@
 import {
-  createContext,
   Dispatch,
   SetStateAction,
+  createContext,
   useCallback,
   useEffect,
   useState,
 } from 'react';
+import { GetJobsResponseType, SortType, StatusType } from 'src/types';
 import { deleteJobsById, requeueJobsById } from 'src/api';
+
 import { DEFAULT_REFRESH_INTERVAL } from 'src/constants';
-import { useJobsList } from 'src/hooks/useJobsList';
-import { SortType, StatusType, GetJobsResponseType } from 'src/types';
 import { KeyedMutator } from 'swr';
+import { useJobsList } from 'src/hooks/useJobsList';
 
 interface JobsListContextType {
   data: GetJobsResponseType | null;
