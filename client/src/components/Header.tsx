@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import humanInterval from 'human-interval';
+
 import JobFilters from 'src/components/JobFilters';
-import Modal from 'src/components/Modal';
-import { createNewJob } from 'src/api';
-import { isUndefined } from 'lodash';
-import Plus from 'src/svgs/Plus';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
-import { LOGO_URL } from 'src/constants';
+import Modal from 'src/components/Modal';
+import Plus from 'src/svgs/Plus';
+import { createNewJob } from 'src/api';
+import humanInterval from 'human-interval';
+import { isUndefined } from 'lodash';
+import { useFormik } from 'formik';
+import { useState } from 'react';
 
 interface FormValuesType {
   name: string;
@@ -92,10 +92,6 @@ const Header: React.FC = () => {
 
   return (
     <div className="relative flex flex-col w-full">
-      <div className="flex items-center mb-2 space-x-2">
-        <img src={LOGO_URL} width={50} height={50} />
-        <span className="text-xl">Agenda Admin</span>
-      </div>
       <JobFilters />
       <div className="flex justify-end w-full">
         <a

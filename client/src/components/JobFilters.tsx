@@ -1,13 +1,14 @@
-import cx from 'classnames';
-import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import InputField from './InputField';
 import { JOB_COLORS } from 'src/constants';
-import { useJobsListContext } from 'src/hooks/useJobsListContext';
-import { useJobsOverview } from 'src/hooks/useJobsOverview';
+import JobNamesAutocomplete from './JobNamesAutocomplete';
 import { StatusType } from 'src/types';
 import { abbreviateNumber } from 'src/utils/formatter';
-import InputField from './InputField';
-import JobNamesAutocomplete from './JobNamesAutocomplete';
+import cx from 'classnames';
+import { debounce } from 'lodash';
+import { useJobsListContext } from 'src/hooks/useJobsListContext';
+import { useJobsOverview } from 'src/hooks/useJobsOverview';
 
 const DEBOUNCE_DELAY = 500;
 
@@ -175,7 +176,7 @@ const JobFilters: React.FC = () => {
             onClear={() => null}
             inputProps={{
               type: 'number',
-              min: 0,
+              min: 1,
               value: +refreshRate / 1000,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
                 handleRefreshIntervalChange(+e.target.value * 1000),
