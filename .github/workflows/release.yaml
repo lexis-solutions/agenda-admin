@@ -4,6 +4,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: __PUBLIC_URL_PLACEHOLDER__
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,6 +27,8 @@ jobs:
         run: npx semantic-release
   docker:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: http://localhost:4000
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
