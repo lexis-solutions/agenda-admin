@@ -2,18 +2,16 @@ FROM node:12
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY package.json yarn.lock ./
+COPY api/package.json api/tsconfig.json ./api/
+COPY client/package.json client/tsconfig.json ./client/
 
-COPY yarn.lock ./
-
-RUN yarn install
+RUN yarn
 
 COPY . .
 
 EXPOSE 4000
 
-RUN yarn --cwd ./client/ build
+RUN yarn build
 
-WORKDIR /usr/src/app/api
-
-CMD [ "./node_modules/.bin/ts-node-transpile-only", "./src/index.ts" ]
+CMD [ "node", "./api/dist/index.js" ]

@@ -1,4 +1,3 @@
-require('tsconfig-paths/register');
 import dotenv from 'dotenv-flow';
 dotenv.config();
 
