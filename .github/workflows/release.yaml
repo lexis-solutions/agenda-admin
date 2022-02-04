@@ -12,11 +12,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - name: Install dependencies
         run: yarn
       - name: Install semantic-release plugins
-        run: yarn add -D @semantic-release/changelog @semantic-release/git
+        run: yarn add -WD @semantic-release/changelog @semantic-release/git
       - name: Build
         run: yarn build
       - name: Release
