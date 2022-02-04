@@ -2,8 +2,17 @@ import { API_URL } from 'src/constants';
 import { StatusType } from 'src/types';
 import { Fetcher } from 'swr';
 
-export const fetcher: Fetcher<any> = (url) =>
-  fetch(url).then((res) => res.json());
+export const fetcher: Fetcher<any> = async (url) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error();
+    error.message = await res.json();
+    throw error;
+  }
+
+  return res.json();
+};
 
 export const fetchNames = (term: string) =>
   fetch(`${API_URL}/autocomplete?autocomplete=${term}`).then((res) =>

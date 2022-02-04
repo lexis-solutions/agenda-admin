@@ -40,6 +40,7 @@ interface JobsListContextType {
   handleRequeueJobs: (ids: string[]) => void;
   refreshInterval: number;
   setRefreshInterval: (i: number) => void;
+  error: any;
 }
 
 const defaultValue: JobsListContextType = {
@@ -69,6 +70,7 @@ const defaultValue: JobsListContextType = {
   handleDeleteJobs: () => null,
   handleRequeueJobs: () => null,
   setRefreshInterval: () => null,
+  error: null,
 };
 
 export const JobsListContext = createContext<JobsListContextType>(defaultValue);
@@ -88,7 +90,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
     localStorage.getItem('refreshInterval') || DEFAULT_REFRESH_INTERVAL
   );
 
-  const { data, mutate } = useJobsList(
+  const { data, mutate, error } = useJobsList(
     {
       name,
       property,
@@ -159,6 +161,7 @@ export const JobsListContextProvider: React.FC = ({ children }) => {
         handleRequeueJobs,
         refreshInterval: +refreshRate,
         setRefreshInterval,
+        error,
       }}
     >
       {children}

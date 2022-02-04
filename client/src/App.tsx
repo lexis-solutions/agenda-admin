@@ -5,14 +5,25 @@ import Logo from './svgs/Logo';
 import { useJobsListContext } from 'src/hooks/useJobsListContext';
 
 const App = () => {
-  const { data } = useJobsListContext();
+  const { data, error } = useJobsListContext();
+
+  if (!data && !error) return null;
+
+  if (error) {
+    return (
+      <div className="m-4 text-xl text-error">
+        <p>An error has occurred!</p>
+        <p>Error message: {error.message}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="flex flex-col items-center justify-between py-8 mb-16 space-y-4">
         <a href="/" className="flex items-center self-start space-x-2 ">
-          <Logo className="h-16 w-16" />
-          <h1 className="text-3xl select-none font-bold">Agenda Admin</h1>
+          <Logo className="w-16 h-16" />
+          <h1 className="text-3xl font-bold select-none">Agenda Admin</h1>
         </a>
         <Header />
         <JobsTable />
