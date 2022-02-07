@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import replaceStream from 'replacestream';
 import Agenda from 'agenda';
@@ -7,18 +7,21 @@ import { Express } from 'express';
 import { setAgendaInstance } from 'src/agenda-instance';
 import app from 'src/app';
 
-interface ParamsType {
-  publicUrl: string;
-  expressApp: Express;
-  agenda: Agenda;
-}
-
 export const mountAgendaAdmin = async ({
   publicUrl,
   expressApp,
   agenda,
-}: ParamsType) => {
+}: {
+  publicUrl: string;
+  expressApp: Express;
+  agenda: Agenda;
+}) => {
   const parsedUrl = new URL(publicUrl);
+
+  await fs.copy(
+    path.join(__dirname, '../client'),
+    path.join(__dirname, '../public')
+  );
 
   const indexHtml = path.join(__dirname, '../public/index.html');
   const updatedIndexHtml = fs
