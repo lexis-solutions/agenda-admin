@@ -6,15 +6,18 @@ import { URL } from 'url';
 import { Express } from 'express';
 import { setAgendaInstance } from 'src/agenda-instance';
 import app from 'src/app';
+import { OptionsType, setOptions } from 'src/options';
 
 export const mountAgendaAdmin = async ({
   publicUrl,
   expressApp,
   agenda,
+  options,
 }: {
   publicUrl: string;
   expressApp: Express;
   agenda: Agenda;
+  options?: OptionsType;
 }) => {
   const parsedUrl = new URL(publicUrl);
 
@@ -55,5 +58,6 @@ export const mountAgendaAdmin = async ({
   );
 
   setAgendaInstance(agenda);
+  setOptions(options);
   expressApp.use(parsedUrl.pathname, app);
 };
