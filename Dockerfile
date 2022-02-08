@@ -12,6 +12,6 @@ COPY . .
 
 EXPOSE 4000
 
-RUN yarn build
+RUN GENERATE_SOURCEMAP=false yarn build
 
 CMD [ "node", "./api/dist/index.js" ]

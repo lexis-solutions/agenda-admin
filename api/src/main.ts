@@ -8,17 +8,19 @@ import { setAgendaInstance } from 'src/agenda-instance';
 import app from 'src/app';
 import { OptionsType, setOptions } from 'src/options';
 
+export interface ParamsType {
+  publicUrl: string;
+  expressApp: Express;
+  agenda: Agenda;
+  options?: OptionsType;
+}
+
 export const mountAgendaAdmin = async ({
   publicUrl,
   expressApp,
   agenda,
   options,
-}: {
-  publicUrl: string;
-  expressApp: Express;
-  agenda: Agenda;
-  options?: OptionsType;
-}) => {
+}: ParamsType) => {
   const parsedUrl = new URL(publicUrl);
 
   await fs.copy(
