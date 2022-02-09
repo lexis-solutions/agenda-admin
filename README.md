@@ -30,6 +30,10 @@ Agenda Admin can be used as express middleware, using the `mountAgendaAdmin` fun
 - `publicUrl` - the URL at which the the middleware should be mounted
 - `expressApp` - the express app
 - `agenda` - an agenda instance
+- `options` - an optional argument, the object can have the following properties: 
+  - `itemsPerPage`
+  - `username`
+  - `password` 
 
 #### Example:
 
@@ -60,12 +64,12 @@ app.listen(4000);
 ```
 docker run -p 4000:4000 \
 --env CONNECTION_STRING=mongo://username:password@host/database \
---env COLLECTION=collection
+--env COLLECTION=collection lexissolutions/agenda-admin:latest
 ```
 
----
+If MongoDB is installed directly on your machine, you can run the command with `--network=host`
 
-### Environment configuration
+#### Docker environment configuration
 
 | name              | description                                                         | required | default value |
 | ----------------- | ------------------------------------------------------------------- | -------- | ------------- |

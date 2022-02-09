@@ -4,22 +4,43 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: __PUBLIC_URL_PLACEHOLDER__
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - name: Install dependencies
         run: yarn
       - name: Install semantic-release plugins
-        run: yarn add -D @semantic-release/changelog @semantic-release/git
+        run: yarn add -WD @semantic-release/changelog @semantic-release/git
       - name: Build
-        run: yarn build
+        run: GENERATE_SOURCEMAP=false yarn build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         working-directory: ./api
         run: npx semantic-release
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: http://localhost:4000
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: lexissolutions/agenda-admin:latest
