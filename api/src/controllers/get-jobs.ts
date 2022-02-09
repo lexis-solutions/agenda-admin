@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { getAgendaInstance } from 'src/agenda-instance';
+import { getOptions } from 'src/options';
 import { StatusType } from 'src/types';
 import { buildGetJobsQuery } from 'src/utils/build-get-jobs-query';
-import { ITEMS_PER_PAGE } from 'src/constants';
 
 interface ReqQuery {
   sortBy: 'lastRunAt' | 'nextRunAt';
@@ -21,6 +21,7 @@ export const getJobs = async (
 ) => {
   const page = req.query.page || 1;
   const query = buildGetJobsQuery(req.query);
+  const { itemsPerPage } = getOptions();
 
   const data = await getAgendaInstance()
     ._collection.aggregate([
@@ -32,15 +33,15 @@ export const getJobs = async (
             {
               $project: {
                 pagesCount: {
-                  $ceil: { $divide: ['$itemsCount', ITEMS_PER_PAGE] },
+                  $ceil: { $divide: ['$itemsCount', itemsPerPage] },
                 },
                 itemsCount: '$itemsCount',
               },
             },
           ],
           jobs: [
-            { $skip: ITEMS_PER_PAGE * (page - 1) },
-            { $limit: ITEMS_PER_PAGE },
+            { $skip: itemsPerPage * (page - 1) },
+            { $limit: itemsPerPage },
           ],
         },
       },

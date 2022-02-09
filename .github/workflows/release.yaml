@@ -18,7 +18,7 @@ jobs:
       - name: Install semantic-release plugins
         run: yarn add -WD @semantic-release/changelog @semantic-release/git
       - name: Build
-        run: yarn build
+        run: GENERATE_SOURCEMAP=false yarn build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
