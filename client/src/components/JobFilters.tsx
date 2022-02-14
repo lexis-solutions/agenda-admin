@@ -115,7 +115,7 @@ const JobFilters: React.FC = () => {
   return (
     <div className="flex flex-col w-full space-y-4">
       <div className="flex flex-row items-end space-x-4">
-        <div className="form-control">
+        <div className="flex-1 form-control">
           <label className="label">
             <span>Job Name</span>
           </label>
@@ -131,12 +131,16 @@ const JobFilters: React.FC = () => {
                 }}
               />
             )}
+            menuStyle={{
+              top: 85,
+              left: 0,
+            }}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
             onSelect={setJobName}
           />
         </div>
-        <div className="form-control">
+        <div className="flex-1 form-control">
           <label className="label">Form Value</label>
           <div className="flex flex-row">
             <InputField
@@ -168,7 +172,7 @@ const JobFilters: React.FC = () => {
             />
           </div>
         </div>
-        <div className="form-control">
+        <div className="flex-1 form-control">
           <label className="label">Refresh Interval (seconds)</label>
           <InputField
             className="input input-bordered"

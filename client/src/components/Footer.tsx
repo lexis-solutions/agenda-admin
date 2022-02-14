@@ -77,7 +77,7 @@ const Footer: React.FC = () => {
   if (!data) return null;
 
   return (
-    <div className="fixed px-4 bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 mx-auto border-t bg-base-100">
+    <div className="fixed bottom-0 z-10 flex flex-row items-center justify-between w-full max-w-screen-xl p-2 px-4 mx-auto border-t bg-base-100">
       <div className="flex flex-row items-center space-x-1">
         <div>{jobsMsg} selected</div>
         <button
@@ -89,7 +89,7 @@ const Footer: React.FC = () => {
         {selectedJobsCount > 0 && (
           <a
             href="#bulk-requeue"
-            className="btn btn-sm btn-ghost text-secondary"
+            className="btn btn-sm btn-ghost text-warning"
             onClick={() => setRenderModals(true)}
           >
             Requeue Selected
@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
         {selectedJobsCount > 0 && (
           <a
             href="#bulk-delete"
-            className="btn btn-sm btn-ghost text-warning"
+            className="btn btn-sm btn-ghost text-error"
             onClick={() => setRenderModals(true)}
           >
             Delete Selected
@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
               <div className="modal-action">
                 <a
                   href="#!"
-                  className="btn btn-primary"
+                  className="btn btn-warning"
                   onClick={() => {
                     handleBulkRequeue();
                     setRenderModals(false);
@@ -135,7 +135,7 @@ const Footer: React.FC = () => {
               <div className="modal-action">
                 <a
                   href="#!"
-                  className="btn btn-warning"
+                  className="btn btn-error"
                   onClick={() => {
                     handleBulkDelete();
                     setRenderModals(false);

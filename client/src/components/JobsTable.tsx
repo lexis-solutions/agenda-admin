@@ -153,7 +153,7 @@ const JobsTable: React.FC = () => {
             <div className="modal-action">
               <a
                 href="#!"
-                className="btn btn-primary"
+                className="btn btn-warning"
                 onClick={() => {
                   if (modalJob) {
                     handleRequeueJobs([modalJob.job._id]);
@@ -178,7 +178,7 @@ const JobsTable: React.FC = () => {
             <div className="modal-action">
               <a
                 href="#!"
-                className="btn btn-warning"
+                className="btn btn-error"
                 onClick={() => {
                   if (modalJob) {
                     handleDeleteJobs([modalJob.job._id]);

@@ -1,14 +1,15 @@
+import { useState } from 'react';
+import humanInterval from 'human-interval';
+import { isUndefined } from 'lodash';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import cx from 'classnames';
 
 import JobFilters from 'src/components/JobFilters';
 import JobNamesAutocomplete from 'src/components/JobNamesAutocomplete';
 import Modal from 'src/components/Modal';
 import Plus from 'src/svgs/Plus';
 import { createNewJob } from 'src/api';
-import humanInterval from 'human-interval';
-import { isUndefined } from 'lodash';
-import { useFormik } from 'formik';
-import { useState } from 'react';
 
 interface FormValuesType {
   name: string;
@@ -71,21 +72,16 @@ const Header: React.FC = () => {
   const [renderModal, setRenderModal] = useState(false);
   const [renderAlert, setRenderAlert] = useState(false);
 
-  const showAlert = () => {
-    setRenderAlert(true);
-    setTimeout(() => setRenderAlert(false), 5000);
-  };
-
   const formik = useFormik<FormValuesType>({
     initialValues: {
       name: '',
       schedule: '',
       repeatInterval: '',
-      data: 'null',
+      data: '{}',
     },
     onSubmit: async (values) => {
       await createNewJob(values);
-      showAlert();
+      setRenderAlert(true);
     },
     validationSchema: createJobSchema,
   });
@@ -104,21 +100,26 @@ const Header: React.FC = () => {
         </a>
       </div>
       {renderModal && (
-        <Modal id="create-job" onClose={() => setRenderModal(false)}>
+        <Modal
+          id="create-job"
+          onClose={() => {
+            setRenderModal(false);
+            setRenderAlert(false);
+          }}
+        >
           <div className="text-xl">Create Job</div>
           <form className="flex flex-col" onSubmit={formik.handleSubmit}>
             <label className="label" htmlFor="name">
               Name
             </label>
-            {formik.errors.name && formik.touched.name ? (
-              <div className="text-error">{formik.errors.name}</div>
-            ) : null}
             <JobNamesAutocomplete
               menuStyle={{ top: 155, left: 20 }}
               renderInput={(props) => (
                 <input
                   {...props}
-                  className="w-full input input-bordered"
+                  className={cx('w-full input input-bordered', {
+                    'border-red-500': formik.errors.name && formik.touched.name,
+                  })}
                   id="name"
                   name="name"
                   type="text"
@@ -128,20 +129,29 @@ const Header: React.FC = () => {
               onChange={formik.handleChange}
               onSelect={(value) => formik.setFieldValue('name', value)}
             />
+
+            <div className="text-xs text-error">
+              {formik.errors.name && formik.touched.name
+                ? formik.errors.name
+                : ''}
+            </div>
             <label className="label" htmlFor="schedule">
               <div className="flex flex-row items-center">Schedule</div>
             </label>
-            {formik.errors.schedule && formik.touched.schedule ? (
-              <div className="text-error">{formik.errors.schedule}</div>
-            ) : null}
             <input
-              className="input input-bordered"
+              className={cx('input input-bordered', {
+                'border-red-500':
+                  formik.errors.schedule && formik.touched.schedule,
+              })}
               id="schedule"
               name="schedule"
               type="text"
               onChange={formik.handleChange}
               value={formik.values.schedule}
             />
+            {formik.errors.schedule && formik.touched.schedule ? (
+              <div className="text-xs text-error">{formik.errors.schedule}</div>
+            ) : null}
             <span className="my-2 text-xs text-base-content">
               Number or{' '}
               <a
@@ -156,17 +166,22 @@ const Header: React.FC = () => {
             <label className="label" htmlFor="repeatInterval">
               <div className="flex flex-row items-center">Repeat Interval</div>
             </label>
-            {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
-              <div className="text-error">{formik.errors.repeatInterval}</div>
-            ) : null}
             <input
-              className="input input-bordered"
+              className={cx('input input-bordered', {
+                'border-red-500':
+                  formik.errors.repeatInterval && formik.touched.repeatInterval,
+              })}
               id="repeatInterval"
               name="repeatInterval"
               type="text"
               onChange={formik.handleChange}
               value={formik.values.repeatInterval}
             />
+            {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
+              <div className="text-xs text-error">
+                {formik.errors.repeatInterval}
+              </div>
+            ) : null}
             <span className="my-2 text-xs text-base-content">
               Number,{' '}
               <a
@@ -190,18 +205,20 @@ const Header: React.FC = () => {
             <label className="label" htmlFor="data">
               Data
             </label>
-            {formik.errors.data && formik.touched.data ? (
-              <div className="text-error">{formik.errors.data}</div>
-            ) : null}
             <textarea
-              className="font-mono textarea textarea-bordered"
+              className={cx('font-mono textarea textarea-bordered', {
+                'border-red-500': formik.errors.data && formik.touched.data,
+              })}
               id="data"
               name="data"
               onChange={formik.handleChange}
               value={formik.values.data}
             />
+            {formik.errors.data && formik.touched.data ? (
+              <div className="text-xs text-error">{formik.errors.data}</div>
+            ) : null}
             {renderAlert && (
-              <div className="sticky left-0 right-0 m-2 alert alert-success">
+              <div className="sticky left-0 right-0 mt-4 -mb-2 alert alert-success">
                 <label>Job successfully created!</label>
               </div>
             )}
@@ -211,10 +228,13 @@ const Header: React.FC = () => {
               </button>
               <a
                 href="#!"
-                onClick={() => setRenderModal(false)}
+                onClick={() => {
+                  setRenderModal(false);
+                  setRenderAlert(false);
+                }}
                 className="btn"
               >
-                Cancel
+                Close
               </a>
             </div>
           </form>
