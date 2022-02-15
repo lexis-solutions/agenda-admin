@@ -61,13 +61,13 @@ app.listen(4000);
 
 ### Docker usage
 
+The docker container exposes port 4000
+
 ```
 docker run -p 4000:4000 \
 --env CONNECTION_STRING=mongo://username:password@host/database \
 --env COLLECTION=collection lexissolutions/agenda-admin:latest
 ```
-
-If MongoDB is installed directly on your machine, you can run the command with `--network=host`
 
 #### Docker environment configuration
 
