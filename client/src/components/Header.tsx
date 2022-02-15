@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import humanInterval from 'human-interval';
-import { isUndefined } from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import cx from 'classnames';
@@ -18,48 +16,25 @@ interface FormValuesType {
   data?: string;
 }
 
-const cronRegex = new RegExp(
-  /^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/
-);
-
 const createJobSchema = Yup.object().shape({
   name: Yup.string().required('Job name is required!'),
-  schedule: Yup.string()
-    .test('valid-human-interval', 'Invalid time format', (value) => {
-      const time = humanInterval(value);
-      return !isNaN(Number(value)) || isUndefined(time) || !isNaN(time);
-    })
-    .when('repeatInterval', {
-      is: (repeatInterval: string | undefined) => !repeatInterval,
-      then: Yup.string().required(
-        'Either a schedule or a repeat interval must be provided!'
-      ),
-    }),
-  repeatInterval: Yup.string().test(
-    'valid-human-interval',
-    'Invalid time format',
-    (value) => {
-      if (isUndefined(value)) {
-        return true;
-      }
-
-      const time = humanInterval(value);
-      return (
-        !isNaN(Number(value)) ||
-        cronRegex.test(value) ||
-        isUndefined(time) ||
-        !isNaN(time)
-      );
-    }
-  ),
+  schedule: Yup.string().when('repeatInterval', {
+    is: (repeatInterval: string | undefined) => !repeatInterval,
+    then: Yup.string().required(
+      'Either a schedule or a repeat interval must be provided!'
+    ),
+  }),
+  repeatInterval: Yup.string(),
   data: Yup.string().test(
     'validate-data-format',
     'Invalid JSON format!',
     (value) => {
+      if (!value) {
+        return false;
+      }
+
       try {
-        if (value) {
-          JSON.parse(value);
-        }
+        JSON.parse(value);
       } catch (e) {
         return false;
       }
@@ -113,7 +88,12 @@ const Header: React.FC = () => {
               Name
             </label>
             <JobNamesAutocomplete
-              menuStyle={{ top: 155, left: 20 }}
+              menuStyle={{
+                top: 155,
+                left: 20,
+                maxWidth: 350,
+                maxHeight: 400,
+              }}
               renderInput={(props) => (
                 <input
                   {...props}

@@ -134,6 +134,9 @@ const JobFilters: React.FC = () => {
             menuStyle={{
               top: 85,
               left: 0,
+              maxWidth: 500,
+              maxHeight: 600,
+              overflowY: 'scroll',
             }}
             value={term}
             onChange={(e) => setTerm(e.target.value)}

@@ -41,7 +41,7 @@ const JobNamesAutocomplete: React.FC<PropsType> = ({
     () => ({
       position: 'absolute',
       cursor: 'pointer',
-      overflow: 'hidden',
+      overflow: 'auto',
       zIndex: 999,
       borderWidth: 2,
       borderRadius: 8,
