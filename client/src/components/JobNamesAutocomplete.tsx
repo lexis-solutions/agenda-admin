@@ -39,8 +39,9 @@ const JobNamesAutocomplete: React.FC<PropsType> = ({
 
   const defaultMenuStyle: React.CSSProperties = useMemo(
     () => ({
-      position: 'fixed',
-      overflow: 'hidden',
+      position: 'absolute',
+      cursor: 'pointer',
+      overflow: 'auto',
       zIndex: 999,
       borderWidth: 2,
       borderRadius: 8,
