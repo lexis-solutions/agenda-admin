@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PUBLIC_URL: __PUBLIC_URL_PLACEHOLDER__
+      PUBLIC_DIR_NAME: client
     steps:
       - name: Checkout
         uses: actions/checkout@v2

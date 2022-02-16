@@ -1,6 +1,5 @@
-export const API_URL = process.env.PUBLIC_URL
-  ? process.env.PUBLIC_URL + '/api'
-  : 'http://localhost:4000/api';
+export const API_URL =
+  process.env.REACT_APP_API_URL || process.env.PUBLIC_URL + '/api';
 export const DEFAULT_REFRESH_INTERVAL = 15000;
 
 export const JOB_COLORS = {
