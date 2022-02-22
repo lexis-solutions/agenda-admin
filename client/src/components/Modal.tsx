@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 
 interface PropsType {
   id: string;
+  title: string;
   onClose?: () => void;
 }
 
-const Modal: React.FC<PropsType> = ({ id, onClose, children }) => {
+const Modal: React.FC<PropsType> = ({ id, onClose, title, children }) => {
   useEffect(() => {
     const closeModalOnEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -21,12 +22,16 @@ const Modal: React.FC<PropsType> = ({ id, onClose, children }) => {
     <div
       id={id}
       className="modal"
-      onClick={() => {
+      onMouseDown={() => {
         window.location.href = '#!';
         if (onClose) onClose();
       }}
     >
-      <div className="space-y-4 modal-box" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="space-y-4 modal-box"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <div className="text-2xl">{title}</div>
         {children}
       </div>
     </div>
