@@ -1,24 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import InputField from './InputField';
-import { JOB_COLORS } from 'src/constants';
 import JobNamesAutocomplete from './JobNamesAutocomplete';
-import { StatusType } from 'src/types';
-import { abbreviateNumber } from 'src/utils/formatter';
-import cx from 'classnames';
 import { debounce } from 'lodash';
 import { useJobsListContext } from 'src/hooks/useJobsListContext';
-import { useJobsOverview } from 'src/hooks/useJobsOverview';
+import Overview from './Overview';
 
 const DEBOUNCE_DELAY = 500;
-
-const STATUS_BUTTONS: StatusType[] = [
-  'scheduled',
-  'queued',
-  'running',
-  'completed',
-  'failed',
-];
 
 const JobFilters: React.FC = () => {
   const {
@@ -28,9 +16,7 @@ const JobFilters: React.FC = () => {
     setProperty: setJobProperty,
     value: jobValue,
     setValue: setJobValue,
-    status: jobStatus,
     setStatus: setJobStatus,
-    jobListUpdatedAt,
     refreshInterval,
     setRefreshInterval,
   } = useJobsListContext();
@@ -40,19 +26,10 @@ const JobFilters: React.FC = () => {
   const [value, setValue] = useState('');
   const [refreshRate, setRefreshRate] = useState(refreshInterval);
 
-  const { data, mutate: refreshOverview } = useJobsOverview({
-    name: jobName,
-    property: jobProperty,
-    value: jobValue,
-  });
-
   useEffect(() => setTerm(jobName), [jobName]);
   useEffect(() => setProperty(jobProperty), [jobProperty]);
   useEffect(() => setValue(jobValue), [jobValue]);
   useEffect(() => setRefreshRate(refreshInterval), [refreshInterval]);
-  useEffect(() => {
-    refreshOverview();
-  }, [refreshOverview, jobListUpdatedAt]);
 
   const debouncedSetJobProperty = useMemo(
     () => debounce(setJobProperty, DEBOUNCE_DELAY),
@@ -81,12 +58,6 @@ const JobFilters: React.FC = () => {
       debouncedSetJobValue(val);
     },
     [debouncedSetJobValue]
-  );
-
-  const handleStatusSelect = useCallback(
-    (btnStatus: StatusType) => () =>
-      setJobStatus(jobStatus !== btnStatus ? btnStatus : ''),
-    [jobStatus, setJobStatus]
   );
 
   const debouncedSetRefreshInterval = useMemo(
@@ -147,7 +118,7 @@ const JobFilters: React.FC = () => {
           <label className="label">Form Value</label>
           <div className="flex flex-row">
             <InputField
-              className="rounded-r-none input input-bordered"
+              className="rounded-r-none"
               showButton={!!property}
               onClear={() => setJobProperty('')}
               inputProps={{
@@ -162,7 +133,7 @@ const JobFilters: React.FC = () => {
               =
             </span>
             <InputField
-              className="rounded-l-none input input-bordered"
+              className="rounded-l-none"
               showButton={!!value}
               onClear={() => setJobValue('')}
               inputProps={{
@@ -178,7 +149,6 @@ const JobFilters: React.FC = () => {
         <div className="flex-1 form-control">
           <label className="label">Refresh Interval (seconds)</label>
           <InputField
-            className="input input-bordered"
             showButton={false}
             onClear={() => null}
             inputProps={{
@@ -191,38 +161,11 @@ const JobFilters: React.FC = () => {
             }}
           />
         </div>
-        <div className="flex-1" />
         <button className="btn btn-ghost" onClick={handleClearFilters}>
           Clear Filters
         </button>
       </div>
-      {
-        <div className="flex w-full overflow-hidden rounded-box tabs">
-          {STATUS_BUTTONS.map((name) => (
-            <a
-              key={name}
-              className={cx(
-                'tab h-16 transition-colors duration-200 flex-1',
-                JOB_COLORS[name],
-                {
-                  'bg-opacity-25': jobStatus && jobStatus !== name,
-                  'tab-active bg-opacity-100': jobStatus === name,
-                }
-              )}
-              onClick={handleStatusSelect(name)}
-            >
-              <div className="flex flex-col text-primary-content">
-                <span className="text-3xl font-bold">
-                  {abbreviateNumber(
-                    data && data.data.length ? data.data[0][name] : 0
-                  )}
-                </span>
-                <span className="text-sm">{name}</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      }
+      <Overview />
     </div>
   );
 };

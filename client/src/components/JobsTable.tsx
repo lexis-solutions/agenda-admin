@@ -127,8 +127,8 @@ const JobsTable: React.FC = () => {
                 <div className="font-bold text-red-500">
                   Failed At: {formattedFailedAt}
                 </div>
+                <div className="font-bold text-red-500">Reason:</div>
                 <div className="font-bold text-red-500">
-                  Reason:
                   <div className="h-48 overflow-scroll resize-y textarea textarea-bordered">
                     <pre>
                       <code>{modalJob?.job.failReason}</code>
@@ -146,7 +146,7 @@ const JobsTable: React.FC = () => {
           {/* Requeue modal */}
           <JobModal
             id="requeue-job"
-            title="Requeue Job"
+            title="Requeue job?"
             job={modalJob}
             onClose={() => setModalJob(null)}
           >
@@ -171,7 +171,7 @@ const JobsTable: React.FC = () => {
           {/* Delete modal */}
           <JobModal
             id="delete-job"
-            title="Delete Job"
+            title="Delete job?"
             job={modalJob}
             onClose={() => setModalJob(null)}
           >
