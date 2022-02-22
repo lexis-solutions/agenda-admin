@@ -68,7 +68,7 @@ const Header: React.FC = () => {
         <a
           href="#create-job"
           onClick={() => setRenderModal(true)}
-          className="mt-4 btn bg-primary text-primary-content"
+          className="mt-4 btn btn-primary text-primary-content"
         >
           <Plus />
           <span className="ml-2">New Job</span>
@@ -77,12 +77,12 @@ const Header: React.FC = () => {
       {renderModal && (
         <Modal
           id="create-job"
+          title="Create job"
           onClose={() => {
             setRenderModal(false);
             setRenderAlert(false);
           }}
         >
-          <div className="text-xl">Create Job</div>
           <form className="flex flex-col" onSubmit={formik.handleSubmit}>
             <label className="label" htmlFor="name">
               Name
@@ -110,7 +110,7 @@ const Header: React.FC = () => {
               onSelect={(value) => formik.setFieldValue('name', value)}
             />
 
-            <div className="text-xs text-error">
+            <div className="mt-2 text-xs text-error">
               {formik.errors.name && formik.touched.name
                 ? formik.errors.name
                 : ''}
@@ -130,7 +130,9 @@ const Header: React.FC = () => {
               value={formik.values.schedule}
             />
             {formik.errors.schedule && formik.touched.schedule ? (
-              <div className="text-xs text-error">{formik.errors.schedule}</div>
+              <div className="mt-2 text-xs text-error">
+                {formik.errors.schedule}
+              </div>
             ) : null}
             <span className="my-2 text-xs text-base-content">
               Number or{' '}
@@ -158,7 +160,7 @@ const Header: React.FC = () => {
               value={formik.values.repeatInterval}
             />
             {formik.errors.repeatInterval && formik.touched.repeatInterval ? (
-              <div className="text-xs text-error">
+              <div className="mt-2 text-xs text-error">
                 {formik.errors.repeatInterval}
               </div>
             ) : null}
@@ -195,7 +197,9 @@ const Header: React.FC = () => {
               value={formik.values.data}
             />
             {formik.errors.data && formik.touched.data ? (
-              <div className="text-xs text-error">{formik.errors.data}</div>
+              <div className="mt-2 text-xs text-error">
+                {formik.errors.data}
+              </div>
             ) : null}
             {renderAlert && (
               <div className="sticky left-0 right-0 mt-4 -mb-2 alert alert-success">

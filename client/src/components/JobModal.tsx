@@ -31,8 +31,7 @@ const JobModal: React.FC<PropsType> = ({
   if (!job) return null;
 
   return (
-    <Modal id={id} onClose={onClose}>
-      <div className="text-2xl">{title}</div>
+    <Modal id={id} onClose={onClose} title={title}>
       <div className="flex flex-row">
         ID: {job.job._id}
         <button

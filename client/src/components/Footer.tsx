@@ -107,8 +107,11 @@ const Footer: React.FC = () => {
         {renderModals && (
           <>
             {/* Bulk requeue modal */}
-            <Modal id="bulk-requeue" onClose={() => setRenderModals(false)}>
-              <div className="text-xl">Requeue {jobsMsg}</div>
+            <Modal
+              id="bulk-requeue"
+              title={'Requeue ' + jobsMsg + '?'}
+              onClose={() => setRenderModals(false)}
+            >
               <div className="modal-action">
                 <a
                   href="#!"
@@ -130,7 +133,11 @@ const Footer: React.FC = () => {
               </div>
             </Modal>
             {/* Bulk delete modal */}
-            <Modal id="bulk-delete" onClose={() => setRenderModals(false)}>
+            <Modal
+              id="bulk-delete"
+              onClose={() => setRenderModals(false)}
+              title={'Delete ' + jobsMsg + '?'}
+            >
               <div className="text-xl">Delete {jobsMsg}</div>
               <div className="modal-action">
                 <a
