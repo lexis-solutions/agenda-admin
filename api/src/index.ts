@@ -8,7 +8,7 @@ try {
   getAgendaInstance()
     .start()
     .then(() => {
-      app.listen(4000, () => console.info('App running on port 4000'));
+      app.listen(7878, () => console.info('App running on port 7878'));
     });
 } catch (error: any) {
   console.error(error.message);
