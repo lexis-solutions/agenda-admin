@@ -93,6 +93,7 @@ const JobFilters: React.FC = () => {
           <JobNamesAutocomplete
             renderInput={(props) => (
               <InputField
+                className="w-full"
                 showButton={!!jobName}
                 onClear={() => setJobName('')}
                 inputProps={{
@@ -149,6 +150,7 @@ const JobFilters: React.FC = () => {
         <div className="flex-1 form-control">
           <label className="label">Refresh Interval (seconds)</label>
           <InputField
+            className="w-full"
             showButton={false}
             onClear={() => null}
             inputProps={{

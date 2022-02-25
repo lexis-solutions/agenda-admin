@@ -49,22 +49,24 @@ const app = express();
 const agenda = new Agenda({ db: { address: 'mongodb://127.0.0.1/agendaDb' } });
 
 mountAgendaAdmin({
-  publicUrl: 'http://localhost:4000/agenda-admin',
+  publicUrl: 'http://localhost:7878/agenda-admin',
   expressApp: app,
   agenda
 });
 
-app.listen(4000);
+app.listen(7878);
 ```
 
 ---
 
 ### Docker usage
 
-The docker container exposes port 4000
+The docker container exposes port 7878
+
+At this point, AgendaAdmin does not support port re-mapping, so the container should be connected to port 7878 only
 
 ```
-docker run -p 4000:4000 \
+docker run -p 7878:7878 \
 --env CONNECTION_STRING=mongo://username:password@host/database \
 --env COLLECTION=collection lexissolutions/agenda-admin:latest
 ```

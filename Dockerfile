@@ -10,7 +10,7 @@ RUN yarn
 
 COPY . .
 
-EXPOSE 4000
+EXPOSE 7878
 
 RUN GENERATE_SOURCEMAP=false yarn build
 
