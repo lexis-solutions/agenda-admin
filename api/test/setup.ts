@@ -1,3 +1,6 @@
+import dotenv from 'dotenv-flow';
+dotenv.config();
+
 import { getAgendaInstance } from 'src/agenda-instance';
 
 beforeAll(async () => {
