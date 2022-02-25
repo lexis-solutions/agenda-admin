@@ -13,9 +13,6 @@ const App = () => {
         </div>
         <Header />
         <JobsTable />
-        <div className="p-4 m-4">
-          <span>No data found.</span>
-        </div>
         <Footer />
       </div>
     </div>
