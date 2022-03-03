@@ -13,6 +13,14 @@
     "type": "git",
     "url": "https://github.com/Lexis-Solutions/agenda-admin.git"
   },
+  "description": "A dashboard for agenda.js",
+  "keywords": [
+    "agenda",
+    "agenda-admin",
+    "dashboard",
+    "job-scheduler",
+    "job-queues"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "tsc && tsc-alias",
