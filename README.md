@@ -27,13 +27,14 @@ Required version of MongoDB: >2.6.0
 
 Agenda Admin can be used as express middleware, using the `mountAgendaAdmin` function. As an argument, it takes an object with the following fields:
 
-- `publicUrl` - the URL at which the the middleware should be mounted
+- `publicUrl` - the URL at which the frontend is served
+- `mountPath` - the path which the middleware should be mounted (passed to `app.use()`)
 - `expressApp` - the express app
 - `agenda` - an agenda instance
-- `options` - an optional argument, the object can have the following properties: 
+- `options` - an optional argument, the object can have the following properties:
   - `itemsPerPage`
   - `username`
-  - `password` 
+  - `password`
 
 #### Example:
 
