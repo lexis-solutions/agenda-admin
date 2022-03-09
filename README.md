@@ -51,6 +51,7 @@ const agenda = new Agenda({ db: { address: 'mongodb://127.0.0.1/agendaDb' } });
 
 mountAgendaAdmin({
   publicUrl: 'http://localhost:7878/agenda-admin',
+  mountPath: '/',
   expressApp: app,
   agenda
 });
