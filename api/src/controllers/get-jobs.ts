@@ -17,7 +17,7 @@ interface ReqQuery {
 export const getJobs = async (
   req: Request<any, any, any, ReqQuery>,
   res: Response,
-  next: NextFunction
+  next?: NextFunction
 ) => {
   const page = req.query.page || 1;
   const query = buildGetJobsQuery(req.query);
@@ -50,5 +50,6 @@ export const getJobs = async (
 
   res.locals = data;
 
-  next();
+  next?.();
+  return data;
 };

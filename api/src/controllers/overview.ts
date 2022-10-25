@@ -11,7 +11,7 @@ interface ReqQuery {
 export const overview = async (
   req: Request<any, any, any, ReqQuery>,
   res: Response,
-  next: NextFunction
+  next?: NextFunction
 ) => {
   const { query } = buildJobQuery({
     ...req.query,
@@ -122,5 +122,6 @@ export const overview = async (
     .toArray();
 
   res.locals.data = data;
-  next();
+  next?.();
+  return data;
 };

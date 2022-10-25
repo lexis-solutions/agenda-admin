@@ -2,6 +2,7 @@ import express from 'express';
 import { autocomplete } from 'src/controllers/autocomplete';
 import { getJobs } from 'src/controllers/get-jobs';
 import { overview } from 'src/controllers/overview';
+import { overviewAndJobs } from 'src/controllers/overview-and-jobs';
 import { deleteJobsById, deleteJobsByQuery } from 'src/controllers/delete-jobs';
 import {
   requeueJobsById,
@@ -15,6 +16,7 @@ router.route('/jobs').get(getJobs);
 router.route('/autocomplete').get(autocomplete);
 router.route('/overview').get(overview);
 router.route('/delete/id').delete(deleteJobsById);
+router.route('/overview-and-jobs').get(overviewAndJobs);
 router.route('/requeue/id').post(requeueJobsById);
 router.route('/delete/query').delete(deleteJobsByQuery);
 router.route('/requeue/query').post(requeueJobsByQuery);
