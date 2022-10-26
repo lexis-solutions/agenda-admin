@@ -1,19 +1,15 @@
 {
   "ts-node": {
-    "require": [ "tsconfig-paths/register", "typescript-transform-paths" ]
+    "require": ["tsconfig-paths/register", "typescript-transform-paths"]
   },
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "src/*": [ "./src/*" ],
-      "test/*": [ "./test/*" ]
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"]
     },
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -34,5 +30,5 @@
       }
     ]
   },
-  "include": [ "src/**/*" ]
+  "include": ["src/**/*", "test/**/*"]
 }
